@@ -1679,11 +1679,36 @@
     cursor: -webkit-grab;
 }
 
+/* Override default orange colors */
+.fb3d-button {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
 
+.fb3d-button:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
 
+/* Change control colors */
+.fb3d-nav {
+    background-color: var(--primary) !important;
+}
 
+.fb3d-nav-arrow,
+.fb3d-nav-close {
+    color: white !important;
+}
 
+/* Change page controls */
+.fb3d-page-number {
+    color: var(--primary) !important;
+}
 
+/* Change loading spinner */
+.fb3d-spinner > div {
+    background-color: var(--primary) !important;
+}
 
 /* Copyright 2014 Mozilla Foundation
  *

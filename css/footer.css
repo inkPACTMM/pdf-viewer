@@ -6,12 +6,12 @@
 
 .footer .section-title {
     text-align: center;
-    color: #c0392b;
+    color: #012FB3;
     margin-bottom: 50px;
     text-transform: uppercase;
 }
 #footer {
-    background: #c0392b !important;
+    background: #012FB3 !important;
 }
 #footer h5{
 	padding-left: 10px;

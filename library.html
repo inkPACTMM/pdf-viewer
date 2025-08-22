@@ -5,8 +5,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- ajax -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <!-- Costume CSS -->
 <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
 <link rel="stylesheet" type="text/css" href="css/footer.css">
@@ -17,9 +17,6 @@
 <link rel="stylesheet" type="text/css" href="css/theme.css">
 
 <script src="js/flipbook.min.js"></script>
-
-<!-- Add PDF.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function () {
@@ -46,13 +43,11 @@ $(document).ready(function () {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load books:', errorThrown);
+            console.log('Response Text:', jqXHR.responseText);
             $('.bookshelf-container').html(`
-                <div class="error-state text-center py-5">
-                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
-                    <h4 class="mt-3">Failed to load books</h4>
-                    <button class="btn btn-primary mt-3" onclick="location.reload()">
-                        Try Again
-                    </button>
+                <div class="alert alert-danger m-5 text-center">
+                    <h4>Error Loading Books</h4>
+                    <p>Please try refreshing the page. If the problem persists, contact support.</p>
                 </div>
             `);
         }
@@ -69,6 +64,35 @@ $(document).ready(function () {
         renderBooks(filteredBooks);
         setupPagination(filteredBooks);
     });
+
+    // Set worker path for PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+    async function renderPDFThumbnail(pdfUrl) {
+        try {
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+            
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+            
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            await page.render({
+                canvasContext: context,
+                viewport: viewport
+            }).promise;
+            
+            return canvas.toDataURL();
+        } catch (error) {
+            console.error('Error rendering PDF thumbnail:', error);
+            return null;
+        }
+    }
 
     function renderBooks(books) {
         const booksPerShelf = 5;
@@ -95,7 +119,7 @@ $(document).ready(function () {
                     <div class="bookshelf mb-5">
                         <div class="covers">
                             ${shelfBooks.map(book => `
-                                <div class="thumb book-1" data-id="${book.id}">
+                                <div class="thumb book-1" data-id="${book.id}" data-book-id="${book.id}">
                                     <a href="v-pdf.html?id=${book.id}">
                                         <img src="${book.thumbnail}" alt="${book.title}">
                                     </a>
@@ -232,56 +256,7 @@ $(document).ready(function () {
             }
         });
     }
-
-    // Set worker path for PDF.js
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-
-    async function renderPDFThumbnail(pdfUrl) {
-        try {
-            const loadingTask = pdfjsLib.getDocument(pdfUrl);
-            const pdf = await loadingTask.promise;
-            const page = await pdf.getPage(1);
-            
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale });
-            
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            
-            await page.render({
-                canvasContext: context,
-                viewport: viewport
-            }).promise;
-            
-            return canvas.toDataURL();
-        } catch (error) {
-            console.error('Error rendering PDF thumbnail:', error);
-            return null;
-        }
-    }
-
-    $(document).ready(function() {
-        // Load books data
-        $.ajax({
-            url: 'data/books.json',
-            dataType: 'json',
-            success: async function(data) {
-                const latestBooks = data.books.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
-                
-                for (const book of latestBooks) {
-                    const thumbnail = await renderPDFThumbnail(book.pdfUrl);
-                    if (thumbnail) {
-                        book.displayThumbnail = thumbnail;
-                    } else {
-                        book.displayThumbnail = book.thumbnail;
-                    }
-                }
-                renderBooks('#latestBooks', latestBooks);
-            }
-        });
-    });
+});
 </script>
 
 <style type="text/css">
@@ -472,51 +447,6 @@ $(document).ready(function () {
         background: #f8f9fa;
     }
 
-    /* Featured Section */
-    .featured-section {
-        padding: 60px 0;
-        background: #f8f9fa;
-    }
-
-    .section-title {
-        color: #333;
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #eee;
-    }
-
-    .book-card {
-        background: white;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .book-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .book-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 4px;
-    }
-
-    .book-card h5 {
-        margin: 1rem 0 0.5rem;
-        font-size: 1.1rem;
-    }
-
-    .book-card p {
-        color: #666;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
     /* Responsive adjustments */
     @media (max-width: 991px) { 
         .hero-section {
@@ -540,11 +470,9 @@ $(document).ready(function () {
             <a class="navbar-brand" href="index.html">
                 <img src="images/logo.svg" alt="InkPact Logo">
             </a>
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -570,10 +498,10 @@ $(document).ready(function () {
     <section class="hero-section">
         <div class="container text-center">
             <h1>Welcome to InkPact Digital Library</h1>
-            <p class="lead">Your gateway to knowledge and discovery</p>
-            <form id="searchForm" action="library.html" method="GET">
+            <p class="lead">Discover and access thousands of documents and publications</p>
+            <form id="searchForm">
                 <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search our entire library..." id="searchInput">
+                    <input type="search" class="form-control" placeholder="Search by title, author, or keyword..." id="searchInput">
                     <div class="input-group-append">
                         <button class="btn" type="submit">
                             <i class="fa fa-search mr-2"></i>Search
@@ -584,23 +512,17 @@ $(document).ready(function () {
         </div>
     </section>
 
-    <!-- Latest Books Section -->
-    <section class="featured-section">
+    <!-- Books Section -->
+    <section class="books-section">
         <div class="container">
-            <h2 class="section-title">Latest Additions</h2>
-            <div class="row" id="latestBooks">
-                <!-- Will be populated by JS -->
+            <div class="bookshelf-container">
+                <!-- Books will be dynamically inserted here -->
             </div>
-        </div>
-    </section>
-
-    <!-- Popular Books Section -->
-    <section class="featured-section bg-white">
-        <div class="container">
-            <h2 class="section-title">Popular Books</h2>
-            <div class="row" id="popularBooks">
-                <!-- Will be populated by JS -->
-            </div>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <!-- Pagination will be dynamically inserted here -->
+                </ul>
+            </nav>
         </div>
     </section>
 
@@ -660,49 +582,19 @@ $(document).ready(function () {
     <!-- Bootstrap Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    <script>
-        $(document).ready(function() {
-            // Load latest books
-            $.getJSON('data/books.json', function(data) {
-                const latestBooks = data.books
-                    .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .slice(0, 4);
-                
-                renderBooks('#latestBooks', latestBooks);
-            });
-
-            // Load popular books
-            $.getJSON('data/popular-books.json', function(data) {
-                renderBooks('#popularBooks', data.popular_books);
-            });
-
-            function renderBooks(container, books) {
-                const booksHtml = books.map(book => `
-                    <div class="col-md-3">
-                        <div class="book-card">
-                            <img src="${book.thumbnail}" alt="${book.title}">
-                            <h5>${book.title}</h5>
-                            <p>${book.author}</p>
-                            <a href="v-pdf.html?id=${book.id}" class="btn btn-sm btn-primary">Read Now</a>
-                        </div>
-                    </div>
-                `).join('');
-                
-                $(container).html(booksHtml);
+    // Set active nav item based on current page
+    $(document).ready(function() {
+        const currentPage = window.location.pathname.split("/").pop();
+        $('.nav-item .nav-link').each(function() {
+            const href = $(this).attr('href');
+            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                $(this).parent().addClass('active');
             }
         });
+    });
     </script>
-
-    <script>
-        // Set active nav item based on current page
-        $(document).ready(function() {
-            const currentPage = window.location.pathname.split("/").pop();
-            $('.nav-item .nav-link').each(function() {
-                const href = $(this).attr('href');
-                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-                    $(this).parent().addClass('active');
-                }
-            });
-        });
-    </script>
+    <!-- Add PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 </body>
+
 </html>

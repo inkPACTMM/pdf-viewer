@@ -17,6 +17,8 @@
   <!-- Bootstrap Css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <!-- Add theme CSS -->
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
 
   <!-- Include JS -->
   <script src="js/flipbook.min.js"></script>
@@ -44,8 +46,8 @@
               name: "allPages.zip",
               hideOnMobile:false
             },
-            btnColor:'rgb(255,120,60)',
-            sideBtnColor:'rgb(255,120,60)',
+            btnColor: '#012FB3',
+            sideBtnColor: '#012FB3',
             sideBtnSize:60,
             sideBtnBackground:"rgba(0,0,0,.7)",
             sideBtnRadius:60,
@@ -89,7 +91,7 @@
     #author {
       font-size: 15px;
       font-weight: bold;
-      color: #0186c9;
+      color: var(--primary);
     }
     #date {
       margin-left: 10px;
@@ -104,16 +106,53 @@
       margin-top: 20px;
       font-weight: lighter;
     }
+    .flipbook-viewport {
+            background-color: #f6f6f6;
+        }
+        
+        .flipbook .page {
+            background-color: white;
+            border: 1px solid rgba(1, 47, 179, 0.1);
+        }
+        
+        .flipbook .page img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .btn-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-back:hover {
+            background: var(--primary-dark);
+        }
   </style>
 
   </head>
 
   <body>
+    <a href="index.html" class="btn-back">← Back</a>
+    <div class="flipbook-viewport">
+        <div class="container">
+            <div class="flipbook">
+                <!-- PDF pages will be loaded here -->
+            </div>
+        </div>
+    </div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
     <a class="navbar-brand" href="index.html">
-      <img src="images/logo.png" alt="KPK LOGO" width="150">
+      <img src="images/logo.svg" alt="KPK LOGO" width="70">
     </a>
   </nav>
   <!-- End Of Navbar -->

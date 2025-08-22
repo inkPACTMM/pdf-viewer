@@ -1,0 +1,24 @@
+{
+    "popular_books": [
+        {
+            "id": 1,
+            "title": "Popular Book 1",
+            "author": "Author 1",
+            "thumbnail": "images/book2/1.jpg",
+            "pdfUrl": "pdf/pdf.pdf",
+            "date": "2023-01-01",
+            "size": "1.2MB",
+            "description": "Popular book description 1"
+        },
+        {
+            "id": 2,
+            "title": "Popular Book 2",
+            "author": "Author 2",
+            "thumbnail": "images/book2/2.jpg",
+            "pdfUrl": "pdf/pdf.pdf",
+            "date": "2023-01-02",
+            "size": "1.5MB",
+            "description": "Popular book description 2"
+        }
+    ]
+}

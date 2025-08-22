@@ -1,0 +1,79 @@
+:root {
+  --primary: #012FB3;
+  --primary-dark: #01248A;
+  --primary-light: #1E43B0;
+}
+
+/* General theme colors */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Navigation */
+.navbar {
+  box-shadow: 0 2px 4px rgba(1, 47, 179, 0.1);
+}
+
+/* Form elements */
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(1, 47, 179, 0.25);
+}
+
+/* Links */
+a {
+  color: var(--primary);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Footer */
+#footer {
+  background-color: var(--primary);
+}
+
+#footer a:hover {
+  color: var(--primary-light) !important;
+}
+
+/* Flipbook overrides */
+.fb3d-modal {
+  --fb3d-primary: var(--primary) !important;
+  --fb3d-button-color: var(--primary) !important;
+  --fb3d-button-hover: var(--primary-dark) !important;
+}
+
+.fb3d-button {
+  background-color: var(--primary) !important;
+}
+
+.fb3d-button:hover {
+  background-color: var(--primary-dark) !important;
+}
