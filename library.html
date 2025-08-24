@@ -21,16 +21,15 @@
 <script type="text/javascript">
 $(document).ready(function () {
     let allBooks = [];
+    let cachedBooks = sessionStorage.getItem('cachedBooks');
     
-    // Show loading state
-    $('.bookshelf-container').html(`
-        <div class="loading-state text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <h4 class="mt-3">Loading Books...</h4>
-        </div>
-    `);
+    // If we have cached books, use them immediately
+    if (cachedBooks) {
+        allBooks = JSON.parse(cachedBooks);
+        renderBooks(allBooks);
+        setupPagination(allBooks);
+        $('.loading-state').hide();
+    }
 
     // Load books data with error handling
     $.ajax({
@@ -38,20 +37,48 @@ $(document).ready(function () {
         dataType: 'json',
         success: function(data) {
             allBooks = data.books;
-            renderBooks(allBooks);
-            setupPagination(allBooks);
+            // Cache the books data
+            sessionStorage.setItem('cachedBooks', JSON.stringify(allBooks));
+            
+            // Only render if we didn't have cached data
+            if (!cachedBooks) {
+                renderBooks(allBooks);
+                setupPagination(allBooks);
+            }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load books:', errorThrown);
-            console.log('Response Text:', jqXHR.responseText);
-            $('.bookshelf-container').html(`
-                <div class="alert alert-danger m-5 text-center">
-                    <h4>Error Loading Books</h4>
-                    <p>Please try refreshing the page. If the problem persists, contact support.</p>
-                </div>
-            `);
+            
+            // Only show error if we don't have cached data
+            if (!cachedBooks) {
+                $('.bookshelf-container').html(`
+                    <div class="alert alert-danger m-5 text-center">
+                        <h4>Error Loading Books</h4>
+                        <p>Please try refreshing the page. If the problem persists, contact support.</p>
+                    </div>
+                `);
+            }
         }
     });
+
+    // Add event listener for page visibility
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            // When page becomes visible (including back button)
+            let lastPage = sessionStorage.getItem('lastActivePage');
+            if (lastPage) {
+                showPage(parseInt(lastPage));
+            }
+        }
+    });
+
+    function showPage(pageNum) {
+        $('.pagination .page-item').removeClass('active');
+        $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1).addClass('active');
+        $('.bookshelf-page').hide();
+        $(`.bookshelf-page[data-page="${pageNum}"]`).show();
+        sessionStorage.setItem('lastActivePage', pageNum);
+    }
 
     // Replace the search input handler with form submit handler
     $('#searchForm').on('submit', function(e) {
@@ -231,28 +258,11 @@ $(document).ready(function () {
             e.preventDefault();
             if ($(this).hasClass('disabled')) return;
 
-            const $this = $(this);
             let pageNum;
-
-            if ($this.find('.page-link').attr('aria-label') === 'Previous') {
-                const $active = $('.pagination .active');
-                if ($active.prev().hasClass('page-item') && !$active.prev().hasClass('disabled')) {
-                    pageNum = parseInt($active.prev().find('.page-link').text());
-                }
-            } else if ($this.find('.page-link').attr('aria-label') === 'Next') {
-                const $active = $('.pagination .active');
-                if ($active.next().hasClass('page-item') && !$active.next().hasClass('disabled')) {
-                    pageNum = parseInt($active.next().find('.page-link').text());
-                }
-            } else {
-                pageNum = parseInt($this.find('.page-link').data('page'));
-            }
+            // ...existing pagination logic...
 
             if (pageNum) {
-                $('.pagination .page-item').removeClass('active');
-                $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1).addClass('active');
-                $('.bookshelf-page').hide();
-                $(`.bookshelf-page[data-page="${pageNum}"]`).show();
+                showPage(pageNum);
             }
         });
     }
@@ -595,6 +605,31 @@ $(document).ready(function () {
     </script>
     <!-- Add PDF.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+function renderBooks(container, books) {
+    books.forEach(book => {
+        const bookCard = `
+            <div class="col-md-3">
+                <div class="book-card">
+                    <a href="v-pdf.html?id=${book.id}">
+                        <div class="thumbnail-wrapper">
+                            <img src="${book.thumbnail}" class="thumbnail" alt="${book.title}">
+                            <div class="book-overlay">
+                                <h5 class="book-overlay-title">${book.title}</h5>
+                                <p class="book-overlay-author">${book.author}</p>
+                            </div>
+                        </div>
+                        <div class="book-bottom-title">
+                            <h5>${book.title}</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        `;
+        $(container).append(bookCard);
+    });
+}
+</script>
 </body>
 
 </html>

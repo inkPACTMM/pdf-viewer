@@ -24,11 +24,10 @@
   <script src="js/flipbook.min.js"></script>
 
   <script type="text/javascript">
-
       $(document).ready(function () {
           $("#read").flipBook({
             //Layout Setting
-            pdfUrl:'pdf/pdf.pdf',
+            pdfUrl:'pdf/UoPeople_Guidelines.pdf',
             lightBox:true,
             layout:3,
             currentPage:{vAlign:"bottom", hAlign:"left"},
@@ -84,6 +83,56 @@
       })
   </script>
 
+  <script type="text/javascript">
+    $(document).ready(function() {
+        // Get book ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('id');
+
+        // Load book data
+        $.getJSON('data/books.json', function(data) {
+            const book = data.books.find(b => b.id == bookId);
+            if (book) {
+                // Update page metadata
+                $('#title').text(book.title);
+                $('#author').text(book.author);
+                $('#date').text(new Date(book.date).toLocaleDateString());
+                $('#size b').text(book.size);
+                $('#description').text(book.description);
+                $('.book-1').attr('src', book.thumbnail);
+
+                // Initialize flipbook with book's PDF
+                $("#read").flipBook({
+                    pdfUrl: book.pdfUrl,
+                    lightBox: true,
+                    layout: 3,
+                    currentPage: {vAlign:"bottom", hAlign:"left"},
+                    btnShare: {enabled:false},
+                    btnPrint: {enabled: false}, // Disable print button
+                    btnDownloadPages: {
+                        enabled: true,
+                        title: "Download PDF",
+                        icon: "fa-download",
+                        url: book.pdfUrl,
+                        name: book.title + ".pdf",
+                        hideOnMobile:false
+                    },
+                    btnColor: '#012FB3',
+                    sideBtnColor: '#012FB3',
+                    sideBtnSize: 60,
+                    sideBtnBackground: "rgba(0,0,0,.7)",
+                    sideBtnRadius: 60,
+                    btnSound: {vAlign:"top", hAlign:"left"},
+                    btnAutoplay: {vAlign:"top", hAlign:"left"}
+                });
+
+                // Update download button href
+                $('a[download]').attr('href', book.pdfUrl);
+            }
+        });
+    });
+</script>
+
   <style>
     body {
       background-color: #f6f6f6;
@@ -135,6 +184,37 @@
         .btn-back:hover {
             background: var(--primary-dark);
         }
+        
+        /* Thumbnail centering styles */
+    .book-cover {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 20px;
+    }
+
+    .book-1 {
+        max-width: 100%;
+        max-height: 400px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive layout adjustments */
+    @media (max-width: 768px) {
+        .book-cover {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .book-1 {
+            max-height: 300px;
+        }
+    }
   </style>
 
   </head>
@@ -162,27 +242,32 @@
   <!-- PDF INFORMATION -->
   <section class="info" id="info">
     <div class="container">
-      <div class="card shadow">
-        <div class="row">
-          <div class="col-md-3">
-            <img src="images/book2/1.jpg" class="w-100 book-1">
-          </div>
-          <div class="col-md-7 mt-3">
-            <!-- Info -->
-            <h3 id="title">COMPANY PROFILE</h3>
-            <p id="author" class="d-inline">Bilkis Ismail</p>
-            <p id="date" class="d-inline">26 April 2019</p>
-            <p id="size"><i class="fas fa-file "></i> File Size <b>1MB</b></p>
-            <!-- Button -->
-            <div class="button">
-              <a id="read" class="btn btn-primary mt-2 text-white">Baca PDF <i class="fas fa-book-reader fa-lg"></i></a>
-              <a href="pdf/pdf.pdf" class="btn btn-primary mt-2 text-white" download>Unduh PDF <i class="fas fa-download fa-lg"></i></a>
+        <div class="card shadow">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="book-cover">
+                        <img src="" class="book-1" alt="Book Cover">
+                    </div>
+                </div>
+                <div class="col-md-7 mt-3">
+                    <h3 id="title"></h3>
+                    <p id="author" class="d-inline"></p>
+                    <p id="date" class="d-inline"></p>
+                    <p id="size"><i class="fas fa-file"></i> File Size <b></b></p>
+                    <div class="button">
+                        <a id="read" class="btn btn-primary mt-2 text-white">
+                            <i class="fas fa-book-reader fa-lg"></i>
+                            Read PDF
+                        </a>
+                        <a href="" class="btn btn-primary mt-2 text-white" download>
+                            <i class="fas fa-download fa-lg"></i>
+                            Download PDF
+                        </a>
+                    </div>
+                    <p id="description"></p>
+                </div>
             </div>
-            <!-- Description -->
-            <p id="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi quo velit consequuntur, iste, impedit dignissimos vitae nesciunt et commodi quos quis iusto est iure tenetur eum amet quas temporibus esse praesentium incidunt sequi ratione. Fuga ab quas itaque enim, molestiae, totam, necessitatibus magni dolores eligendi obcaecati libero omnis iste. Facilis.</p>
-          </div>
         </div>
-      </div>
     </div>
   </section>
   <!-- END OF PDF INFORMATION -->
@@ -232,7 +317,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-          <p class="h6">Hak Cipta © 2017 Komisi Pemberantasan Korupsi. Semua Hak Dilindungi.</p>
+          <p class="h6">Copyright © 2025 InpPACT</p>
         </div>
         </hr>
       </div>
@@ -243,8 +328,9 @@
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-  </body>
 
+
+
+</html>  </body>  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </html>

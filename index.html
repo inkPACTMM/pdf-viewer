@@ -517,6 +517,80 @@ $(document).ready(function () {
         margin-bottom: 0.5rem;
     }
 
+    /* Latest Books Section */
+    .latest-books {
+        padding: 40px 0;
+    }
+
+    .latest-books .book-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .latest-books .book-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .latest-books .thumbnail-wrapper {
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .latest-books .thumbnail {
+        width: 100%;
+        height: auto;
+        display: block;
+        vertical-align: top;
+    }
+
+    .latest-books .book-info {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    /* Popular Books Section */
+    .popular-books {
+        padding: 40px 0;
+        background: #fff;
+        border-top: 1px solid #eee;
+    }
+
+    .popular-books .book-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .popular-books .book-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .popular-books .thumbnail-wrapper {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .popular-books .thumbnail {
+        width: 100%;
+        height: auto;
+        display: block;
+        vertical-align: top;
+    }
+
+    .popular-books .book-info {
+        padding: 1rem;
+        text-align: center;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 991px) { 
         .hero-section {
@@ -676,18 +750,22 @@ $(document).ready(function () {
             });
 
             function renderBooks(container, books) {
-                const booksHtml = books.map(book => `
-                    <div class="col-md-3">
-                        <div class="book-card">
-                            <img src="${book.thumbnail}" alt="${book.title}">
-                            <h5>${book.title}</h5>
-                            <p>${book.author}</p>
-                            <a href="v-pdf.html?id=${book.id}" class="btn btn-sm btn-primary">Read Now</a>
+                books.forEach(book => {
+                    const bookCard = `
+                        <div class="col-md-3">
+                            <div class="book-card">
+                                <a href="v-pdf.html?id=${book.id}">
+                                    <div class="thumbnail-wrapper">
+                                        <img src="${book.thumbnail}" class="thumbnail" alt="${book.title}">
+                                    </div>
+                                    <h5 class="book-title">${book.title}</h5>
+                                    <p class="book-author">${book.author}</p>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
-                
-                $(container).html(booksHtml);
+                    `;
+                    $(container).append(bookCard);
+                });
             }
         });
     </script>
