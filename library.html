@@ -21,51 +21,66 @@
 <script type="text/javascript">
 $(document).ready(function () {
     let allBooks = [];
-    let cachedBooks = sessionStorage.getItem('cachedBooks');
-    
-    // If we have cached books, use them immediately
-    if (cachedBooks) {
-        allBooks = JSON.parse(cachedBooks);
+    let cachedData = sessionStorage.getItem('libraryBooks');
+    let lastScrollPosition = sessionStorage.getItem('libraryScrollPosition');
+
+    // If we have cached data, use it immediately
+    if (cachedData) {
+        allBooks = JSON.parse(cachedData);
         renderBooks(allBooks);
         setupPagination(allBooks);
-        $('.loading-state').hide();
+        // Restore scroll position
+        if (lastScrollPosition) {
+            $(window).scrollTop(lastScrollPosition);
+        }
+    } else {
+        // Show loading only if no cache exists
+        $('.bookshelf-container').html(`
+            <div class="loading-state text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <h4 class="mt-3">Loading Books...</h4>
+            </div>
+        `);
     }
 
-    // Load books data with error handling
+    // Load books data
     $.ajax({
         url: 'data/books.json',
         dataType: 'json',
         success: function(data) {
             allBooks = data.books;
-            // Cache the books data
-            sessionStorage.setItem('cachedBooks', JSON.stringify(allBooks));
+            // Cache the data
+            sessionStorage.setItem('libraryBooks', JSON.stringify(allBooks));
             
             // Only render if we didn't have cached data
-            if (!cachedBooks) {
+            if (!cachedData) {
                 renderBooks(allBooks);
                 setupPagination(allBooks);
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to load books:', errorThrown);
-            
-            // Only show error if we don't have cached data
-            if (!cachedBooks) {
+            if (!cachedData) {
                 $('.bookshelf-container').html(`
                     <div class="alert alert-danger m-5 text-center">
                         <h4>Error Loading Books</h4>
-                        <p>Please try refreshing the page. If the problem persists, contact support.</p>
+                        <p>Please try refreshing the page.</p>
                     </div>
                 `);
             }
         }
     });
 
-    // Add event listener for page visibility
+    // Save scroll position when leaving page
+    $(window).on('beforeunload', function() {
+        sessionStorage.setItem('libraryScrollPosition', $(window).scrollTop());
+    });
+
+    // Handle visibility change
     document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible') {
-            // When page becomes visible (including back button)
-            let lastPage = sessionStorage.getItem('lastActivePage');
+            let lastPage = sessionStorage.getItem('libraryCurrentPage');
             if (lastPage) {
                 showPage(parseInt(lastPage));
             }
