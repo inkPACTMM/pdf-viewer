@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
   <link rel="shortcut icon" href="images/logo.svg">
   <title>View PDF</title>
   <!-- Required meta tags -->
@@ -15,8 +15,10 @@
   <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
   <!-- Bootstrap Css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <!-- Add theme CSS -->
   <link rel="stylesheet" type="text/css" href="css/theme.css">
 
@@ -24,151 +26,169 @@
   <script src="js/flipbook.min.js"></script>
 
   <script type="text/javascript">
-    $(document).ready(function() {
-        // Get book ID from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const bookId = urlParams.get('id');
+    $(document).ready(function () {
+      // Get book ID from URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const bookId = urlParams.get('id');
 
-        // Load book data
-        $.getJSON('data/books.json', function(data) {
-            const book = data.books.find(b => b.id == bookId);
-            if (book) {
-                // Update page metadata
-                $('#title').text(book.title);
-                $('#author').text(book.author);
-                $('#date').text(new Date(book.date).toLocaleDateString());
-                $('#size b').text(book.size);
-                $('#description').text(book.description);
-                $('.book-1').attr('src', book.thumbnail);
-                document.title = book.title + " - View PDF";
+      // Load book data
+      $.getJSON('data/books.json', function (data) {
+        const book = data.books.find(b => b.id == bookId);
+        if (book) {
+          // Update page metadata
+          $('#title').text(book.title);
+          $('#author').text(book.author);
+          $('#date').text(new Date(book.date).toLocaleDateString());
+          $('#size b').text(book.size);
+          $('#description').text(book.description);
+          $('.book-1').attr('src', book.thumbnail);
+          document.title = book.title + " - View PDF";
 
-                // Initialize flipbook with book's PDF
-                $("#read").flipBook({
-                    pdfUrl: book.pdfUrl,
-                    lightBox: true,
-                    layout: 3,
-                    currentPage: {vAlign:"bottom", hAlign:"left"},
-                    btnShare: {enabled:false},
-                    btnPrint: {enabled: false},
-                    btnDownloadPages: {
-                        enabled: true,
-                        title: "Download PDF",
-                        icon: "fa-download",
-                        url: book.pdfUrl,
-                        name: book.title + ".pdf",
-                        hideOnMobile:false
-                    },
-                    btnColor: '#012FB3',
-                    sideBtnColor: '#012FB3',
-                    sideBtnSize: 60,
-                    sideBtnBackground: "rgba(0,0,0,.7)",
-                    sideBtnRadius: 60,
-                    btnSound: {vAlign:"top", hAlign:"left"},
-                    btnAutoplay: {vAlign:"top", hAlign:"left"}
-                });
-
-                // Update download button href
-                $('a[download]').attr('href', book.pdfUrl);
+          // Initialize flipbook with book's PDF
+          $("#read").flipBook({
+            pdfUrl: book.pdfUrl,
+            lightBox: true,
+            layout: 3,
+            currentPage: {
+              vAlign: "bottom",
+              hAlign: "left"
+            },
+            btnShare: {
+              enabled: false
+            },
+            btnPrint: {
+              enabled: false
+            },
+            btnDownloadPages: {
+              enabled: true,
+              title: "Download PDF",
+              icon: "fa-download",
+              url: book.pdfUrl,
+              name: book.title + ".pdf",
+              hideOnMobile: false
+            },
+            btnColor: '#012FB3',
+            sideBtnColor: '#012FB3',
+            sideBtnSize: 60,
+            sideBtnBackground: "rgba(0,0,0,.7)",
+            sideBtnRadius: 60,
+            btnSound: {
+              vAlign: "top",
+              hAlign: "left"
+            },
+            btnAutoplay: {
+              vAlign: "top",
+              hAlign: "left"
             }
-        });
+          });
+
+          // Update download button href
+          $('a[download]').attr('href', book.pdfUrl);
+        }
+      });
     });
-</script>
+  </script>
 
   <style>
     body {
       background-color: #f6f6f6;
     }
+
     #author {
       font-size: 15px;
       font-weight: bold;
       color: var(--primary);
     }
+
     #date {
       margin-left: 10px;
       font-size: 15px;
       color: #819196;
     }
+
     #size {
       font-size: 15px;
       color: #819196;
     }
+
     #description {
       margin-top: 20px;
       font-weight: lighter;
     }
+
     .flipbook-viewport {
-            background-color: #f6f6f6;
-        }
-        
-        .flipbook .page {
-            background-color: white;
-            border: 1px solid rgba(1, 47, 179, 0.1);
-        }
-        
-        .flipbook .page img {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        .btn-back {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        
-        .btn-back:hover {
-            background: var(--primary-dark);
-        }
-        
-        /* Thumbnail centering styles */
+      background-color: #f6f6f6;
+    }
+
+    .flipbook .page {
+      background-color: white;
+      border: 1px solid rgba(1, 47, 179, 0.1);
+    }
+
+    .flipbook .page img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .btn-back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .btn-back:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Thumbnail centering styles */
     .book-cover {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
     }
 
     .book-1 {
-        max-width: 100%;
-        max-height: 400px;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 100%;
+      max-height: 400px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     /* Responsive layout adjustments */
     @media (max-width: 768px) {
-        .book-cover {
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .book-1 {
-            max-height: 300px;
-        }
+      .book-cover {
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      .book-1 {
+        max-height: 300px;
+      }
     }
   </style>
 
-  </head>
+</head>
 
-  <body>
-    <a href="index.html" class="btn-back">← Back</a>
-    <div class="flipbook-viewport">
-        <div class="container">
-            <div class="flipbook">
-                <!-- PDF pages will be loaded here -->
-            </div>
-        </div>
+<body>
+  <a href="index.html" class="btn-back">← Back</a>
+  <div class="flipbook-viewport">
+    <div class="container">
+      <div class="flipbook">
+        <!-- PDF pages will be loaded here -->
+      </div>
     </div>
+  </div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
@@ -183,32 +203,32 @@
   <!-- PDF INFORMATION -->
   <section class="info" id="info">
     <div class="container">
-        <div class="card shadow">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="book-cover">
-                        <img src="" class="book-1" alt="Book Cover">
-                    </div>
-                </div>
-                <div class="col-md-7 mt-3">
-                    <h3 id="title"></h3>
-                    <p id="author" class="d-inline"></p>
-                    <p id="date" class="d-inline"></p>
-                    <p id="size"><i class="fas fa-file"></i> File Size <b></b></p>
-                    <div class="button">
-                        <a id="read" class="btn btn-primary mt-2 text-white">
-                            <i class="fas fa-book-reader fa-lg"></i>
-                            Read PDF
-                        </a>
-                        <a href="" class="btn btn-primary mt-2 text-white" download>
-                            <i class="fas fa-download fa-lg"></i>
-                            Download PDF
-                        </a>
-                    </div>
-                    <p id="description"></p>
-                </div>
+      <div class="card shadow">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="book-cover">
+              <img src="" class="book-1" alt="Book Cover">
             </div>
+          </div>
+          <div class="col-md-7 mt-3">
+            <h3 id="title"></h3>
+            <p id="author" class="d-inline"></p>
+            <p id="date" class="d-inline"></p>
+            <p id="size"><i class="fas fa-file"></i> File Size <b></b></p>
+            <div class="button">
+              <a id="read" class="btn btn-primary mt-2 text-white">
+                <i class="fas fa-book-reader fa-lg"></i>
+                Read PDF
+              </a>
+              <a href="" class="btn btn-primary mt-2 text-white" download>
+                <i class="fas fa-download fa-lg"></i>
+                Download PDF
+              </a>
+            </div>
+            <p id="description"></p>
+          </div>
         </div>
+      </div>
     </div>
   </section>
   <!-- END OF PDF INFORMATION -->
@@ -218,49 +238,35 @@
     <div class="container">
       <div class="row text-center text-xs-center text-sm-left text-md-left">
         <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Tentang KPK</h5>
+          <h5>Quick Links</h5>
           <ul class="list-unstyled quick-links">
-          <li><a href="https://www.kpk.go.id/id/tentang-kpk/sekilas-komisi-pemberantasan-korupsi"><i class="fa fa-angle-double-right"></i>About</a></li>
-            <li><a href="https://www.kpk.go.id/id/tentang-kpk/pejabat-struktural"><i class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
-            <li><a href="https://www.kpk.go.id/id/tentang-kpk/roadmap-dan-rencana-strategis"><i class="fa fa-angle-double-right"></i>Rencana Strategis</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i>About Us</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i>Library</a></li>
           </ul>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Layanan Publik</h5>
+          <h5>Contact InkPact</h5>
           <ul class="list-unstyled quick-links">
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/pengaduan-masyarakat/mengenal-pengaduan-masyarakat"><i class="fa fa-angle-double-right"></i>Pengaduan Masyarakat</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/laporan-harta-kekayaan-penyelenggaraan-negara/mengenal-lhkpn"><i class="fa fa-angle-double-right"></i>LHKPN</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/gratifikasi/mengenal-gratifikasi"><i class="fa fa-angle-double-right"></i>Gratifikasi</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/informasi-publik"><i class="fa fa-angle-double-right"></i>Informasi Publik</a></li>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
+            </li>
+            <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
+            <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
+            <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
           </ul>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Kontak KPK</h5>
+          <h5>Our Social Media</h5>
           <ul class="list-unstyled quick-links">
-            <li><a href="https://www.google.com/maps/dir/-6.1677568,106.6115072/GEDUNG+KPK+Jl.+Kuningan+Persada+Kav.+4+Jakarta+Selatan+12950/@-6.1687329,106.5817096,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e69f40eaa579f6f:0x3177a5ac88a987e8!2m2!1d106.8307239!2d-6.2077814"><i class="fas fa-map-marker-alt"></i></i>GEDUNG KPK Jl. Kuningan Persada Kav. 4 Jakarta Selatan 12950</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i>(021) 2557 8300</a></li>
-            <li><a href="#"><i class="fas fa-fax"></i>(021) 2557 8333</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i>informasi@kpk.go.id</a></li>
-            <li><a href="#"><i class="fas fa-headset"></i></i>Call Center: 198</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
           </ul>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-          <ul class="list-unstyled list-inline social text-center">
-            <li class="list-inline-item"><a href="https://www.instagram.com/official.kpk/"><i class="fab fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a href="https://twitter.com/kpk_ri?lang=id"><i class="fab fa-twitter-square"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.facebook.com/KomisiPemberantasanKorupsi"><i class="fab fa-facebook-square"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.youtube.com/user/HUMASKPK"><i class="fab fa-youtube-square"></i></a></li>
-          </ul>
-        </div>
-        </hr>
-      </div>
-      <div class="row">
+      <div class="row" style="padding-top: 50px;">
         <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-          <p class="h6">Copyright © 2025 InpPACT</p>
+          <p class="h6">Copyright © 2025 InkPact. All Rights Reserved.</p>
         </div>
-        </hr>
       </div>
     </div>
   </section>
@@ -268,69 +274,94 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous">
+  </script>
 
 
 
 
-</html>  </body>  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </html>
-      <div class="row text-center text-xs-center text-sm-left text-md-left">
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Tentang KPK</h5>
-          <ul class="list-unstyled quick-links">
-          <li><a href="https://www.kpk.go.id/id/tentang-kpk/sekilas-komisi-pemberantasan-korupsi"><i class="fa fa-angle-double-right"></i>About</a></li>
-            <li><a href="https://www.kpk.go.id/id/tentang-kpk/pejabat-struktural"><i class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
-            <li><a href="https://www.kpk.go.id/id/tentang-kpk/roadmap-dan-rencana-strategis"><i class="fa fa-angle-double-right"></i>Rencana Strategis</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Layanan Publik</h5>
-          <ul class="list-unstyled quick-links">
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/pengaduan-masyarakat/mengenal-pengaduan-masyarakat"><i class="fa fa-angle-double-right"></i>Pengaduan Masyarakat</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/laporan-harta-kekayaan-penyelenggaraan-negara/mengenal-lhkpn"><i class="fa fa-angle-double-right"></i>LHKPN</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/gratifikasi/mengenal-gratifikasi"><i class="fa fa-angle-double-right"></i>Gratifikasi</a></li>
-            <li><a href="https://www.kpk.go.id/id/layanan-publik/informasi-publik"><i class="fa fa-angle-double-right"></i>Informasi Publik</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <h5>Kontak KPK</h5>
-          <ul class="list-unstyled quick-links">
-            <li><a href="https://www.google.com/maps/dir/-6.1677568,106.6115072/GEDUNG+KPK+Jl.+Kuningan+Persada+Kav.+4+Jakarta+Selatan+12950/@-6.1687329,106.5817096,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e69f40eaa579f6f:0x3177a5ac88a987e8!2m2!1d106.8307239!2d-6.2077814"><i class="fas fa-map-marker-alt"></i></i>GEDUNG KPK Jl. Kuningan Persada Kav. 4 Jakarta Selatan 12950</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i>(021) 2557 8300</a></li>
-            <li><a href="#"><i class="fas fa-fax"></i>(021) 2557 8333</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i>informasi@kpk.go.id</a></li>
-            <li><a href="#"><i class="fas fa-headset"></i></i>Call Center: 198</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-          <ul class="list-unstyled list-inline social text-center">
-            <li class="list-inline-item"><a href="https://www.instagram.com/official.kpk/"><i class="fab fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a href="https://twitter.com/kpk_ri?lang=id"><i class="fab fa-twitter-square"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.facebook.com/KomisiPemberantasanKorupsi"><i class="fab fa-facebook-square"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.youtube.com/user/HUMASKPK"><i class="fab fa-youtube-square"></i></a></li>
-          </ul>
-        </div>
-        </hr>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-          <p class="h6">Copyright © 2025 InpPACT</p>
-        </div>
-        </hr>
-      </div>
-    </div>
-  </section>
-  <!-- End Of Footer -->
+</body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+  integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+</html>
+<div class="row text-center text-xs-center text-sm-left text-md-left">
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h5>Tentang KPK</h5>
+    <ul class="list-unstyled quick-links">
+      <li><a href="https://www.kpk.go.id/id/tentang-kpk/sekilas-komisi-pemberantasan-korupsi"><i
+            class="fa fa-angle-double-right"></i>About</a></li>
+      <li><a href="https://www.kpk.go.id/id/tentang-kpk/pejabat-struktural"><i
+            class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
+      <li><a href="https://www.kpk.go.id/id/tentang-kpk/roadmap-dan-rencana-strategis"><i
+            class="fa fa-angle-double-right"></i>Rencana Strategis</a></li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h5>Layanan Publik</h5>
+    <ul class="list-unstyled quick-links">
+      <li><a href="https://www.kpk.go.id/id/layanan-publik/pengaduan-masyarakat/mengenal-pengaduan-masyarakat"><i
+            class="fa fa-angle-double-right"></i>Pengaduan Masyarakat</a></li>
+      <li><a
+          href="https://www.kpk.go.id/id/layanan-publik/laporan-harta-kekayaan-penyelenggaraan-negara/mengenal-lhkpn"><i
+            class="fa fa-angle-double-right"></i>LHKPN</a></li>
+      <li><a href="https://www.kpk.go.id/id/layanan-publik/gratifikasi/mengenal-gratifikasi"><i
+            class="fa fa-angle-double-right"></i>Gratifikasi</a></li>
+      <li><a href="https://www.kpk.go.id/id/layanan-publik/informasi-publik"><i
+            class="fa fa-angle-double-right"></i>Informasi Publik</a></li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h5>Kontak KPK</h5>
+    <ul class="list-unstyled quick-links">
+      <li><a
+          href="https://www.google.com/maps/dir/-6.1677568,106.6115072/GEDUNG+KPK+Jl.+Kuningan+Persada+Kav.+4+Jakarta+Selatan+12950/@-6.1687329,106.5817096,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e69f40eaa579f6f:0x3177a5ac88a987e8!2m2!1d106.8307239!2d-6.2077814"><i
+            class="fas fa-map-marker-alt"></i></i>GEDUNG KPK Jl. Kuningan Persada Kav. 4 Jakarta Selatan 12950</a></li>
+      <li><a href="#"><i class="fas fa-phone"></i>(021) 2557 8300</a></li>
+      <li><a href="#"><i class="fas fa-fax"></i>(021) 2557 8333</a></li>
+      <li><a href="#"><i class="fas fa-envelope"></i>informasi@kpk.go.id</a></li>
+      <li><a href="#"><i class="fas fa-headset"></i></i>Call Center: 198</a></li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+    <ul class="list-unstyled list-inline social text-center">
+      <li class="list-inline-item"><a href="https://www.instagram.com/official.kpk/"><i
+            class="fab fa-instagram"></i></a></li>
+      <li class="list-inline-item"><a href="https://twitter.com/kpk_ri?lang=id"><i
+            class="fab fa-twitter-square"></i></a></li>
+      <li class="list-inline-item"><a href="https://www.facebook.com/KomisiPemberantasanKorupsi"><i
+            class="fab fa-facebook-square"></i></a></li>
+      <li class="list-inline-item"><a href="https://www.youtube.com/user/HUMASKPK"><i
+            class="fab fa-youtube-square"></i></a></li>
+    </ul>
+  </div>
+  </hr>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+    <p class="h6">Copyright © 2025 InpPACT</p>
+  </div>
+  </hr>
+</div>
+</div>
+</section>
+<!-- End Of Footer -->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+  integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 
 
 
 
-</html>  </body>  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</html>
+</body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+  integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
 </html>

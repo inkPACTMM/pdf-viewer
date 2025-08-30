@@ -3,30 +3,31 @@
 
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ajax -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-<!-- Costume CSS -->
-<link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
-<link rel="stylesheet" type="text/css" href="css/footer.css">
-<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
-<!-- Bootstrap Css -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!-- Add theme CSS -->
-<link rel="stylesheet" type="text/css" href="css/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <!-- Costume CSS -->
+    <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+    <!-- Bootstrap Css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Add theme CSS -->
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
 
-<script src="js/flipbook.min.js"></script>
+    <script src="js/flipbook.min.js"></script>
 
-<!-- Add PDF.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <!-- Add PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function () {
-    let allBooks = [];
-    
-    // Show loading state
-    $('.bookshelf-container').html(`
+    <script type="text/javascript">
+        $(document).ready(function () {
+                    let allBooks = [];
+
+                    // Show loading state
+                    $('.bookshelf-container').html(`
         <div class="loading-state text-center py-5">
             <div class="spinner-border text-primary" role="status">
                 <span class="sr-only">Loading...</span>
@@ -35,18 +36,18 @@ $(document).ready(function () {
         </div>
     `);
 
-    // Load books data with error handling
-    $.ajax({
-        url: 'data/books.json',
-        dataType: 'json',
-        success: function(data) {
-            allBooks = data.books;
-            renderBooks(allBooks);
-            setupPagination(allBooks);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to load books:', errorThrown);
-            $('.bookshelf-container').html(`
+                    // Load books data with error handling
+                    $.ajax({
+                        url: 'data/books.json',
+                        dataType: 'json',
+                        success: function (data) {
+                            allBooks = data.books;
+                            renderBooks(allBooks);
+                            setupPagination(allBooks);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Failed to load books:', errorThrown);
+                            $('.bookshelf-container').html(`
                 <div class="error-state text-center py-5">
                     <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
                     <h4 class="mt-3">Failed to load books</h4>
@@ -55,43 +56,44 @@ $(document).ready(function () {
                     </button>
                 </div>
             `);
-        }
-    });
+                        }
+                    });
 
-    // Replace the search input handler with form submit handler
-    $('#searchForm').on('submit', function(e) {
-        e.preventDefault();
-        const searchTerm = $('#searchInput').val().toLowerCase();
-        const filteredBooks = allBooks.filter(book => 
-            book.title.toLowerCase().includes(searchTerm) ||
-            book.author.toLowerCase().includes(searchTerm)
-        );
-        renderBooks(filteredBooks);
-        setupPagination(filteredBooks);
-    });
+                    // Replace the search input handler with form submit handler
+                    $('#searchForm').on('submit', function (e) {
+                        e.preventDefault();
+                        const searchTerm = $('#searchInput').val().toLowerCase();
+                        const filteredBooks = allBooks.filter(book =>
+                            book.title.toLowerCase().includes(searchTerm) ||
+                            book.author.toLowerCase().includes(searchTerm)
+                        );
+                        renderBooks(filteredBooks);
+                        setupPagination(filteredBooks);
+                    });
 
-    function renderBooks(books) {
-        const booksPerShelf = 5;
-        const shelvesPerPage = 2;
-        $('.bookshelf-container').empty();
+                    function renderBooks(books) {
+                        const booksPerShelf = 5;
+                        const shelvesPerPage = 2;
+                        $('.bookshelf-container').empty();
 
-        // Group books into pages and only create necessary shelves
-        const chunkedBooks = [];
-        for (let i = 0; i < books.length; i += booksPerShelf * shelvesPerPage) {
-            chunkedBooks.push(books.slice(i, i + booksPerShelf * shelvesPerPage));
-        }
+                        // Group books into pages and only create necessary shelves
+                        const chunkedBooks = [];
+                        for (let i = 0; i < books.length; i += booksPerShelf * shelvesPerPage) {
+                            chunkedBooks.push(books.slice(i, i + booksPerShelf * shelvesPerPage));
+                        }
 
-        const $container = $('<div class="bookshelf-pages"></div>');
-        
-        // Only create one page at a time
-        chunkedBooks.forEach((pageBooks, pageIndex) => {
-            const $page = $(`<div class="bookshelf-page" data-page="${pageIndex + 1}"></div>`);
-            
-            // Create exactly 2 shelves per page
-            const shelfCount = Math.min(2, Math.ceil(pageBooks.length / booksPerShelf));
-            for (let shelf = 0; shelf < shelfCount; shelf++) {
-                const shelfBooks = pageBooks.slice(shelf * booksPerShelf, (shelf + 1) * booksPerShelf);
-                const $shelf = $(`
+                        const $container = $('<div class="bookshelf-pages"></div>');
+
+                        // Only create one page at a time
+                        chunkedBooks.forEach((pageBooks, pageIndex) => {
+                            const $page = $(`<div class="bookshelf-page" data-page="${pageIndex + 1}"></div>`);
+
+                            // Create exactly 2 shelves per page
+                            const shelfCount = Math.min(2, Math.ceil(pageBooks.length / booksPerShelf));
+                            for (let shelf = 0; shelf < shelfCount; shelf++) {
+                                const shelfBooks = pageBooks.slice(shelf * booksPerShelf, (shelf + 1) *
+                                    booksPerShelf);
+                                const $shelf = $(`
                     <div class="bookshelf mb-5">
                         <div class="covers">
                             ${shelfBooks.map(book => `
@@ -105,508 +107,528 @@ $(document).ready(function () {
                         <img class="shelf-img" src="images/shelf_wood.png">
                     </div>
                 `);
-                $page.append($shelf);
-            }
-            
-            $container.append($page);
-        });
+                                $page.append($shelf);
+                            }
 
-        $('.bookshelf-container').append($container);
-        
-        // Show first page
-        $('.bookshelf-page').hide();
-        $('.bookshelf-page[data-page="1"]').show();
+                            $container.append($page);
+                        });
 
-        // Initialize flipBook for new elements
-        $(".book-1").flipBook({
-            // Layout Setting
-            pdfUrl:'pdf/pdf.pdf',
-            lightBox:true,
-            layout:3,
-            currentPage:{vAlign:"bottom", hAlign:"left"},
-            // BTN SETTING
-            btnShare : {enabled:false},
-            btnPrint : {
-              hideOnMobile:true
-            },
-            btnDownloadPages : {
-              enabled: true,
-              title: "Download pages",
-              icon: "fa-download",
-              icon2: "file_download",
-              url: "images/pdf.rar",
-              name: "allPages.zip",
-              hideOnMobile:false
-            },
-            btnColor: '#012FB3',
-            sideBtnColor: '#012FB3',
-            sideBtnSize:60,
-            sideBtnBackground:"rgba(0,0,0,.7)",
-            sideBtnRadius:60,
-            btnSound:{vAlign:"top", hAlign:"left"},
-            btnAutoplay:{vAlign:"top", hAlign:"left"},
-            // SHARING
-            btnShare : {
-              enabled: true,
-              title: "Share",
-              icon: "fa-share-alt"
-            },
-            facebook : {
-              enabled: true,
-              url: "ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            },
-            google_plus : {
-              enabled: false
-            },
-            email : {
-            enabled: true,
-            url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf",
-            title: "PDF KPK",
-            description: "Silahkan click link di bawah untuk melihat / mengunduf pdf"
-            },
-            twitter : {
-            enabled: true,
-            url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            },
-            pinterest : {
-            enabled: true,
-            url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            }
-        });
-    }
+                        $('.bookshelf-container').append($container);
 
-    function setupPagination(books) {
-        const booksPerPage = 10; // 2 shelves × 5 books
-        const pageCount = Math.ceil(books.length / booksPerPage);
-        
-        // Update pagination UI
-        let paginationHtml = `
+                        // Show first page
+                        $('.bookshelf-page').hide();
+                        $('.bookshelf-page[data-page="1"]').show();
+
+                        // Initialize flipBook for new elements
+                        $(".book-1").flipBook({
+                            // Layout Setting
+                            pdfUrl: 'pdf/pdf.pdf',
+                            lightBox: true,
+                            layout: 3,
+                            currentPage: {
+                                vAlign: "bottom",
+                                hAlign: "left"
+                            },
+                            // BTN SETTING
+                            btnShare: {
+                                enabled: false
+                            },
+                            btnPrint: {
+                                hideOnMobile: true
+                            },
+                            btnDownloadPages: {
+                                enabled: true,
+                                title: "Download pages",
+                                icon: "fa-download",
+                                icon2: "file_download",
+                                url: "images/pdf.rar",
+                                name: "allPages.zip",
+                                hideOnMobile: false
+                            },
+                            btnColor: '#012FB3',
+                            sideBtnColor: '#012FB3',
+                            sideBtnSize: 60,
+                            sideBtnBackground: "rgba(0,0,0,.7)",
+                            sideBtnRadius: 60,
+                            btnSound: {
+                                vAlign: "top",
+                                hAlign: "left"
+                            },
+                            btnAutoplay: {
+                                vAlign: "top",
+                                hAlign: "left"
+                            },
+                            // SHARING
+                            btnShare: {
+                                enabled: true,
+                                title: "Share",
+                                icon: "fa-share-alt"
+                            },
+                            facebook: {
+                                enabled: true,
+                                url: "ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                            },
+                            google_plus: {
+                                enabled: false
+                            },
+                            email: {
+                                enabled: true,
+                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf",
+                                title: "PDF KPK",
+                                description: "Silahkan click link di bawah untuk melihat / mengunduf pdf"
+                            },
+                            twitter: {
+                                enabled: true,
+                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                            },
+                            pinterest: {
+                                enabled: true,
+                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                            }
+                        });
+                    }
+
+                    function setupPagination(books) {
+                        const booksPerPage = 10; // 2 shelves × 5 books
+                        const pageCount = Math.ceil(books.length / booksPerPage);
+
+                        // Update pagination UI
+                        let paginationHtml = `
             <li class="page-item ${pageCount <= 1 ? 'disabled' : ''}">
                 <a class="page-link" href="#" tabindex="-1" aria-label="Previous">&laquo;</a>
             </li>
         `;
-        
-        for (let i = 1; i <= pageCount; i++) {
-            paginationHtml += `
+
+                        for (let i = 1; i <= pageCount; i++) {
+                            paginationHtml += `
                 <li class="page-item ${i === 1 ? 'active' : ''}">
                     <a class="page-link" href="#" data-page="${i}">${i}</a>
                 </li>
             `;
-        }
-        
-        paginationHtml += `
+                        }
+
+                        paginationHtml += `
             <li class="page-item ${pageCount <= 1 ? 'disabled' : ''}">
                 <a class="page-link" href="#" aria-label="Next">&raquo;</a>
             </li>
         `;
-        
-        $('.pagination').html(paginationHtml);
 
-        // Update pagination click handlers
-        $('.pagination').off('click').on('click', '.page-item', function(e) {
-            e.preventDefault();
-            if ($(this).hasClass('disabled')) return;
+                        $('.pagination').html(paginationHtml);
 
-            const $this = $(this);
-            let pageNum;
+                        // Update pagination click handlers
+                        $('.pagination').off('click').on('click', '.page-item', function (e) {
+                            e.preventDefault();
+                            if ($(this).hasClass('disabled')) return;
 
-            if ($this.find('.page-link').attr('aria-label') === 'Previous') {
-                const $active = $('.pagination .active');
-                if ($active.prev().hasClass('page-item') && !$active.prev().hasClass('disabled')) {
-                    pageNum = parseInt($active.prev().find('.page-link').text());
-                }
-            } else if ($this.find('.page-link').attr('aria-label') === 'Next') {
-                const $active = $('.pagination .active');
-                if ($active.next().hasClass('page-item') && !$active.next().hasClass('disabled')) {
-                    pageNum = parseInt($active.next().find('.page-link').text());
-                }
-            } else {
-                pageNum = parseInt($this.find('.page-link').data('page'));
-            }
+                            const $this = $(this);
+                            let pageNum;
 
-            if (pageNum) {
-                $('.pagination .page-item').removeClass('active');
-                $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1).addClass('active');
-                $('.bookshelf-page').hide();
-                $(`.bookshelf-page[data-page="${pageNum}"]`).show();
-            }
-        });
-    }
+                            if ($this.find('.page-link').attr('aria-label') === 'Previous') {
+                                const $active = $('.pagination .active');
+                                if ($active.prev().hasClass('page-item') && !$active.prev().hasClass(
+                                        'disabled')) {
+                                    pageNum = parseInt($active.prev().find('.page-link').text());
+                                }
+                            } else if ($this.find('.page-link').attr('aria-label') === 'Next') {
+                                const $active = $('.pagination .active');
+                                if ($active.next().hasClass('page-item') && !$active.next().hasClass(
+                                        'disabled')) {
+                                    pageNum = parseInt($active.next().find('.page-link').text());
+                                }
+                            } else {
+                                pageNum = parseInt($this.find('.page-link').data('page'));
+                            }
 
-    // Set worker path for PDF.js
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-
-    async function renderPDFThumbnail(pdfUrl) {
-        try {
-            const loadingTask = pdfjsLib.getDocument(pdfUrl);
-            const pdf = await loadingTask.promise;
-            const page = await pdf.getPage(1);
-            
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale });
-            
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            
-            await page.render({
-                canvasContext: context,
-                viewport: viewport
-            }).promise;
-            
-            return canvas.toDataURL();
-        } catch (error) {
-            console.error('Error rendering PDF thumbnail:', error);
-            return null;
-        }
-    }
-
-    $(document).ready(function() {
-        // Load books data
-        $.ajax({
-            url: 'data/books.json',
-            dataType: 'json',
-            success: async function(data) {
-                const latestBooks = data.books.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
-                
-                for (const book of latestBooks) {
-                    const thumbnail = await renderPDFThumbnail(book.pdfUrl);
-                    if (thumbnail) {
-                        book.displayThumbnail = thumbnail;
-                    } else {
-                        book.displayThumbnail = book.thumbnail;
+                            if (pageNum) {
+                                $('.pagination .page-item').removeClass('active');
+                                $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1)
+                                    .addClass('active');
+                                $('.bookshelf-page').hide();
+                                $(`.bookshelf-page[data-page="${pageNum}"]`).show();
+                            }
+                        });
                     }
-                }
-                renderBooks('#latestBooks', latestBooks);
-            }
-        });
-    });
-</script>
 
-<style type="text/css">
-    /* Main Layout Styles */
-    body {
-        background-color: #f8f9fa;
-    }
+                    // Set worker path for PDF.js
+                    pdfjsLib.GlobalWorkerOptions.workerSrc =
+                        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
 
-    /* Hero and Search Section */
-    .hero-section {
-        background: #fff;
-        padding: 50px 0;
-        margin-top: 76px;
-        margin-bottom: 40px;
-        border-bottom: 1px solid #eee;
-    }
+                    async function renderPDFThumbnail(pdfUrl) {
+                        try {
+                            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                            const pdf = await loadingTask.promise;
+                            const page = await pdf.getPage(1);
 
-    .hero-section h1 {
-        color: #333;
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-    }
+                            const scale = 1.5;
+                            const viewport = page.getViewport({
+                                scale
+                            });
 
-    .hero-section .lead {
-        color: #666;
-        font-size: 1.2rem;
-        margin-bottom: 2.5rem;
-    }
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
 
-    /* Book Display */
-    .books-section {
-        padding-top: 40px;
-    }
+                            await page.render({
+                                canvasContext: context,
+                                viewport: viewport
+                            }).promise;
 
-    .bookshelf {
-        text-align: center;
-        padding: 0px;
-        margin-bottom: 40px !important;
-    }
+                            return canvas.toDataURL();
+                        } catch (error) {
+                            console.error('Error rendering PDF thumbnail:', error);
+                            return null;
+                        }
+                    }
 
-    .bookshelf .covers {
-        width: 100%;
-        height: auto;
-        z-index: 99;
-        position: relative;
-        text-align: center;
-    }
+                    $(document).ready(function () {
+                        // Load books data
+                        $.ajax({
+                            url: 'data/books.json',
+                            dataType: 'json',
+                            success: async function (data) {
+                                const latestBooks = data.books.sort((a, b) => new Date(b.date) -
+                                    new Date(a.date)).slice(0, 4);
 
-    .bookshelf .thumb {
-        display: inline-block;
-        cursor: pointer;
-        margin: 0px 0.5%;
-        width: 15% !important;
-        box-shadow: 0px 1px 3px rgba(0,0,0,.3);
-        max-width: 120px;
-        transition: transform 0.3s ease;
-    }
+                                for (const book of latestBooks) {
+                                    const thumbnail = await renderPDFThumbnail(book.pdfUrl);
+                                    if (thumbnail) {
+                                        book.displayThumbnail = thumbnail;
+                                    } else {
+                                        book.displayThumbnail = book.thumbnail;
+                                    }
+                                }
+                                renderBooks('#latestBooks', latestBooks);
+                            }
+                        });
+                    });
+    </script>
 
-    .bookshelf .thumb:hover {
-        transform: translateY(-5px);
-    }
+    <style type="text/css">
+        /* Main Layout Styles */
+        body {
+            background-color: #f8f9fa;
+        }
 
-    .bookshelf .thumb img {
-        width: 100%;
-        display: block;
-        vertical-align: top;
-    }
-
-    .bookshelf .shelf-img {
-        z-index: 0;
-        height: auto;
-        max-width: 100%;
-        vertical-align: top;
-        margin-top: -12px;
-    }
-
-    /* Search Form */
-    #searchForm {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 0 15px;
-    }
-
-    #searchForm .input-group {
-        border: 2px solid #012FB3;
-        border-radius: 50px;
-        overflow: hidden;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-    }
-
-    #searchForm .form-control {
-        border: none;
-        padding: 0.75rem 1.75rem;
-        height: 54px;
-        font-size: 1rem;
-        line-height: 1.5;
-    }
-
-    #searchForm .btn {
-        padding: 0.75rem 2rem;
-        background: #012FB3;
-        color: white;
-        border: none;
-        min-width: 120px;
-    }
-
-    #searchForm .btn:hover {
-        background: #1E43B0;
-    }
-
-    /* Pagination */
-    .pagination {
-        margin-top: 40px;
-    }
-
-    .page-link {
-        border-radius: 5px;
-        margin: 0 5px;
-    }
-
-    /* Navbar Styles */
-    .navbar {
-        padding: 12px 0;
-        background: white !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .navbar-brand {
-        padding: 0;
-        margin-right: 3rem;
-    }
-
-    .navbar-brand img {
-        height: 38px;
-        width: auto;
-    }
-
-    .navbar-nav .nav-item {
-        margin-right: 1rem;
-    }
-
-    .navbar-nav .nav-link {
-        color: #333 !important;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        transition: all 0.2s;
-    }
-
-    .navbar-nav .nav-link:hover {
-        color: #012FB3 !important;
-        background: rgba(1, 47, 179, 0.05);
-    }
-
-    .navbar-nav .active .nav-link {
-        color: #012FB3 !important;
-        background: rgba(1, 47, 179, 0.1);
-    }
-
-    .nav-buttons .btn {
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        border-radius: 6px;
-    }
-
-    /* Update navbar styles */
-    .navbar {
-        padding: 15px 0;
-        background: white !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .navbar-brand img {
-        height: 46px;
-        width: auto;
-        filter: none;  /* Remove the filter to show original logo colors */
-    }
-
-    /* Search box in hero section */
-    #searchForm .btn-light {
-        background: white;
-        color: #012FB3;
-        font-weight: 500;
-        border: none;
-    }
-
-    #searchForm .btn-light:hover {
-        background: #f8f9fa;
-    }
-
-    /* Featured Section */
-    .featured-section {
-        padding: 60px 0;
-        background: #f8f9fa;
-    }
-
-    .section-title {
-        color: #333;
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #eee;
-    }
-
-    .book-card {
-        background: white;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .book-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .book-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 4px;
-    }
-
-    .book-card h5 {
-        margin: 1rem 0 0.5rem;
-        font-size: 1.1rem;
-    }
-
-    .book-card p {
-        color: #666;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Latest Books Section */
-    .latest-books {
-        padding: 40px 0;
-    }
-
-    .latest-books .book-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-
-    .latest-books .book-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .latest-books .thumbnail-wrapper {
-        width: 100%;
-        height: 180px;
-        overflow: hidden;
-        border-radius: 8px 8px 0 0;
-    }
-
-    .latest-books .thumbnail {
-        width: 100%;
-        height: auto;
-        display: block;
-        vertical-align: top;
-    }
-
-    .latest-books .book-info {
-        padding: 1rem;
-        text-align: center;
-    }
-
-    /* Popular Books Section */
-    .popular-books {
-        padding: 40px 0;
-        background: #fff;
-        border-top: 1px solid #eee;
-    }
-
-    .popular-books .book-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-
-    .popular-books .book-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .popular-books .thumbnail-wrapper {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        border-radius: 8px 8px 0 0;
-    }
-
-    .popular-books .thumbnail {
-        width: 100%;
-        height: auto;
-        display: block;
-        vertical-align: top;
-    }
-
-    .popular-books .book-info {
-        padding: 1rem;
-        text-align: center;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 991px) { 
+        /* Hero and Search Section */
         .hero-section {
+            background: #fff;
+            padding: 50px 0;
+            margin-top: 76px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hero-section h1 {
+            color: #333;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section .lead {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Book Display */
+        .books-section {
+            padding-top: 40px;
+        }
+
+        .bookshelf {
+            text-align: center;
+            padding: 0px;
+            margin-bottom: 40px !important;
+        }
+
+        .bookshelf .covers {
+            width: 100%;
+            height: auto;
+            z-index: 99;
+            position: relative;
+            text-align: center;
+        }
+
+        .bookshelf .thumb {
+            display: inline-block;
+            cursor: pointer;
+            margin: 0px 0.5%;
+            width: 15% !important;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, .3);
+            max-width: 120px;
+            transition: transform 0.3s ease;
+        }
+
+        .bookshelf .thumb:hover {
+            transform: translateY(-5px);
+        }
+
+        .bookshelf .thumb img {
+            width: 100%;
+            display: block;
+            vertical-align: top;
+        }
+
+        .bookshelf .shelf-img {
+            z-index: 0;
+            height: auto;
+            max-width: 100%;
+            vertical-align: top;
+            margin-top: -12px;
+        }
+
+        /* Search Form */
+        #searchForm {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        #searchForm .input-group {
+            border: 2px solid #012FB3;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #searchForm .form-control {
+            border: none;
+            padding: 0.75rem 1.75rem;
+            height: 54px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        #searchForm .btn {
+            padding: 0.75rem 2rem;
+            background: #012FB3;
+            color: white;
+            border: none;
+            min-width: 120px;
+        }
+
+        #searchForm .btn:hover {
+            background: #1E43B0;
+        }
+
+        /* Pagination */
+        .pagination {
+            margin-top: 40px;
+        }
+
+        .page-link {
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            padding: 12px 0;
+            background: white !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand {
+            padding: 0;
+            margin-right: 3rem;
+        }
+
+        .navbar-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 1rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #012FB3 !important;
+            background: rgba(1, 47, 179, 0.05);
+        }
+
+        .navbar-nav .active .nav-link {
+            color: #012FB3 !important;
+            background: rgba(1, 47, 179, 0.1);
+        }
+
+        .nav-buttons .btn {
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        /* Update navbar styles */
+        .navbar {
+            padding: 15px 0;
+            background: white !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand img {
+            height: 46px;
+            width: auto;
+            filter: none;
+            /* Remove the filter to show original logo colors */
+        }
+
+        /* Search box in hero section */
+        #searchForm .btn-light {
+            background: white;
+            color: #012FB3;
+            font-weight: 500;
+            border: none;
+        }
+
+        #searchForm .btn-light:hover {
+            background: #f8f9fa;
+        }
+
+        /* Featured Section */
+        .featured-section {
             padding: 60px 0;
+            background: #f8f9fa;
         }
-        
-        .search-box {
-            margin-top: -30px;
+
+        .section-title {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
         }
-    }
-</style>
-<link rel="shortcut icon" href="images/KPK_Logo.svg">
-<title>Home</title>
+
+        .book-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .book-card h5 {
+            margin: 1rem 0 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .book-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Latest Books Section */
+        .latest-books {
+            padding: 40px 0;
+        }
+
+        .latest-books .book-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .latest-books .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .latest-books .thumbnail-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .latest-books .thumbnail {
+            width: 100%;
+            height: auto;
+            display: block;
+            vertical-align: top;
+        }
+
+        .latest-books .book-info {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Popular Books Section */
+        .popular-books {
+            padding: 40px 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+
+        .popular-books .book-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .popular-books .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .popular-books .thumbnail-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .popular-books .thumbnail {
+            width: 100%;
+            height: auto;
+            display: block;
+            vertical-align: top;
+        }
+
+        .popular-books .book-info {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+
+            .search-box {
+                margin-top: -30px;
+            }
+        }
+    </style>
+    <link rel="shortcut icon" href="images/logo.svg">
+    <title>Home</title>
 
 </head>
-	<body>
+
+<body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
@@ -647,7 +669,8 @@ $(document).ready(function () {
             <p class="lead">Your gateway to knowledge and discovery</p>
             <form id="searchForm" action="library.html" method="GET">
                 <div class="input-group">
-                    <input type="search" name="q" class="form-control" placeholder="Search our entire library..." id="searchInput">
+                    <input type="search" name="q" class="form-control" placeholder="Search our entire library..."
+                        id="searchInput">
                     <div class="input-group-append">
                         <button class="btn" type="submit">
                             <i class="fa fa-search mr-2"></i>Search
@@ -680,72 +703,64 @@ $(document).ready(function () {
 
     <!-- Footer -->
     <section id="footer" class="footer mt-5">
-      <div class="container">
-        <div class="row text-center text-xs-center text-sm-left text-md-left">
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <h5>Tentang KPK</h5>
-            <ul class="list-unstyled quick-links">
-            <li><a href="https://www.kpk.go.id/id/tentang-kpk/sekilas-komisi-pemberantasan-korupsi"><i class="fa fa-angle-double-right"></i>About</a></li>
-              <li><a href="https://www.kpk.go.id/id/tentang-kpk/pejabat-struktural"><i class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
-              <li><a href="https://www.kpk.go.id/id/tentang-kpk/roadmap-dan-rencana-strategis"><i class="fa fa-angle-double-right"></i>Rencana Strategis</a></li>
-            </ul>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <h5>Layanan Publik</h5>
-            <ul class="list-unstyled quick-links">
-              <li><a href="https://www.kpk.go.id/id/layanan-publik/pengaduan-masyarakat/mengenal-pengaduan-masyarakat"><i class="fa fa-angle-double-right"></i>Pengaduan Masyarakat</a></li>
-              <li><a href="https://www.kpk.go.id/id/layanan-publik/laporan-harta-kekayaan-penyelenggaraan-negara/mengenal-lhkpn"><i class="fa fa-angle-double-right"></i>LHKPN</a></li>
-              <li><a href="https://www.kpk.go.id/id/layanan-publik/gratifikasi/mengenal-gratifikasi"><i class="fa fa-angle-double-right"></i>Gratifikasi</a></li>
-              <li><a href="https://www.kpk.go.id/id/layanan-publik/informasi-publik"><i class="fa fa-angle-double-right"></i>Informasi Publik</a></li>
-            </ul>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <h5>Kontak KPK</h5>
-            <ul class="list-unstyled quick-links">
-              <li><a href="https://www.google.com/maps/dir/-6.1677568,106.6115072/GEDUNG+KPK+Jl.+Kuningan+Persada+Kav.+4+Jakarta+Selatan+12950/@-6.1687329,106.5817096,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e69f40eaa579f6f:0x3177a5ac88a987e8!2m2!1d106.8307239!2d-6.2077814"><i class="fas fa-map-marker-alt"></i></i>GEDUNG KPK Jl. Kuningan Persada Kav. 4 Jakarta Selatan 12950</a></li>
-              <li><a href="#"><i class="fas fa-phone"></i>(021) 2557 8300</a></li>
-              <li><a href="#"><i class="fas fa-fax"></i>(021) 2557 8333</a></li>
-              <li><a href="#"><i class="fas fa-envelope"></i>informasi@kpk.go.id</a></li>
-              <li><a href="#"><i class="fas fa-headset"></i></i>Call Center: 198</a></li>
-            </ul>
-          </div>
+        <div class="container">
+            <div class="row text-center text-xs-center text-sm-left text-md-left">
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>About Us</a></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Library</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Contact InkPact</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
+                        </li>
+                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
+                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
+                        <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Our Social Media</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 50px;">
+                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+                    <p class="h6">Copyright © 2025 InkPact. All Rights Reserved.</p>
+                </div>
+            </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-            <ul class="list-unstyled list-inline social text-center">
-              <li class="list-inline-item"><a href="https://www.instagram.com/official.kpk/"><i class="fab fa-instagram"></i></a></li>
-              <li class="list-inline-item"><a href="https://twitter.com/kpk_ri?lang=id"><i class="fab fa-twitter-square"></i></a></li>
-              <li class="list-inline-item"><a href="https://www.facebook.com/KomisiPemberantasanKorupsi"><i class="fab fa-facebook-square"></i></a></li>
-              <li class="list-inline-item"><a href="https://www.youtube.com/user/HUMASKPK"><i class="fab fa-youtube-square"></i></a></li>
-            </ul>
-          </div>
-          </hr>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-            <p class="h6">Hak Cipta © 2017 Komisi Pemberantasan Korupsi. Semua Hak Dilindungi.</p>
-          </div>
-          </hr>
-        </div>
-      </div>
     </section>
+
     <!-- End Of Footer -->
 
     <!-- Bootstrap Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    <script>
-        $(document).ready(function() {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function () {
             // Load latest books
-            $.getJSON('data/books.json', function(data) {
+            $.getJSON('data/books.json', function (data) {
                 const latestBooks = data.books
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
                     .slice(0, 4);
-                
+
                 renderBooks('#latestBooks', latestBooks);
             });
 
             // Load popular books
-            $.getJSON('data/popular-books.json', function(data) {
+            $.getJSON('data/popular-books.json', function (data) {
                 renderBooks('#popularBooks', data.popular_books);
             });
 
@@ -772,9 +787,9 @@ $(document).ready(function () {
 
     <script>
         // Set active nav item based on current page
-        $(document).ready(function() {
+        $(document).ready(function () {
             const currentPage = window.location.pathname.split("/").pop();
-            $('.nav-item .nav-link').each(function() {
+            $('.nav-item .nav-link').each(function () {
                 const href = $(this).attr('href');
                 if (href === currentPage || (currentPage === '' && href === 'index.html')) {
                     $(this).parent().addClass('active');
@@ -783,4 +798,5 @@ $(document).ready(function () {
         });
     </script>
 </body>
+
 </html>
