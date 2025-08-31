@@ -10,18 +10,15 @@
   <!-- AJAX -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-  <!-- costume css -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
   <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
-  <!-- Bootstrap Css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
   <!-- Add theme CSS -->
   <link rel="stylesheet" type="text/css" href="css/theme.css">
-
   <!-- Include JS -->
   <script src="js/flipbook.min.js"></script>
 
@@ -92,6 +89,8 @@
   <style>
     body {
       background-color: #f6f6f6;
+      padding-top: 100px;
+      /* Add padding for fixed navbar */
     }
 
     #author {
@@ -165,8 +164,25 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* PDF Information Section */
+    .info {
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      padding: 20px;
+      border-radius: 10px;
+      border: none;
+    }
+
     /* Responsive layout adjustments */
     @media (max-width: 768px) {
+      body {
+        padding-top: 80px;
+        /* Less padding on mobile */
+      }
+
       .book-cover {
         padding: 10px;
         margin-bottom: 20px;
@@ -175,30 +191,107 @@
       .book-1 {
         max-height: 300px;
       }
+
+      .info {
+        margin-top: 10px;
+      }
+    }
+
+    .navbar {
+      padding: 12px 0;
+      background: white !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar-brand {
+      padding: 0;
+      margin-right: 3rem;
+    }
+
+    .navbar-brand img {
+      height: 38px;
+      width: auto;
+    }
+
+    .navbar-nav .nav-item {
+      margin-right: 1rem;
+    }
+
+    .navbar-nav .nav-link {
+      color: #333 !important;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #012FB3 !important;
+      background: rgba(1, 47, 179, 0.05);
+    }
+
+    .navbar-nav .active .nav-link {
+      color: #012FB3 !important;
+      background: rgba(1, 47, 179, 0.1);
+    }
+
+    .nav-buttons .btn {
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      border-radius: 6px;
+    }
+
+    /* Update navbar styles */
+    .navbar {
+      padding: 15px 0;
+      background: white !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar-brand img {
+      height: 46px;
+      width: auto;
+      filter: none;
+      /* Remove the filter to show original logo colors */
     }
   </style>
-
 </head>
 
 <body>
-  <a href="index.html" class="btn-back">← Back</a>
-  <div class="flipbook-viewport">
-    <div class="container">
-      <div class="flipbook">
-        <!-- PDF pages will be loaded here -->
-      </div>
-    </div>
-  </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-    <a class="navbar-brand" href="index.html">
-      <img src="images/logo.svg" alt="KPK LOGO" width="70">
-    </a>
-  </nav>
-  <!-- End Of Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/logo.svg" alt="InkPact Logo">
+      </a>
 
-  <br><br><br><br><br>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about-us.html">About Us</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="library.html">Library</a>
+          </li>
+        </ul>
+        <div class="nav-buttons">
+          <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+          <button class="btn btn-primary" type="button">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+
+  <a href="index.html" class="btn-back">← Back</a>
 
   <!-- PDF INFORMATION -->
   <section class="info" id="info">
@@ -240,16 +333,15 @@
         <div class="col-xs-12 col-sm-4 col-md-4">
           <h5>Quick Links</h5>
           <ul class="list-unstyled quick-links">
-            <li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
-            <li><a href="#"><i class="fa fa-angle-double-right"></i>About Us</a></li>
-            <li><a href="#"><i class="fa fa-angle-double-right"></i>Library</a></li>
+            <li><a href="index.html"><i class="fa fa-angle-double-right"></i>Home</a></li>
+            <li><a href="about-us.html"><i class="fa fa-angle-double-right"></i>About Us</a></li>
+            <li><a href="library.html"><i class="fa fa-angle-double-right"></i>Library</a></li>
           </ul>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
           <h5>Contact InkPact</h5>
           <ul class="list-unstyled quick-links">
-            <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
-            </li>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a></li>
             <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
             <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
             <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
@@ -274,94 +366,8 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous">
-  </script>
-
-
-
-
-</html>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 </body>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-  integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-</html>
-<div class="row text-center text-xs-center text-sm-left text-md-left">
-  <div class="col-xs-12 col-sm-4 col-md-4">
-    <h5>Tentang KPK</h5>
-    <ul class="list-unstyled quick-links">
-      <li><a href="https://www.kpk.go.id/id/tentang-kpk/sekilas-komisi-pemberantasan-korupsi"><i
-            class="fa fa-angle-double-right"></i>About</a></li>
-      <li><a href="https://www.kpk.go.id/id/tentang-kpk/pejabat-struktural"><i
-            class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
-      <li><a href="https://www.kpk.go.id/id/tentang-kpk/roadmap-dan-rencana-strategis"><i
-            class="fa fa-angle-double-right"></i>Rencana Strategis</a></li>
-    </ul>
-  </div>
-  <div class="col-xs-12 col-sm-4 col-md-4">
-    <h5>Layanan Publik</h5>
-    <ul class="list-unstyled quick-links">
-      <li><a href="https://www.kpk.go.id/id/layanan-publik/pengaduan-masyarakat/mengenal-pengaduan-masyarakat"><i
-            class="fa fa-angle-double-right"></i>Pengaduan Masyarakat</a></li>
-      <li><a
-          href="https://www.kpk.go.id/id/layanan-publik/laporan-harta-kekayaan-penyelenggaraan-negara/mengenal-lhkpn"><i
-            class="fa fa-angle-double-right"></i>LHKPN</a></li>
-      <li><a href="https://www.kpk.go.id/id/layanan-publik/gratifikasi/mengenal-gratifikasi"><i
-            class="fa fa-angle-double-right"></i>Gratifikasi</a></li>
-      <li><a href="https://www.kpk.go.id/id/layanan-publik/informasi-publik"><i
-            class="fa fa-angle-double-right"></i>Informasi Publik</a></li>
-    </ul>
-  </div>
-  <div class="col-xs-12 col-sm-4 col-md-4">
-    <h5>Kontak KPK</h5>
-    <ul class="list-unstyled quick-links">
-      <li><a
-          href="https://www.google.com/maps/dir/-6.1677568,106.6115072/GEDUNG+KPK+Jl.+Kuningan+Persada+Kav.+4+Jakarta+Selatan+12950/@-6.1687329,106.5817096,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e69f40eaa579f6f:0x3177a5ac88a987e8!2m2!1d106.8307239!2d-6.2077814"><i
-            class="fas fa-map-marker-alt"></i></i>GEDUNG KPK Jl. Kuningan Persada Kav. 4 Jakarta Selatan 12950</a></li>
-      <li><a href="#"><i class="fas fa-phone"></i>(021) 2557 8300</a></li>
-      <li><a href="#"><i class="fas fa-fax"></i>(021) 2557 8333</a></li>
-      <li><a href="#"><i class="fas fa-envelope"></i>informasi@kpk.go.id</a></li>
-      <li><a href="#"><i class="fas fa-headset"></i></i>Call Center: 198</a></li>
-    </ul>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-    <ul class="list-unstyled list-inline social text-center">
-      <li class="list-inline-item"><a href="https://www.instagram.com/official.kpk/"><i
-            class="fab fa-instagram"></i></a></li>
-      <li class="list-inline-item"><a href="https://twitter.com/kpk_ri?lang=id"><i
-            class="fab fa-twitter-square"></i></a></li>
-      <li class="list-inline-item"><a href="https://www.facebook.com/KomisiPemberantasanKorupsi"><i
-            class="fab fa-facebook-square"></i></a></li>
-      <li class="list-inline-item"><a href="https://www.youtube.com/user/HUMASKPK"><i
-            class="fab fa-youtube-square"></i></a></li>
-    </ul>
-  </div>
-  </hr>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-    <p class="h6">Copyright © 2025 InpPACT</p>
-  </div>
-  </hr>
-</div>
-</div>
-</section>
-<!-- End Of Footer -->
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-  integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-
-
-
-
-</html>
-</body>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-  integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
 </html>

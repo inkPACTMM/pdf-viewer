@@ -2,308 +2,17 @@
 <html>
 
 <head>
-
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ajax -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-    <!-- Costume CSS -->
-    <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
-    <link rel="stylesheet" type="text/css" href="css/footer.css">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
-    <!-- Bootstrap Css -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- Add theme CSS -->
-    <link rel="stylesheet" type="text/css" href="css/theme.css">
-
-    <script src="js/flipbook.min.js"></script>
-
-    <!-- Add PDF.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-                    let allBooks = [];
-
-                    // Show loading state
-                    $('.bookshelf-container').html(`
-        <div class="loading-state text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <h4 class="mt-3">Loading Books...</h4>
-        </div>
-    `);
-
-                    // Load books data with error handling
-                    $.ajax({
-                        url: 'data/books.json',
-                        dataType: 'json',
-                        success: function (data) {
-                            allBooks = data.books;
-                            renderBooks(allBooks);
-                            setupPagination(allBooks);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error('Failed to load books:', errorThrown);
-                            $('.bookshelf-container').html(`
-                <div class="error-state text-center py-5">
-                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
-                    <h4 class="mt-3">Failed to load books</h4>
-                    <button class="btn btn-primary mt-3" onclick="location.reload()">
-                        Try Again
-                    </button>
-                </div>
-            `);
-                        }
-                    });
-
-                    // Replace the search input handler with form submit handler
-                    $('#searchForm').on('submit', function (e) {
-                        e.preventDefault();
-                        const searchTerm = $('#searchInput').val().toLowerCase();
-                        const filteredBooks = allBooks.filter(book =>
-                            book.title.toLowerCase().includes(searchTerm) ||
-                            book.author.toLowerCase().includes(searchTerm)
-                        );
-                        renderBooks(filteredBooks);
-                        setupPagination(filteredBooks);
-                    });
-
-                    function renderBooks(books) {
-                        const booksPerShelf = 5;
-                        const shelvesPerPage = 2;
-                        $('.bookshelf-container').empty();
-
-                        // Group books into pages and only create necessary shelves
-                        const chunkedBooks = [];
-                        for (let i = 0; i < books.length; i += booksPerShelf * shelvesPerPage) {
-                            chunkedBooks.push(books.slice(i, i + booksPerShelf * shelvesPerPage));
-                        }
-
-                        const $container = $('<div class="bookshelf-pages"></div>');
-
-                        // Only create one page at a time
-                        chunkedBooks.forEach((pageBooks, pageIndex) => {
-                            const $page = $(`<div class="bookshelf-page" data-page="${pageIndex + 1}"></div>`);
-
-                            // Create exactly 2 shelves per page
-                            const shelfCount = Math.min(2, Math.ceil(pageBooks.length / booksPerShelf));
-                            for (let shelf = 0; shelf < shelfCount; shelf++) {
-                                const shelfBooks = pageBooks.slice(shelf * booksPerShelf, (shelf + 1) *
-                                    booksPerShelf);
-                                const $shelf = $(`
-                    <div class="bookshelf mb-5">
-                        <div class="covers">
-                            ${shelfBooks.map(book => `
-                                <div class="thumb book-1" data-id="${book.id}">
-                                    <a href="v-pdf.html?id=${book.id}">
-                                        <img src="${book.thumbnail}" alt="${book.title}">
-                                    </a>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <img class="shelf-img" src="images/shelf_wood.png">
-                    </div>
-                `);
-                                $page.append($shelf);
-                            }
-
-                            $container.append($page);
-                        });
-
-                        $('.bookshelf-container').append($container);
-
-                        // Show first page
-                        $('.bookshelf-page').hide();
-                        $('.bookshelf-page[data-page="1"]').show();
-
-                        // Initialize flipBook for new elements
-                        $(".book-1").flipBook({
-                            // Layout Setting
-                            pdfUrl: 'pdf/pdf.pdf',
-                            lightBox: true,
-                            layout: 3,
-                            currentPage: {
-                                vAlign: "bottom",
-                                hAlign: "left"
-                            },
-                            // BTN SETTING
-                            btnShare: {
-                                enabled: false
-                            },
-                            btnPrint: {
-                                hideOnMobile: true
-                            },
-                            btnDownloadPages: {
-                                enabled: true,
-                                title: "Download pages",
-                                icon: "fa-download",
-                                icon2: "file_download",
-                                url: "images/pdf.rar",
-                                name: "allPages.zip",
-                                hideOnMobile: false
-                            },
-                            btnColor: '#012FB3',
-                            sideBtnColor: '#012FB3',
-                            sideBtnSize: 60,
-                            sideBtnBackground: "rgba(0,0,0,.7)",
-                            sideBtnRadius: 60,
-                            btnSound: {
-                                vAlign: "top",
-                                hAlign: "left"
-                            },
-                            btnAutoplay: {
-                                vAlign: "top",
-                                hAlign: "left"
-                            },
-                            // SHARING
-                            btnShare: {
-                                enabled: true,
-                                title: "Share",
-                                icon: "fa-share-alt"
-                            },
-                            facebook: {
-                                enabled: true,
-                                url: "ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-                            },
-                            google_plus: {
-                                enabled: false
-                            },
-                            email: {
-                                enabled: true,
-                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf",
-                                title: "PDF KPK",
-                                description: "Silahkan click link di bawah untuk melihat / mengunduf pdf"
-                            },
-                            twitter: {
-                                enabled: true,
-                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-                            },
-                            pinterest: {
-                                enabled: true,
-                                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-                            }
-                        });
-                    }
-
-                    function setupPagination(books) {
-                        const booksPerPage = 10; // 2 shelves × 5 books
-                        const pageCount = Math.ceil(books.length / booksPerPage);
-
-                        // Update pagination UI
-                        let paginationHtml = `
-            <li class="page-item ${pageCount <= 1 ? 'disabled' : ''}">
-                <a class="page-link" href="#" tabindex="-1" aria-label="Previous">&laquo;</a>
-            </li>
-        `;
-
-                        for (let i = 1; i <= pageCount; i++) {
-                            paginationHtml += `
-                <li class="page-item ${i === 1 ? 'active' : ''}">
-                    <a class="page-link" href="#" data-page="${i}">${i}</a>
-                </li>
-            `;
-                        }
-
-                        paginationHtml += `
-            <li class="page-item ${pageCount <= 1 ? 'disabled' : ''}">
-                <a class="page-link" href="#" aria-label="Next">&raquo;</a>
-            </li>
-        `;
-
-                        $('.pagination').html(paginationHtml);
-
-                        // Update pagination click handlers
-                        $('.pagination').off('click').on('click', '.page-item', function (e) {
-                            e.preventDefault();
-                            if ($(this).hasClass('disabled')) return;
-
-                            const $this = $(this);
-                            let pageNum;
-
-                            if ($this.find('.page-link').attr('aria-label') === 'Previous') {
-                                const $active = $('.pagination .active');
-                                if ($active.prev().hasClass('page-item') && !$active.prev().hasClass(
-                                        'disabled')) {
-                                    pageNum = parseInt($active.prev().find('.page-link').text());
-                                }
-                            } else if ($this.find('.page-link').attr('aria-label') === 'Next') {
-                                const $active = $('.pagination .active');
-                                if ($active.next().hasClass('page-item') && !$active.next().hasClass(
-                                        'disabled')) {
-                                    pageNum = parseInt($active.next().find('.page-link').text());
-                                }
-                            } else {
-                                pageNum = parseInt($this.find('.page-link').data('page'));
-                            }
-
-                            if (pageNum) {
-                                $('.pagination .page-item').removeClass('active');
-                                $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1)
-                                    .addClass('active');
-                                $('.bookshelf-page').hide();
-                                $(`.bookshelf-page[data-page="${pageNum}"]`).show();
-                            }
-                        });
-                    }
-
-                    // Set worker path for PDF.js
-                    pdfjsLib.GlobalWorkerOptions.workerSrc =
-                        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-
-                    async function renderPDFThumbnail(pdfUrl) {
-                        try {
-                            const loadingTask = pdfjsLib.getDocument(pdfUrl);
-                            const pdf = await loadingTask.promise;
-                            const page = await pdf.getPage(1);
-
-                            const scale = 1.5;
-                            const viewport = page.getViewport({
-                                scale
-                            });
-
-                            const canvas = document.createElement('canvas');
-                            const context = canvas.getContext('2d');
-                            canvas.height = viewport.height;
-                            canvas.width = viewport.width;
-
-                            await page.render({
-                                canvasContext: context,
-                                viewport: viewport
-                            }).promise;
-
-                            return canvas.toDataURL();
-                        } catch (error) {
-                            console.error('Error rendering PDF thumbnail:', error);
-                            return null;
-                        }
-                    }
-
-                    $(document).ready(function () {
-                        // Load books data
-                        $.ajax({
-                            url: 'data/books.json',
-                            dataType: 'json',
-                            success: async function (data) {
-                                const latestBooks = data.books.sort((a, b) => new Date(b.date) -
-                                    new Date(a.date)).slice(0, 4);
-
-                                for (const book of latestBooks) {
-                                    const thumbnail = await renderPDFThumbnail(book.pdfUrl);
-                                    if (thumbnail) {
-                                        book.displayThumbnail = thumbnail;
-                                    } else {
-                                        book.displayThumbnail = book.thumbnail;
-                                    }
-                                }
-                                renderBooks('#latestBooks', latestBooks);
-                            }
-                        });
-                    });
-    </script>
-
+    <title>Home | InkPact Digital Library</title>
+    <link rel="shortcut icon" href="images/logo.svg">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/footer.css">
     <style type="text/css">
         /* Main Layout Styles */
         body {
@@ -623,9 +332,6 @@
             }
         }
     </style>
-    <link rel="shortcut icon" href="images/logo.svg">
-    <title>Home</title>
-
 </head>
 
 <body>
@@ -647,7 +353,7 @@
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="about-us.html">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="library.html">Library</a>
@@ -665,8 +371,16 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container text-center">
-            <h1>Welcome to InkPact Digital Library</h1>
-            <p class="lead">Your gateway to knowledge and discovery</p>
+            <!-- Big circle logo -->
+            <div style="width:220px;height:220px;margin:0 auto 32px auto;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#fff;box-shadow:0 4px 32px rgba(1,47,179,0.08);">
+                <img src="images/logo.svg" alt="InkPact Logo" style="width:160px;height:160px;object-fit:contain;">
+            </div>
+            <!-- Title and description -->
+            <h1 style="font-size:3.2rem;font-weight:700;color:#012FB3;margin-bottom:1.2rem;">CREATING IMPACT</h1>
+            <p class="lead" style="font-size:1.25rem;color:#22223b;max-width:600px;margin:0 auto 2.5rem auto;">
+                inkPACT is a youth-led digital magazine that transforms stories into action. We amplify voices from Myanmar's youth organizations while funding grassroots community projects aligned with UN SDGs.
+            </p>
+            <!-- Search Form -->
             <form id="searchForm" action="library.html" method="GET">
                 <div class="input-group">
                     <input type="search" name="q" class="form-control" placeholder="Search our entire library..."
@@ -741,13 +455,11 @@
 
     <!-- End Of Footer -->
 
-    <!-- Bootstrap Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
             // Load latest books
@@ -784,9 +496,7 @@
             }
         });
     </script>
-
     <script>
-        // Set active nav item based on current page
         $(document).ready(function () {
             const currentPage = window.location.pathname.split("/").pop();
             $('.nav-item .nav-link').each(function () {
