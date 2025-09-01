@@ -13,432 +13,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
-    <style>
-        /* Background styles */
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            position: relative;
-            font-family: 'Georgia', serif;
-        }
-
-        /* Enhanced navbar */
-        .navbar {
-            padding: 12px 0;
-            background: white !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .navbar-brand {
-            padding: 0;
-            margin-right: 3rem;
-        }
-
-        .navbar-brand img {
-            height: 38px;
-            width: auto;
-        }
-
-        .navbar-nav .nav-item {
-            margin-right: 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #333 !important;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #012FB3 !important;
-            background: rgba(1, 47, 179, 0.05);
-        }
-
-        .navbar-nav .active .nav-link {
-            color: #012FB3 !important;
-            background: rgba(1, 47, 179, 0.1);
-        }
-
-        .nav-buttons .btn {
-            padding: 0.5rem 1.5rem;
-            font-weight: 500;
-            border-radius: 6px;
-        }
-
-        /* Update navbar styles */
-        .navbar {
-            padding: 15px 0;
-            background: white !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .navbar-brand img {
-            height: 46px;
-            width: auto;
-            filter: none;
-            /* Remove the filter to show original logo colors */
-        }
-
-        /* Enhanced book container */
-        .book-container {
-            max-width: 950px;
-            margin: 130px auto 80px;
-            perspective: 1200px;
-        }
-
-        .book {
-            background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%);
-            border-radius: 0 25px 25px 0;
-            box-shadow:
-                0 0 0 3px #012FB3,
-                -15px 0 30px rgba(1, 47, 179, 0.2),
-                0 15px 45px rgba(0, 0, 0, 0.15);
-            position: relative;
-            transform-style: preserve-3d;
-            margin-left: 50px;
-            transition: transform 0.3s ease;
-            counter-reset: chapter;
-        }
-
-        .book:hover {
-            transform: rotateY(-2deg);
-        }
-
-        /* Enhanced book spine */
-        .book::before {
-            content: "InkPact Youth Magazine 2025";
-            position: absolute;
-            left: -50px;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            background: linear-gradient(180deg, #012FB3 0%, #1E43B0 50%, #0A2490 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.2;
-            letter-spacing: 1px;
-            border-radius: 20px 0 0 20px;
-            writing-mode: vertical-lr;
-            text-orientation: mixed;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Enhanced page styling */
-        .page {
-            padding: 70px 60px;
-            min-height: 700px;
-            position: relative;
-            background: linear-gradient(to bottom, #ffffff 0%, #fefefe 100%);
-            border-radius: 0 20px 20px 0;
-        }
-
-        .page::before {
-            content: "";
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            right: 30px;
-            bottom: 30px;
-            border: 2px solid #f0f0f0;
-            border-radius: 15px;
-            pointer-events: none;
-        }
-
-        /* Enhanced page header */
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding-bottom: 40px;
-            border-bottom: 4px double #012FB3;
-            position: relative;
-            z-index: 1;
-        }
-
-        .page-header::after {
-            content: "📚";
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 20px;
-            font-size: 28px;
-        }
-
-        .page-title {
-            font-family: 'Georgia', serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: #012FB3;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(1, 47, 179, 0.15);
-            letter-spacing: -1px;
-        }
-
-        .page-subtitle {
-            font-style: italic;
-            color: #6c757d;
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            font-weight: 300;
-        }
-
-        /* Enhanced chapter styling */
-        .chapter {
-            margin-bottom: 60px;
-            page-break-inside: avoid;
-            position: relative;
-            z-index: 1;
-        }
-
-        .chapter-title {
-            font-family: 'Georgia', serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: #012FB3;
-            margin-bottom: 25px;
-            padding-left: 40px;
-            position: relative;
-            border-left: 6px solid #012FB3;
-        }
-
-        .chapter-title::before {
-            content: counter(chapter, upper-roman) ".";
-            counter-increment: chapter;
-            position: absolute;
-            left: -50px;
-            top: 0;
-            font-size: 1.4rem;
-            color: #1E43B0;
-            font-weight: bold;
-            background: linear-gradient(135deg, #f8faff, #e3f2fd);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #012FB3;
-        }
-
-        .chapter-content {
-            font-family: 'Georgia', serif;
-            font-size: 1.15rem;
-            line-height: 1.9;
-            color: #333;
-            text-align: justify;
-            margin-bottom: 30px;
-            text-indent: 2.5em;
-        }
-
-        .chapter-content:first-of-type {
-            text-indent: 0;
-        }
-
-        .chapter-content:first-of-type::first-letter {
-            font-size: 5rem;
-            font-weight: 900;
-            color: #012FB3;
-            float: left;
-            line-height: 4rem;
-            margin: 10px 12px 0 0;
-            font-family: 'Georgia', serif;
-        }
-
-        /* Enhanced special elements */
-        .highlight-box {
-            background: linear-gradient(135deg, #f8faff 0%, #e3f2fd 100%);
-            border: 3px solid #012FB3;
-            border-radius: 20px;
-            padding: 35px;
-            margin: 40px 0;
-            position: relative;
-            box-shadow: 0 8px 25px rgba(1, 47, 179, 0.1);
-        }
-
-        .highlight-box::before {
-            content: "💡";
-            position: absolute;
-            top: -18px;
-            left: 25px;
-            background: white;
-            padding: 0 15px;
-            font-size: 28px;
-            border-radius: 15px;
-            border: 2px solid #012FB3;
-        }
-
-        /* Enhanced objectives grid */
-        .objectives-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .objective-card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
-            border: 3px solid #e9ecef;
-            border-radius: 20px;
-            padding: 35px;
-            text-align: center;
-            transition: all 0.4s ease;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .objective-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: #012FB3;
-            box-shadow: 0 12px 35px rgba(1, 47, 179, 0.2);
-        }
-
-        .objective-icon {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: #012FB3;
-        }
-
-        .objective-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #012FB3;
-            margin-bottom: 15px;
-        }
-
-        .objective-desc {
-            color: #6c757d;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-
-        /* Enhanced team showcase */
-        .team-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            margin: 50px 0;
-        }
-
-        .team-page {
-            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
-            border: 3px solid #dee2e6;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .team-page:hover {
-            transform: translateY(-12px) rotate(2deg);
-            box-shadow: 0 20px 40px rgba(1, 47, 179, 0.2);
-            border-color: #012FB3;
-        }
-
-        .team-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #012FB3;
-        }
-
-        .team-role {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #012FB3;
-            margin-bottom: 15px;
-        }
-
-        .team-desc {
-            color: #6c757d;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* Enhanced quote styling */
-        .book-quote {
-            background: linear-gradient(135deg, #f8faff 0%, #fff 100%);
-            border-left: 8px solid #012FB3;
-            border-radius: 0 20px 20px 0;
-            padding: 40px;
-            margin: 50px 0;
-            font-style: italic;
-            font-size: 1.3rem;
-            color: #444;
-            position: relative;
-            box-shadow: 0 6px 25px rgba(1, 47, 179, 0.12);
-        }
-
-        .book-quote::before {
-            content: "";
-            font-size: 5rem;
-            color: #012FB3;
-            position: absolute;
-            top: -15px;
-            left: 30px;
-            opacity: 0.4;
-        }
-
-        /* Enhanced page number */
-        .page-number {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
-            font-size: 1rem;
-            color: #6c757d;
-            font-style: italic;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #dee2e6;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .book-container {
-                margin: 110px 15px 50px;
-            }
-
-            .book {
-                margin-left: 25px;
-            }
-
-            .book::before {
-                left: -25px;
-                width: 25px;
-                font-size: 10px;
-            }
-
-            .page {
-                padding: 50px 25px;
-            }
-
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .chapter-title {
-                font-size: 1.6rem;
-            }
-
-            .objectives-list,
-            .team-showcase,
-            .contact-cards {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-    </style>
+    <!-- About Us CSS -->
+    <link rel="stylesheet" href="css/about-us.css">
 </head>
 
 <body>
@@ -474,30 +50,24 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="book-container">
-        <div class="book">
-            <div class="page">
-                <!-- Book Header -->
-                <div class="page-header">
-                    <h1 class="page-title">About InkPact</h1>
-                    <p class="page-subtitle">A Youth-Led Digital Magazine Transforming Stories into Action</p>
+    <div class="magazine-container">
+        <div class="magazine">
+            <!-- Left Page -->
+            <div class="page-left">
+                <!-- Magazine Header -->
+                <div class="magazine-header">
+                    <h1 class="magazine-title">About InkPact</h1>
+                    <p class="magazine-subtitle">A Youth-Led Digital Magazine Transforming Stories into Action</p>
                 </div>
 
                 <!-- Chapter 1: Our Story -->
                 <div class="chapter">
                     <h2 class="chapter-title">Our Story</h2>
                     <p class="chapter-content">
-                        InkPact Youth emerged from a shared vision among Myanmar's passionate young leaders who
-                        recognized the urgent need for authentic youth voices in sustainable development discourse. In a
-                        landscape where young people are often underrepresented despite being the primary drivers of
-                        change, we created a platform that not only amplifies these voices but transforms them into
-                        tangible action.
+                        InkPact Youth emerged from a shared vision among Myanmar's passionate young leaders who recognized the urgent need for authentic youth voices in sustainable development discourse.
                     </p>
                     <p class="chapter-content">
-                        Our digital magazine serves as more than just a publication—it's a catalyst for community
-                        transformation. By aligning our storytelling with the United Nations Sustainable Development
-                        Goals, we bridge the gap between awareness and action, ensuring that every story we share
-                        contributes to meaningful progress in our communities.
+                        In a landscape where young people are often underrepresented despite being the primary drivers of change, we created a platform that not only amplifies these voices but transforms them into tangible action.
                     </p>
                 </div>
 
@@ -506,134 +76,97 @@
                     <h2 class="chapter-title">Our Mission</h2>
                     <div class="highlight-box">
                         <p class="chapter-content">
-                            To create a secure, youth-led platform that amplifies voices from Myanmar's youth
-                            organizations while funding grassroots community projects through compelling storytelling
-                            aligned with UN Sustainable Development Goals.
+                            To create a secure, youth-led platform that amplifies voices from Myanmar's youth organizations while funding grassroots community projects through compelling storytelling aligned with UN Sustainable Development Goals.
                         </p>
                     </div>
-                    <p class="chapter-content">
-                        We believe in the power of narrative to drive social change. Each article, interview, and
-                        feature story we publish is carefully crafted to not only inform but inspire action. Our unique
-                        model ensures that the impact extends beyond digital engagement—revenue from our magazine
-                        directly funds community projects proposed and led by young people across Myanmar.
-                    </p>
                 </div>
 
-                <!-- Chapter 3: Objectives -->
+                <!-- Chapter 3: Our Objectives -->
                 <div class="chapter">
                     <h2 class="chapter-title">Our Objectives</h2>
-                    <div class="objectives-list">
-                        <div class="objective-card">
+                    <div class="objectives-grid">
+                        <div class="objective-item">
                             <div class="objective-icon">📢</div>
                             <h3 class="objective-title">Amplify Youth Voices</h3>
-                            <p class="objective-desc">Ensure representation across diverse regions and communities
-                                throughout Myanmar</p>
+                            <p class="objective-desc">Ensure representation across diverse regions and communities</p>
                         </div>
-                        <div class="objective-card">
+                        <div class="objective-item">
                             <div class="objective-icon">🌍</div>
                             <h3 class="objective-title">Raise SDG Awareness</h3>
-                            <p class="objective-desc">Educate through compelling storytelling that makes global goals
-                                locally relevant</p>
+                            <p class="objective-desc">Make global goals locally relevant through storytelling</p>
                         </div>
-                        <div class="objective-card">
+                        <div class="objective-item">
                             <div class="objective-icon">📅</div>
                             <h3 class="objective-title">Regular Publication</h3>
-                            <p class="objective-desc">Maintain consistent monthly/bi-monthly distribution through
-                                trusted channels</p>
+                            <p class="objective-desc">Maintain consistent monthly distribution</p>
                         </div>
-                        <div class="objective-card">
+                        <div class="objective-item">
                             <div class="objective-icon">🌱</div>
-                            <h3 class="objective-title">Fund Grassroots Projects</h3>
-                            <p class="objective-desc">Support community initiatives through sustainable revenue
-                                generation</p>
+                            <h3 class="objective-title">Fund Projects</h3>
+                            <p class="objective-desc">Support community initiatives through revenue</p>
                         </div>
                     </div>
                 </div>
 
+                <div class="page-number-left">Page 1 • InkPact Youth Magazine</div>
+            </div>
+
+            <!-- Right Page -->
+            <div class="page-right">
                 <!-- Chapter 4: Our Audience -->
                 <div class="chapter">
                     <h2 class="chapter-title">Who We Serve</h2>
                     <p class="chapter-content">
-                        Our content reaches and resonates with a diverse audience committed to positive social change.
-                        From youth leaders organizing community initiatives to international organizations supporting
-                        development work, we create content that speaks to various stakeholders in the development
-                        ecosystem.
+                        Our content reaches and resonates with a diverse audience committed to positive social change. From youth leaders organizing community initiatives to international organizations supporting development work.
                     </p>
                     <p class="chapter-content">
-                        Educators and students find our stories valuable for understanding real-world applications of
-                        sustainable development principles, while policy makers gain insights into youth perspectives on
-                        critical issues. Civil society groups and international partners use our platform to understand
-                        grassroots movements and identify collaboration opportunities.
+                        Educators, students, policy makers, and civil society groups use our platform to understand grassroots movements and identify collaboration opportunities.
                     </p>
                 </div>
 
-                <!-- Chapter 5: Team Structure -->
+                <!-- Chapter 5: Our Team -->
                 <div class="chapter">
                     <h2 class="chapter-title">Our Team</h2>
                     <p class="chapter-content">
-                        InkPact operates as a youth-led collective where every member brings unique skills and
-                        perspectives to our shared mission. Our organizational structure reflects our commitment to
-                        collaborative leadership and distributed responsibility.
+                        InkPact operates as a youth-led collective where every member brings unique skills and perspectives to our shared mission.
                     </p>
-                    <div class="team-showcase">
-                        <div class="team-page">
+                    <div class="team-grid">
+                        <div class="team-item">
                             <div class="team-icon">👑</div>
                             <h3 class="team-role">Editor-in-Chief</h3>
-                            <p class="team-desc">Oversees content strategy, editorial direction, and publication quality
-                            </p>
+                            <p class="team-desc">Oversees content strategy and publication quality</p>
                         </div>
-                        <div class="team-page">
+                        <div class="team-item">
                             <div class="team-icon">🔍</div>
                             <h3 class="team-role">Content Curators</h3>
-                            <p class="team-desc">Source and develop stories from youth organizations across Myanmar</p>
+                            <p class="team-desc">Source stories from youth organizations</p>
                         </div>
-                        <div class="team-page">
+                        <div class="team-item">
                             <div class="team-icon">🎨</div>
                             <h3 class="team-role">Design Lead</h3>
-                            <p class="team-desc">Creates visual identity, layouts, and ensures engaging presentation</p>
+                            <p class="team-desc">Creates visual identity and layouts</p>
                         </div>
-                        <div class="team-page">
+                        <div class="team-item">
                             <div class="team-icon">📡</div>
                             <h3 class="team-role">Outreach Coordinator</h3>
-                            <p class="team-desc">Builds partnerships and manages distribution through networks</p>
+                            <p class="team-desc">Builds partnerships and manages distribution</p>
                         </div>
-                        <div class="team-page">
+                        <div class="team-item">
                             <div class="team-icon">💰</div>
                             <h3 class="team-role">Finance Assistant</h3>
-                            <p class="team-desc">Manages revenue distribution and funding for grassroots projects</p>
+                            <p class="team-desc">Manages revenue and project funding</p>
                         </div>
-                        <div class="team-page">
+                        <div class="team-item">
                             <div class="team-icon">🛡️</div>
                             <h3 class="team-role">Safety Advisor</h3>
-                            <p class="team-desc">Ensures contributor security and implements safety protocols</p>
+                            <p class="team-desc">Ensures contributor security protocols</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Chapter 6: Safety & Independence -->
-                <div class="chapter">
-                    <h2 class="chapter-title">Our Commitment to Safety</h2>
-                    <p class="chapter-content">
-                        Operating in a complex political environment requires unwavering commitment to contributor
-                        safety and editorial independence. We have implemented comprehensive security protocols that
-                        protect our contributors while maintaining the authenticity and impact of their stories.
-                    </p>
-                    <div class="highlight-box">
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 10px;">🔒 Security protocols for contributor anonymity when needed
-                            </li>
-                            <li style="margin-bottom: 10px;">☁️ Safe digital hosting to avoid censorship</li>
-                            <li style="margin-bottom: 10px;">⚖️ Legal advice for content related to activism</li>
-                            <li style="margin-bottom: 10px;">✍️ Editorial independence and authenticity</li>
-                        </ul>
-                    </div>
-                    <div class="book-quote">
-                        This is an independent youth initiative not affiliated with any political entity. Our commitment
-                        is to the stories and voices of young people working toward a better future for Myanmar.
-                    </div>
-                </div>
+                <!-- Contact Section -->
 
-                <div class="page-number">Page 1 of 1 • InkPact Youth Magazine</div>
+                <div class="page-number-right">Page 2 • 2025 Edition</div>
             </div>
         </div>
     </div>
