@@ -260,6 +260,36 @@
             border-radius: 8px;
         }
 
+        /* Enhanced Categories Section */
+        .blog-categories-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .blog-category-tag {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .blog-category-tag:nth-child(2) {
+            background: linear-gradient(135deg, #6610f2 0%, #8b5a2b 100%);
+        }
+
+        .blog-category-tag:nth-child(3) {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .blog-category-tag:nth-child(4) {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             body {
@@ -292,6 +322,15 @@
             .blog-meta {
                 grid-template-columns: 1fr;
                 gap: 10px;
+            }
+
+            .blog-categories-section {
+                gap: 6px;
+            }
+
+            .blog-category-tag {
+                font-size: 0.8rem;
+                padding: 5px 12px;
             }
         }
 
@@ -341,7 +380,7 @@
     <!-- End Navbar -->
 
     <a href="blogs.html" class="btn-back">
-        <i class="fas fa-arrow-left mr-2"></i>Back to Blogs
+        <i class="fas fa-arrow-left mr-2"></i>Back
     </a>
 
     <!-- Blog Content -->
@@ -423,19 +462,29 @@
                         `<p>${paragraph.replace(/\n/g, '<br>')}</p>`
                     ).join('');
 
+                    // Handle multiple writers, designers, and categories
+                    const writers = Array.isArray(blog.writers) ? blog.writers.join(', ') : (blog.writers || blog.writer || 'Unknown');
+                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners.join(', ') : (blog.graphicDesigners || blog.graphicDesigner || 'Unknown');
+                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : ['General']);
+
+                    // Generate categories HTML
+                    const categoriesHTML = categories.map(cat => `<span class="blog-category-tag">${cat}</span>`).join('');
+
                     const blogHtml = `
                         <img src="${blog.image}" alt="${blog.blogName}" class="blog-image">
                         <div class="blog-text-content">
-                            <span class="blog-category">${blog.category}</span>
+                            <div class="blog-categories-section">
+                                ${categoriesHTML}
+                            </div>
                             <h1 class="blog-title">${blog.blogName}</h1>
                             <div class="blog-meta">
                                 <span class="blog-writer">
                                     <i class="fas fa-pen mr-1"></i>
-                                    <strong>Writer:</strong> ${blog.writer}
+                                    <strong>Writer${Array.isArray(blog.writers) && blog.writers.length > 1 ? 's' : ''}:</strong> ${writers}
                                 </span>
                                 <span class="blog-designer">
                                     <i class="fas fa-palette mr-1"></i>
-                                    <strong>Graphic Designer:</strong> ${blog.graphicDesigner}
+                                    <strong>Graphic Designer${Array.isArray(blog.graphicDesigners) && blog.graphicDesigners.length > 1 ? 's' : ''}:</strong> ${designers}
                                 </span>
                                 <span class="blog-date">
                                     <i class="fas fa-calendar mr-1"></i>

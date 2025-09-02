@@ -49,83 +49,23 @@
             }
         }
 
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         /* Main Layout Styles */
         body {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             overflow-x: hidden;
             min-width: 320px;
-        }
-
-        /* Hero and Search Section */
-        .hero-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: clamp(40px, 8vh, 80px) 0 clamp(30px, 6vh, 60px);
-            margin-top: 76px;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section h1 {
-            color: #333;
-            font-size: clamp(1.8rem, 5vw, 3.2rem);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-section .lead {
-            color: #666;
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
-        /* Search Form */
-        #searchForm {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 clamp(10px, 3vw, 15px);
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
-        #searchForm .input-group {
-            border: 2px solid #012FB3;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 4px 25px rgba(1, 47, 179, 0.15);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: white;
-            position: relative;
-        }
-
-        #searchForm .input-group.focused {
-            box-shadow: 0 8px 35px rgba(1, 47, 179, 0.25);
-            transform: translateY(-3px);
-        }
-
-        #searchForm .form-control {
-            border: none;
-            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.75rem);
-            height: clamp(48px, 8vw, 58px);
-            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
-            line-height: 1.5;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        #searchForm .btn {
-            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2.5rem);
-            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
-            color: white;
-            border: none;
-            min-width: clamp(100px, 20vw, 140px);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-size: clamp(0.8rem, 2vw, 1rem);
         }
 
         /* Navbar Styles */
@@ -211,24 +151,144 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* Blog Cards */
+        /* Hero and Search Section */
+        .hero-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: clamp(40px, 8vh, 80px) 0 clamp(30px, 6vh, 60px);
+            margin-top: 76px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(1, 47, 179, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-section h1 {
+            color: #333;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-section .lead {
+            color: #666;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Search Form */
+        #searchForm {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 clamp(10px, 3vw, 15px);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        #searchForm .input-group {
+            border: 2px solid #012FB3;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(1, 47, 179, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            position: relative;
+        }
+
+        #searchForm .input-group.focused {
+            box-shadow: 0 8px 35px rgba(1, 47, 179, 0.25);
+            transform: translateY(-3px);
+        }
+
+        #searchForm .form-control {
+            border: none;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.75rem);
+            height: clamp(48px, 8vw, 58px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            line-height: 1.5;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        #searchForm .form-control:focus {
+            box-shadow: none;
+            background: rgba(1, 47, 179, 0.02);
+        }
+
+        #searchForm .btn {
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2.5rem);
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            border: none;
+            min-width: clamp(100px, 20vw, 140px);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+
+        #searchForm .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        #searchForm .btn:hover::before {
+            left: 100%;
+        }
+
+        #searchForm .btn:hover {
+            background: linear-gradient(135deg, #1E43B0 0%, #012FB3 100%);
+            transform: translateX(-3px);
+        }
+
+        #searchForm .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Blog Grid Layout */
+        .blogs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 0 15px;
+        }
+
+        /* Blog Cards - Simplified without modal */
         .blog-card {
             background: white;
-            border-radius: 16px;
-            padding: 0;
-            margin-bottom: 30px;
+            border-radius: 20px;
+            overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(1, 47, 179, 0.05);
             cursor: pointer;
             animation: fadeInUp 0.6s ease-out;
             animation-fill-mode: both;
-            overflow: hidden;
+            position: relative;
+            height: fit-content;
         }
 
         .blog-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(1, 47, 179, 0.15);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(1, 47, 179, 0.15);
             border-color: rgba(1, 47, 179, 0.1);
         }
 
@@ -244,39 +304,79 @@
             animation-delay: 0.3s;
         }
 
+        /* Image Container - Simplified */
+        .blog-image-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
         .blog-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
         }
 
         .blog-card:hover .blog-image {
             transform: scale(1.05);
         }
 
+        /* Updated Category Badges for Multiple Categories */
+        .blog-categories {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: calc(100% - 30px);
+        }
+
+        .blog-category {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(1, 47, 179, 0.3);
+            white-space: nowrap;
+        }
+
+        .blog-category:nth-child(2) {
+            background: linear-gradient(135deg, #6610f2 0%, #8b5a2b 100%);
+            box-shadow: 0 2px 8px rgba(102, 16, 242, 0.3);
+        }
+
+        .blog-category:nth-child(3) {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .blog-category:nth-child(4) {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Blog Content */
         .blog-content {
             padding: 25px;
         }
 
-        .blog-category {
-            display: inline-block;
-            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
         .blog-title {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
             font-weight: 700;
             color: #333;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             line-height: 1.3;
             transition: color 0.3s ease;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .blog-card:hover .blog-title {
@@ -284,13 +384,12 @@
         }
 
         .blog-meta {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             margin-bottom: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
-            gap: 15px;
         }
 
         .blog-writer {
@@ -315,7 +414,11 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 20px;
-            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .read-more-btn {
@@ -328,6 +431,7 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            font-size: 0.9rem;
         }
 
         .read-more-btn:hover {
@@ -349,13 +453,15 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             animation: fadeInUp 0.6s ease-out;
+            grid-column: 1 / -1;
         }
 
         .empty-state h3 {
             color: #012FB3;
             margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
 
         .empty-state p {
@@ -367,15 +473,21 @@
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0 30px;
+                margin-bottom: 30px;
+            }
+
+            .blogs-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 10px;
             }
 
             .blog-card {
-                padding: 20px;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
 
-            .blog-image {
-                height: 180px;
+            .blog-image-container {
+                height: 200px;
             }
 
             .blog-content {
@@ -383,22 +495,34 @@
             }
 
             .blog-meta {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+                grid-template-columns: 1fr;
+                gap: 6px;
             }
 
-            .blog-writer,
-            .blog-designer,
-            .blog-date,
-            .blog-read-time {
-                margin-bottom: 0;
+            .blog-categories {
+                max-width: calc(100% - 20px);
+                gap: 4px;
+            }
+
+            .blog-category {
+                font-size: 0.7rem;
+                padding: 3px 10px;
             }
         }
 
         @media (max-width: 576px) {
-            .blog-meta {
-                gap: 6px;
+            .blogs-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 5px;
+            }
+
+            .blog-image-container {
+                height: 180px;
+            }
+
+            .blog-content {
+                padding: 15px;
             }
         }
     </style>
@@ -447,7 +571,7 @@
             <p class="lead">Discover stories of change, innovation, and impact from youth across Myanmar</p>
             <form id="searchForm">
                 <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search by blog title or writer..."
+                    <input type="search" class="form-control" placeholder="Search by blog title, writer, or designer..."
                         id="searchInput">
                     <div class="input-group-append">
                         <button class="btn" type="submit">
@@ -462,7 +586,7 @@
     <!-- Blogs Section -->
     <section class="blogs-section">
         <div class="container">
-            <div class="blogs-container">
+            <div class="blogs-grid" id="blogsGrid">
                 <!-- Blogs will be dynamically inserted here -->
             </div>
         </div>
@@ -536,8 +660,8 @@
 
             // Load blogs data
             function loadBlogs() {
-                $('.blogs-container').html(`
-                    <div class="loading-state text-center py-5">
+                $('#blogsGrid').html(`
+                    <div class="loading-state text-center py-5" style="grid-column: 1 / -1;">
                         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -554,8 +678,8 @@
                         renderBlogs(allBlogs);
                     },
                     error: function () {
-                        $('.blogs-container').html(`
-                            <div class="alert alert-danger m-5 text-center">
+                        $('#blogsGrid').html(`
+                            <div class="alert alert-danger m-5 text-center" style="grid-column: 1 / -1;">
                                 <h4><i class="fas fa-exclamation-triangle mr-2"></i>Error Loading Blogs</h4>
                                 <p>Unable to load blogs at this time. Please try again later.</p>
                                 <button class="btn btn-primary mt-3" onclick="location.reload()">
@@ -567,12 +691,12 @@
                 });
             }
 
-            // Render blogs
+            // Render blogs - Updated to handle multiple categories
             function renderBlogs(blogs) {
-                $('.blogs-container').empty();
+                $('#blogsGrid').empty();
 
                 if (blogs.length === 0) {
-                    $('.blogs-container').html(`
+                    $('#blogsGrid').html(`
                         <div class="empty-state">
                             <div class="mb-4">
                                 <i class="fas fa-search" style="font-size: 4rem; color: #012FB3; opacity: 0.3;"></i>
@@ -585,20 +709,32 @@
                 }
 
                 blogs.forEach((blog, index) => {
+                    // Format multiple writers and designers
+                    const writersText = Array.isArray(blog.writers) ? blog.writers.join(', ') : blog.writers || 'Unknown';
+                    const designersText = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners.join(', ') : blog.graphicDesigners || 'Unknown';
+                    
+                    // Handle multiple categories
+                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : ['General']);
+                    const categoriesHTML = categories.map(cat => `<span class="blog-category">${cat}</span>`).join('');
+                    
                     const blogCard = `
                         <div class="blog-card" data-blog-id="${blog.id}" style="animation-delay: ${index * 0.1}s">
-                            <img src="${blog.image}" alt="${blog.blogName}" class="blog-image" loading="lazy">
+                            <div class="blog-image-container">
+                                <img src="${blog.image}" alt="${blog.blogName}" class="blog-image" loading="lazy">
+                                <div class="blog-categories">
+                                    ${categoriesHTML}
+                                </div>
+                            </div>
                             <div class="blog-content">
-                                <span class="blog-category">${blog.category}</span>
                                 <h3 class="blog-title">${blog.blogName}</h3>
                                 <div class="blog-meta">
                                     <span class="blog-writer">
                                         <i class="fas fa-pen mr-1"></i>
-                                        ${blog.writer}
+                                        ${writersText}
                                     </span>
                                     <span class="blog-designer">
                                         <i class="fas fa-palette mr-1"></i>
-                                        ${blog.graphicDesigner}
+                                        ${designersText}
                                     </span>
                                     <span class="blog-date">
                                         <i class="fas fa-calendar mr-1"></i>
@@ -611,36 +747,111 @@
                                 </div>
                                 <p class="blog-description">${blog.description}</p>
                                 <a href="blog-detail.html?id=${blog.id}" class="read-more-btn">
-                                    Read More <i class="fas fa-arrow-right ml-1"></i>
+                                    Read Full Article <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
                         </div>
                     `;
-                    $('.blogs-container').append(blogCard);
+                    $('#blogsGrid').append(blogCard);
                 });
 
                 // Add click handler to blog cards
-                $('.blog-card').on('click', function (e) {
-                    if (!$(e.target).hasClass('read-more-btn')) {
+                $('.blog-card').on('click', function(e) {
+                    if (!$(e.target).closest('.read-more-btn').length) {
                         const blogId = $(this).data('blog-id');
                         window.location.href = `blog-detail.html?id=${blogId}`;
                     }
                 });
             }
 
-            // Search functionality
+            // Search functionality - Updated to include content keywords
             $('#searchForm').on('submit', function (e) {
                 e.preventDefault();
-                const searchTerm = $('#searchInput').val().toLowerCase();
+                const searchTerm = $('#searchInput').val().toLowerCase().trim();
 
-                const filteredBlogs = allBlogs.filter(blog =>
-                    blog.blogName.toLowerCase().includes(searchTerm) ||
-                    blog.writer.toLowerCase().includes(searchTerm) ||
-                    blog.graphicDesigner.toLowerCase().includes(searchTerm) ||
-                    blog.description.toLowerCase().includes(searchTerm)
-                );
+                if (searchTerm === '') {
+                    renderBlogs(allBlogs);
+                    return;
+                }
+
+                const filteredBlogs = allBlogs.filter(blog => {
+                    // Search in blog name and description
+                    const basicMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
+                                     blog.description.toLowerCase().includes(searchTerm);
+                    
+                    // Search in writers array
+                    const writersMatch = Array.isArray(blog.writers) ? 
+                        blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
+                        (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
+                    
+                    // Search in graphic designers array
+                    const designersMatch = Array.isArray(blog.graphicDesigners) ? 
+                        blog.graphicDesigners.some(designer => designer.toLowerCase().includes(searchTerm)) :
+                        (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(searchTerm));
+                    
+                    // Search in categories array
+                    const categoriesMatch = Array.isArray(blog.categories) ? 
+                        blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
+                        (blog.category && blog.category.toLowerCase().includes(searchTerm));
+                    
+                    // Search in content - NEW: Split content into words and search for keywords
+                    const contentMatch = blog.content && blog.content.toLowerCase().includes(searchTerm);
+                    
+                    // Advanced content keyword matching - search for partial matches in content
+                    const contentKeywordMatch = blog.content && 
+                        blog.content.toLowerCase().split(/\s+/).some(word => 
+                            word.includes(searchTerm) || searchTerm.includes(word.replace(/[^\w]/g, ''))
+                        );
+                    
+                    return basicMatch || writersMatch || designersMatch || categoriesMatch || contentMatch || contentKeywordMatch;
+                });
 
                 renderBlogs(filteredBlogs);
+            });
+
+            // Enhanced real-time search as user types (optional)
+            let searchTimeout;
+            $('#searchInput').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase().trim();
+                
+                // Clear previous timeout
+                clearTimeout(searchTimeout);
+                
+                // Add delay to avoid too many searches while typing
+                searchTimeout = setTimeout(() => {
+                    if (searchTerm.length >= 2) { // Only search after 2 characters
+                        const filteredBlogs = allBlogs.filter(blog => {
+                            // Quick search in title, description, and key content words
+                            const quickMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
+                                             blog.description.toLowerCase().includes(searchTerm) ||
+                                             (blog.content && blog.content.toLowerCase().includes(searchTerm));
+                            
+                            // Search in writers
+                            const writersMatch = Array.isArray(blog.writers) ? 
+                                blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
+                                (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
+                            
+                            // Search in categories
+                            const categoriesMatch = Array.isArray(blog.categories) ? 
+                                blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
+                                (blog.category && blog.category.toLowerCase().includes(searchTerm));
+                            
+                            return quickMatch || writersMatch || categoriesMatch;
+                        });
+                        
+                        renderBlogs(filteredBlogs);
+                    } else if (searchTerm.length === 0) {
+                        renderBlogs(allBlogs); // Show all blogs when search is empty
+                    }
+                }, 300); // 300ms delay
+            });
+
+            // Clear search functionality
+            $('#searchInput').on('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    $(this).val('');
+                    renderBlogs(allBlogs);
+                }
             });
 
             // Initial load
