@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blogs | InkPact Digital Library</title>
+    <link rel="shortcut icon" href="images/logo.svg">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <style>
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 30px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translate3d(-30px, 0, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
+        }
+
+        /* Main Layout Styles */
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow-x: hidden;
+            min-width: 320px;
+        }
+
+        /* Hero and Search Section */
+        .hero-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: clamp(40px, 8vh, 80px) 0 clamp(30px, 6vh, 60px);
+            margin-top: 76px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section h1 {
+            color: #333;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-section .lead {
+            color: #666;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Search Form */
+        #searchForm {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 clamp(10px, 3vw, 15px);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        #searchForm .input-group {
+            border: 2px solid #012FB3;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(1, 47, 179, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            position: relative;
+        }
+
+        #searchForm .input-group.focused {
+            box-shadow: 0 8px 35px rgba(1, 47, 179, 0.25);
+            transform: translateY(-3px);
+        }
+
+        #searchForm .form-control {
+            border: none;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.75rem);
+            height: clamp(48px, 8vw, 58px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            line-height: 1.5;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        #searchForm .btn {
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2.5rem);
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            border: none;
+            min-width: clamp(100px, 20vw, 140px);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.98) !important;
+        }
+
+        .navbar-brand {
+            padding: 0;
+            margin-right: 3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand img {
+            height: 46px;
+            width: auto;
+            filter: none;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 1rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(1, 47, 179, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .navbar-nav .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #012FB3 !important;
+            background: rgba(1, 47, 179, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .active .nav-link {
+            color: #012FB3 !important;
+            background: rgba(1, 47, 179, 0.1);
+        }
+
+        .nav-buttons .btn {
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .nav-buttons .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Blog Cards */
+        .blog-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(1, 47, 179, 0.05);
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+            overflow: hidden;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(1, 47, 179, 0.15);
+            border-color: rgba(1, 47, 179, 0.1);
+        }
+
+        .blog-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .blog-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .blog-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .blog-title {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .blog-card:hover .blog-title {
+            color: #012FB3;
+        }
+
+        .blog-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            gap: 15px;
+        }
+
+        .blog-writer {
+            font-weight: 600;
+            color: #012FB3;
+        }
+
+        .blog-designer {
+            font-weight: 600;
+            color: #6610f2;
+        }
+
+        .blog-date {
+            color: #666;
+        }
+
+        .blog-read-time {
+            color: #999;
+        }
+
+        .blog-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .read-more-btn {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .read-more-btn:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(1, 47, 179, 0.3);
+        }
+
+        /* Loading States */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+            height: 200px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .empty-state h3 {
+            color: #012FB3;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 0 30px;
+            }
+
+            .blog-card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .blog-image {
+                height: 180px;
+            }
+
+            .blog-content {
+                padding: 20px;
+            }
+
+            .blog-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .blog-writer,
+            .blog-designer,
+            .blog-date,
+            .blog-read-time {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-meta {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.svg" alt="InkPact Logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about-us.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="library.html">Library</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="blogs.html">Blogs</a>
+                    </li>
+                </ul>
+                <div class="nav-buttons">
+                    <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+                    <button class="btn btn-primary" type="button">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1>Blogs</h1>
+            <p class="lead">Discover stories of change, innovation, and impact from youth across Myanmar</p>
+            <form id="searchForm">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Search by blog title or writer..."
+                        id="searchInput">
+                    <div class="input-group-append">
+                        <button class="btn" type="submit">
+                            <i class="fa fa-search mr-2"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section class="blogs-section">
+        <div class="container">
+            <div class="blogs-container">
+                <!-- Blogs will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer" class="footer mt-5">
+        <div class="container">
+            <div class="row text-center text-xs-center text-sm-left text-md-left">
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="index.html"><i class="fa fa-angle-double-right"></i>Home</a></li>
+                        <li><a href="about-us.html"><i class="fa fa-angle-double-right"></i>About Us</a></li>
+                        <li><a href="library.html"><i class="fa fa-angle-double-right"></i>Library</a></li>
+                        <li><a href="blogs.html"><i class="fa fa-angle-double-right"></i>Blogs</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Contact InkPact</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
+                        </li>
+                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
+                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
+                        <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Our Social Media</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 50px;">
+                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+                    <p class="h6">Copyright © 2025 InkPact. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Of Footer -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Navbar scroll effect
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('.navbar').addClass('scrolled');
+                } else {
+                    $('.navbar').removeClass('scrolled');
+                }
+            });
+
+            // Enhanced search form interaction
+            $('#searchInput').on('focus', function () {
+                $(this).closest('.input-group').addClass('focused');
+            }).on('blur', function () {
+                $(this).closest('.input-group').removeClass('focused');
+            });
+
+            let allBlogs = [];
+
+            // Load blogs data
+            function loadBlogs() {
+                $('.blogs-container').html(`
+                    <div class="loading-state text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <h4 class="mt-3">Loading Blogs...</h4>
+                        <p class="text-muted">Please wait while we fetch the latest stories</p>
+                    </div>
+                `);
+
+                $.ajax({
+                    url: 'data/blogs.json',
+                    dataType: 'json',
+                    success: function (data) {
+                        allBlogs = data.blogs;
+                        renderBlogs(allBlogs);
+                    },
+                    error: function () {
+                        $('.blogs-container').html(`
+                            <div class="alert alert-danger m-5 text-center">
+                                <h4><i class="fas fa-exclamation-triangle mr-2"></i>Error Loading Blogs</h4>
+                                <p>Unable to load blogs at this time. Please try again later.</p>
+                                <button class="btn btn-primary mt-3" onclick="location.reload()">
+                                    <i class="fas fa-redo mr-2"></i>Retry
+                                </button>
+                            </div>
+                        `);
+                    }
+                });
+            }
+
+            // Render blogs
+            function renderBlogs(blogs) {
+                $('.blogs-container').empty();
+
+                if (blogs.length === 0) {
+                    $('.blogs-container').html(`
+                        <div class="empty-state">
+                            <div class="mb-4">
+                                <i class="fas fa-search" style="font-size: 4rem; color: #012FB3; opacity: 0.3;"></i>
+                            </div>
+                            <h3>No blogs found</h3>
+                            <p>Try a different search term or <a href="blogs.html" class="text-primary">browse all blogs</a>.</p>
+                        </div>
+                    `);
+                    return;
+                }
+
+                blogs.forEach((blog, index) => {
+                    const blogCard = `
+                        <div class="blog-card" data-blog-id="${blog.id}" style="animation-delay: ${index * 0.1}s">
+                            <img src="${blog.image}" alt="${blog.blogName}" class="blog-image" loading="lazy">
+                            <div class="blog-content">
+                                <span class="blog-category">${blog.category}</span>
+                                <h3 class="blog-title">${blog.blogName}</h3>
+                                <div class="blog-meta">
+                                    <span class="blog-writer">
+                                        <i class="fas fa-pen mr-1"></i>
+                                        ${blog.writer}
+                                    </span>
+                                    <span class="blog-designer">
+                                        <i class="fas fa-palette mr-1"></i>
+                                        ${blog.graphicDesigner}
+                                    </span>
+                                    <span class="blog-date">
+                                        <i class="fas fa-calendar mr-1"></i>
+                                        ${new Date(blog.date).toLocaleDateString()}
+                                    </span>
+                                    <span class="blog-read-time">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        ${blog.readTime}
+                                    </span>
+                                </div>
+                                <p class="blog-description">${blog.description}</p>
+                                <a href="blog-detail.html?id=${blog.id}" class="read-more-btn">
+                                    Read More <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    $('.blogs-container').append(blogCard);
+                });
+
+                // Add click handler to blog cards
+                $('.blog-card').on('click', function (e) {
+                    if (!$(e.target).hasClass('read-more-btn')) {
+                        const blogId = $(this).data('blog-id');
+                        window.location.href = `blog-detail.html?id=${blogId}`;
+                    }
+                });
+            }
+
+            // Search functionality
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault();
+                const searchTerm = $('#searchInput').val().toLowerCase();
+
+                const filteredBlogs = allBlogs.filter(blog =>
+                    blog.blogName.toLowerCase().includes(searchTerm) ||
+                    blog.writer.toLowerCase().includes(searchTerm) ||
+                    blog.graphicDesigner.toLowerCase().includes(searchTerm) ||
+                    blog.description.toLowerCase().includes(searchTerm)
+                );
+
+                renderBlogs(filteredBlogs);
+            });
+
+            // Initial load
+            loadBlogs();
+        });
+    </script>
+</body>
+
+</html>
