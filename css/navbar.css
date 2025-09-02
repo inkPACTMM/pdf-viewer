@@ -25,6 +25,7 @@
 .navbar-brand img {
     height: 46px;
     width: auto;
+    margin-left: 20px;
     filter: none;
 }
 
@@ -350,8 +351,9 @@
     }
 
     .navbar-toggler {
-        width: 44px;
+        width: 22px;
         height: 44px;
+        margin-right: 30px;
     }
 
     .navbar-collapse {
