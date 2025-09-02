@@ -13,6 +13,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/navbar.css">
     <style type="text/css">
         /* Animation Keyframes */
         @keyframes fadeInUp {
@@ -20,6 +21,7 @@
                 opacity: 0;
                 transform: translate3d(0, 40px, 0);
             }
+
             to {
                 opacity: 1;
                 transform: translate3d(0, 0, 0);
@@ -31,6 +33,7 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -38,14 +41,27 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: calc(200px + 100%) 0; }
+            0% {
+                background-position: -200px 0;
+            }
+
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
         }
 
         /* Main Layout Styles */
@@ -353,10 +369,21 @@
             transform: translateX(-50%) translateY(-5px);
         }
 
-        .book-card:nth-child(1) { animation-delay: 0.1s; }
-        .book-card:nth-child(2) { animation-delay: 0.2s; }
-        .book-card:nth-child(3) { animation-delay: 0.3s; }
-        .book-card:nth-child(4) { animation-delay: 0.4s; }
+        .book-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .book-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .book-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .book-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
 
         .book-card::before {
             content: '';
@@ -422,6 +449,230 @@
             font-size: 0.9rem;
             margin: 0 1rem 1.5rem;
             font-weight: 500;
+        }
+
+        /* Blog Cards for Home Page */
+        .blog-card-home {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+            height: 100%;
+        }
+
+        .blog-card-home:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .blog-card-home:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .blog-card-home:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .blog-card-home:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .blog-card-home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .blog-card-home:hover::before {
+            left: 100%;
+        }
+
+        .blog-card-home:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(1, 47, 179, 0.12);
+        }
+
+        .blog-card-home a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+
+        .blog-thumbnail-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+
+        .blog-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .blog-card-home:hover .blog-thumbnail {
+            transform: scale(1.1);
+        }
+
+        /* Blog Categories for Home */
+        .blog-categories-home {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            max-width: calc(100% - 24px);
+        }
+
+        .blog-category-home {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(1, 47, 179, 0.3);
+            white-space: nowrap;
+        }
+
+        .blog-category-home:nth-child(2) {
+            background: linear-gradient(135deg, #6610f2 0%, #8b5a2b 100%);
+            box-shadow: 0 2px 6px rgba(102, 16, 242, 0.3);
+        }
+
+        .blog-category-home:nth-child(3) {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+        }
+
+        .blog-category-home:nth-child(4) {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+        }
+
+        .blog-content-home {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 180px);
+        }
+
+        .blog-title-home {
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-card-home:hover .blog-title-home {
+            color: #012FB3;
+        }
+
+        .blog-meta-home {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .blog-writer-home {
+            font-weight: 600;
+            color: #012FB3;
+        }
+
+        .blog-date-home {
+            color: #666;
+        }
+
+        .blog-read-time-home {
+            color: #999;
+        }
+
+        .blog-description-home {
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.85rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+            margin-bottom: 0.75rem;
+        }
+
+        .blog-read-more-home {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            align-self: flex-start;
+            margin-top: auto;
+        }
+
+        .blog-read-more-home:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(1, 47, 179, 0.3);
+        }
+
+        /* View All Blogs Button */
+        .view-all-blogs {
+            text-align: center;
+            margin-top: 3rem;
+            animation: fadeInUp 0.6s ease-out 0.5s both;
+        }
+
+        .view-all-blogs .btn {
+            background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(1, 47, 179, 0.3);
+        }
+
+        .view-all-blogs .btn:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(1, 47, 179, 0.4);
         }
 
         /* Loading States */
@@ -523,6 +774,10 @@
                 height: 180px;
             }
 
+            .blog-thumbnail-wrapper {
+                height: 160px;
+            }
+
             .book-title {
                 font-size: 1rem;
                 margin: 1rem 1rem 0.5rem;
@@ -555,6 +810,10 @@
             .thumbnail-wrapper {
                 height: 160px;
             }
+
+            .blog-thumbnail-wrapper {
+                height: 140px;
+            }
         }
 
         /* Touch device optimizations */
@@ -577,20 +836,21 @@
 
 <body>
 
-    <!-- Navbar -->
+    <!-- Enhanced Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="images/logo.svg" alt="InkPact Logo">
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
@@ -604,13 +864,13 @@
                     </li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+                    <button class="btn btn-outline-primary" type="button">Sign In</button>
                     <button class="btn btn-primary" type="button">Get Started</button>
                 </div>
             </div>
         </div>
     </nav>
-    <!-- End Of Navbar -->
+    <!-- End Enhanced Navbar -->
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -623,7 +883,8 @@
                 <!-- Title and description -->
                 <h1>CREATING IMPACT</h1>
                 <p class="lead">
-                    inkPACT is a youth-led digital magazine that transforms stories into action. We amplify voices from Myanmar's youth organizations while funding grassroots community projects aligned with UN SDGs.
+                    inkPACT is a youth-led digital magazine that transforms stories into action. We amplify voices from
+                    Myanmar's youth organizations while funding grassroots community projects aligned with UN SDGs.
                 </p>
                 <!-- Search Form -->
                 <form id="searchForm" action="library.html" method="GET">
@@ -651,8 +912,23 @@
         </div>
     </section>
 
-    <!-- Popular Books Section -->
+    <!-- Latest Blogs Section - NEW -->
     <section class="featured-section bg-white">
+        <div class="container">
+            <h2 class="section-title">Latest Stories</h2>
+            <div class="row" id="latestBlogs">
+                <!-- Will be populated by JS -->
+            </div>
+            <div class="view-all-blogs">
+                <a href="blogs.html" class="btn">
+                    <i class="fas fa-newspaper mr-2"></i>View All Blogs
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Books Section -->
+    <section class="featured-section">
         <div class="container">
             <h2 class="section-title">Popular Books</h2>
             <div class="row" id="popularBooks">
@@ -677,18 +953,22 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Contact InkPact</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
-                        </li>
-                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
-                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
                         <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Our Social Media</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D"
+                                target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://inkpactmm.org" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>LinkedIn</a></li>
+                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>YouTube</a></li>
+                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -709,13 +989,38 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Navbar scroll effect
-            $(window).scroll(function() {
+            // Enhanced navbar scroll effect
+            $(window).scroll(function () {
                 if ($(this).scrollTop() > 50) {
                     $('.navbar').addClass('scrolled');
                 } else {
                     $('.navbar').removeClass('scrolled');
                 }
+            });
+
+            // Auto-close mobile menu when clicking on links
+            $('.navbar-nav .nav-link').on('click', function () {
+                if ($(window).width() < 992) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.navbar').length) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
+            // Add smooth scroll behavior for mobile menu
+            $('.navbar-toggler').on('click', function () {
+                setTimeout(() => {
+                    if ($('.navbar-collapse').hasClass('show')) {
+                        $('body').addClass('menu-open');
+                    } else {
+                        $('body').removeClass('menu-open');
+                    }
+                }, 10);
             });
 
             // Intersection Observer for animations
@@ -733,7 +1038,7 @@
             }, observerOptions);
 
             // Observe elements for animation
-            $('.section-title, .book-card').each(function() {
+            $('.section-title, .book-card').each(function () {
                 observer.observe(this);
             });
 
@@ -752,6 +1057,7 @@
 
             // Show loading states
             showLoadingState('#latestBooks');
+            showLoadingState('#latestBlogs');
             showLoadingState('#popularBooks');
 
             // Load latest books
@@ -761,16 +1067,30 @@
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
                     .slice(0, 4);
                 renderBooks('#latestBooks', latestBooks);
-            }).fail(function() {
-                $('#latestBooks').html('<div class="col-12 text-center"><p>Unable to load latest books</p></div>');
+            }).fail(function () {
+                $('#latestBooks').html(
+                    '<div class="col-12 text-center"><p>Unable to load latest books</p></div>');
+            });
+
+            // Load latest blogs - NEW
+            $.getJSON('data/blogs.json', function (data) {
+                $('#latestBlogs').empty();
+                const latestBlogs = data.blogs
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 4);
+                renderBlogs('#latestBlogs', latestBlogs);
+            }).fail(function () {
+                $('#latestBlogs').html(
+                    '<div class="col-12 text-center"><p>Unable to load latest blogs</p></div>');
             });
 
             // Load popular books
             $.getJSON('data/popular-books.json', function (data) {
                 $('#popularBooks').empty();
                 renderBooks('#popularBooks', data.popular_books);
-            }).fail(function() {
-                $('#popularBooks').html('<div class="col-12 text-center"><p>Unable to load popular books</p></div>');
+            }).fail(function () {
+                $('#popularBooks').html(
+                    '<div class="col-12 text-center"><p>Unable to load popular books</p></div>');
             });
 
             function renderBooks(container, books) {
@@ -793,21 +1113,21 @@
                 });
 
                 // Re-observe new elements
-                $(container).find('.book-card').each(function() {
+                $(container).find('.book-card').each(function () {
                     observer.observe(this);
                 });
 
                 // Enhanced tooltip positioning for edge cases
-                $('.book-tooltip').each(function() {
+                $('.book-tooltip').each(function () {
                     const $tooltip = $(this);
                     const $card = $tooltip.closest('.book-card');
-                    
+
                     // Adjust tooltip position if it would go off-screen
-                    $card.on('mouseenter', function() {
+                    $card.on('mouseenter', function () {
                         setTimeout(() => {
                             const tooltipRect = $tooltip[0].getBoundingClientRect();
                             const viewportWidth = window.innerWidth;
-                            
+
                             if (tooltipRect.left < 10) {
                                 $tooltip.css({
                                     'left': '10px',
@@ -822,14 +1142,69 @@
                             }
                         }, 50);
                     });
-                    
-                    $card.on('mouseleave', function() {
+
+                    $card.on('mouseleave', function () {
                         $tooltip.css({
                             'left': '50%',
                             'right': 'auto',
                             'transform': 'translateX(-50%)'
                         });
                     });
+                });
+            }
+
+            // NEW: Render blogs function
+            function renderBlogs(container, blogs) {
+                blogs.forEach((blog, index) => {
+                    // Handle multiple writers, designers, and categories
+                    const writersText = Array.isArray(blog.writers) ? blog.writers.join(', ') : blog
+                        .writers || 'Unknown';
+                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog
+                        .category ? [blog.category] : ['General']);
+                    const categoriesHTML = categories.slice(0, 3).map(cat =>
+                        `<span class="blog-category-home">${cat}</span>`).join('');
+
+                    const blogCard = `
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="blog-card-home" style="animation-delay: ${index * 0.1}s">
+                                <a href="blog-detail.html?id=${blog.id}">
+                                    <div class="blog-thumbnail-wrapper">
+                                        <img src="${blog.image}" class="blog-thumbnail" alt="${blog.blogName}" loading="lazy">
+                                        <div class="blog-categories-home">
+                                            ${categoriesHTML}
+                                        </div>
+                                    </div>
+                                    <div class="blog-content-home">
+                                        <h5 class="blog-title-home">${blog.blogName}</h5>
+                                        <div class="blog-meta-home">
+                                            <span class="blog-writer_home">
+                                                <i class="fas fa-pen mr-1"></i>
+                                                ${writersText}
+                                            </span>
+                                            <span class="blog-date-home">
+                                                <i class="fas fa-calendar mr-1"></i>
+                                                ${new Date(blog.date).toLocaleDateString()}
+                                            </span>
+                                            <span class="blog-read-time-home">
+                                                <i class="fas fa-clock mr-1"></i>
+                                                ${blog.readTime}
+                                            </span>
+                                        </div>
+                                        <p class="blog-description-home">${blog.description}</p>
+                                        <span class="blog-read-more-home">
+                                            Read Story <i class="fas fa-arrow-right ml-1"></i>
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    $(container).append(blogCard);
+                });
+
+                // Re-observe new elements
+                $(container).find('.blog-card-home').each(function () {
+                    observer.observe(this);
                 });
             }
 
@@ -843,9 +1218,9 @@
             });
 
             // Enhanced search form interaction
-            $('#searchInput').on('focus', function() {
+            $('#searchInput').on('focus', function () {
                 $(this).closest('.input-group').addClass('focused');
-            }).on('blur', function() {
+            }).on('blur', function () {
                 $(this).closest('.input-group').removeClass('focused');
             });
         });

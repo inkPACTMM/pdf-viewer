@@ -15,17 +15,20 @@
     <link rel="stylesheet" href="css/footer.css">
     <!-- About Us CSS -->
     <link rel="stylesheet" href="css/about-us.css">
+    <!-- Add the new navbar CSS -->
+    <link rel="stylesheet" href="css/navbar.css">
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- Enhanced Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="images/logo.svg" alt="InkPact Logo">
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -45,13 +48,13 @@
                     </li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+                    <button class="btn btn-outline-primary" type="button">Sign In</button>
                     <button class="btn btn-primary" type="button">Get Started</button>
                 </div>
             </div>
         </div>
     </nav>
-    <!-- End Navbar -->
+    <!-- End Enhanced Navbar -->
 
     <div class="magazine-container">
         <div class="magazine">
@@ -258,18 +261,22 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Contact InkPact</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
-                        </li>
-                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
-                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
                         <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Our Social Media</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D"
+                                target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://inkpactmm.org" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>LinkedIn</a></li>
+                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>YouTube</a></li>
+                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -285,9 +292,31 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
+            // Enhanced navbar scroll effect
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('.navbar').addClass('scrolled');
+                } else {
+                    $('.navbar').removeClass('scrolled');
+                }
+            });
+
+            // Auto-close mobile menu when clicking on links
+            $('.navbar-nav .nav-link').on('click', function () {
+                if ($(window).width() < 992) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.navbar').length) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
             // Simple smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {

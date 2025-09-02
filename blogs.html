@@ -13,6 +13,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/navbar.css">
     <style>
         /* Animation Keyframes */
         @keyframes fadeInUp {
@@ -470,20 +471,76 @@
         }
 
         /* Responsive */
+        @media (max-width: 1200px) {
+            .blogs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 25px;
+                padding: 0 10px;
+            }
+
+            .hero-section {
+                margin-top: 70px;
+                padding: 60px 0 40px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .hero-section {
+                padding: 50px 0 35px;
+                margin-top: 70px;
+                margin-bottom: 40px;
+            }
+
+            .hero-section h1 {
+                font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+            }
+
+            .hero-section .lead {
+                font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+                margin-bottom: 2rem;
+                padding: 0 1rem;
+            }
+
+            .blogs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+
+            #searchForm {
+                padding: 0 1rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
             .hero-section {
                 padding: 40px 0 30px;
                 margin-bottom: 30px;
             }
 
+            .hero-section h1 {
+                font-size: clamp(1.5rem, 6vw, 2.2rem);
+                margin-bottom: 0.8rem;
+            }
+
+            .hero-section .lead {
+                font-size: clamp(0.9rem, 3vw, 1.1rem);
+                margin-bottom: 1.8rem;
+                padding: 0 1.5rem;
+            }
+
             .blogs-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
-                padding: 0 10px;
+                padding: 0 15px;
             }
 
             .blog-card {
                 margin-bottom: 0;
+                border-radius: 16px;
             }
 
             .blog-image-container {
@@ -496,47 +553,313 @@
 
             .blog-meta {
                 grid-template-columns: 1fr;
-                gap: 6px;
+                gap: 8px;
+                font-size: 0.8rem;
+            }
+
+            .blog-title {
+                font-size: clamp(1rem, 4vw, 1.3rem);
+                margin-bottom: 12px;
+                -webkit-line-clamp: 3;
+            }
+
+            .blog-description {
+                font-size: clamp(0.8rem, 3vw, 0.9rem);
+                -webkit-line-clamp: 2;
+                margin-bottom: 15px;
+            }
+
+            .read-more-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                border-radius: 20px;
             }
 
             .blog-categories {
                 max-width: calc(100% - 20px);
                 gap: 4px;
+                top: 12px;
+                left: 12px;
             }
 
             .blog-category {
-                font-size: 0.7rem;
-                padding: 3px 10px;
+                font-size: 0.65rem;
+                padding: 3px 8px;
+                border-radius: 12px;
+            }
+
+            #searchForm .input-group {
+                border-radius: 25px;
+            }
+
+            #searchForm .form-control {
+                height: clamp(44px, 8vw, 52px);
+                font-size: clamp(0.85rem, 3vw, 1rem);
+                padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
+            }
+
+            #searchForm .btn {
+                padding: clamp(0.4rem, 2vw, 0.6rem) clamp(1rem, 4vw, 1.8rem);
+                min-width: clamp(80px, 18vw, 120px);
+                font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+            }
+
+            .empty-state {
+                padding: 60px 15px;
+            }
+
+            .empty-state h3 {
+                font-size: 1.3rem;
+            }
+
+            .empty-state p {
+                font-size: 1rem;
             }
         }
 
         @media (max-width: 576px) {
+            .hero-section {
+                padding: 30px 0 25px;
+                margin-bottom: 25px;
+            }
+
+            .hero-section h1 {
+                font-size: clamp(1.3rem, 7vw, 1.8rem);
+                margin-bottom: 0.6rem;
+            }
+
+            .hero-section .lead {
+                font-size: clamp(0.85rem, 4vw, 1rem);
+                margin-bottom: 1.5rem;
+                padding: 0 1rem;
+                line-height: 1.4;
+            }
+
             .blogs-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
-                padding: 0 5px;
+                padding: 0 10px;
+            }
+
+            .blog-card {
+                border-radius: 12px;
             }
 
             .blog-image-container {
                 height: 180px;
+                border-radius: 12px 12px 0 0;
             }
 
             .blog-content {
                 padding: 15px;
+            }
+
+            .blog-title {
+                font-size: clamp(0.95rem, 4.5vw, 1.2rem);
+                margin-bottom: 10px;
+                line-height: 1.2;
+            }
+
+            .blog-meta {
+                gap: 6px;
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+            }
+
+            .blog-meta span {
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            .blog-description {
+                font-size: clamp(0.75rem, 3.5vw, 0.85rem);
+                line-height: 1.4;
+                margin-bottom: 12px;
+            }
+
+            .read-more-btn {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+                border-radius: 15px;
+            }
+
+            .blog-categories {
+                gap: 3px;
+                top: 10px;
+                left: 10px;
+            }
+
+            .blog-category {
+                font-size: 0.6rem;
+                padding: 2px 6px;
+                border-radius: 10px;
+            }
+
+            #searchForm .input-group {
+                border-radius: 25px;
+            }
+
+            #searchForm .form-control {
+                height: clamp(44px, 8vw, 52px);
+                font-size: clamp(0.85rem, 3vw, 1rem);
+                padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
+            }
+
+            #searchForm .btn {
+                padding: clamp(0.4rem, 2vw, 0.6rem) clamp(1rem, 4vw, 1.8rem);
+                min-width: clamp(80px, 18vw, 120px);
+                font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+            }
+
+            .empty-state {
+                padding: 60px 15px;
+            }
+
+            .empty-state h3 {
+                font-size: 1.3rem;
+            }
+
+            .empty-state p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-section {
+                padding: 25px 0 20px;
+            }
+
+            .blogs-grid {
+                padding: 0 5px;
+                gap: 12px;
+            }
+
+            .blog-content {
+                padding: 12px;
+            }
+
+            .blog-image-container {
+                height: 160px;
+            }
+
+            .blog-title {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .blog-meta {
+                font-size: 0.7rem;
+                gap: 4px;
+            }
+
+            .blog-description {
+                font-size: 0.8rem;
+                margin-bottom: 10px;
+            }
+
+            .read-more-btn {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+            }
+
+            #searchForm .form-control {
+                height: 40px;
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            #searchForm .btn {
+                padding: 0.4rem 1rem;
+                min-width: 80px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .blog-card:hover {
+                transform: none;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            }
+
+            .blog-card:hover .blog-image {
+                transform: none;
+            }
+
+            .blog-card:hover .blog-title {
+                color: #333;
+            }
+
+            .read-more-btn:hover {
+                transform: none;
+                box-shadow: 0 4px 15px rgba(1, 47, 179, 0.2);
+            }
+
+            #searchForm .btn:hover {
+                transform: none;
+            }
+
+            #searchForm .input-group:hover {
+                transform: none;
+            }
+        }
+
+        /* Landscape phone orientation */
+        @media (max-width: 812px) and (orientation: landscape) {
+            .hero-section {
+                padding: 20px 0 15px;
+                margin-bottom: 20px;
+            }
+
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-section .lead {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .blog-image-container {
+                height: 140px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 320px) {
+            .blogs-grid {
+                padding: 0 2px;
+            }
+
+            .blog-content {
+                padding: 10px;
+            }
+
+            .blog-title {
+                font-size: 0.9rem;
+            }
+
+            .blog-meta {
+                font-size: 0.65rem;
+            }
+
+            .blog-description {
+                font-size: 0.75rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- Enhanced Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="images/logo.svg" alt="InkPact Logo">
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -556,13 +879,13 @@
                     </li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+                    <button class="btn btn-outline-primary" type="button">Sign In</button>
                     <button class="btn btn-primary" type="button">Get Started</button>
                 </div>
             </div>
         </div>
     </nav>
-    <!-- End Navbar -->
+    <!-- End Enhanced Navbar -->
 
     <!-- Hero Section -->
     <section class="hero-section text-center">
@@ -608,18 +931,22 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Contact InkPact</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
-                        </li>
-                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
-                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
                         <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Our Social Media</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D"
+                                target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://inkpactmm.org" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>LinkedIn</a></li>
+                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>YouTube</a></li>
+                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -640,12 +967,26 @@
 
     <script>
         $(document).ready(function () {
-            // Navbar scroll effect
+            // Enhanced navbar scroll effect
             $(window).scroll(function () {
                 if ($(this).scrollTop() > 50) {
                     $('.navbar').addClass('scrolled');
                 } else {
                     $('.navbar').removeClass('scrolled');
+                }
+            });
+
+            // Auto-close mobile menu when clicking on links
+            $('.navbar-nav .nav-link').on('click', function () {
+                if ($(window).width() < 992) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.navbar').length) {
+                    $('.navbar-collapse').collapse('hide');
                 }
             });
 
@@ -710,13 +1051,17 @@
 
                 blogs.forEach((blog, index) => {
                     // Format multiple writers and designers
-                    const writersText = Array.isArray(blog.writers) ? blog.writers.join(', ') : blog.writers || 'Unknown';
-                    const designersText = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners.join(', ') : blog.graphicDesigners || 'Unknown';
-                    
+                    const writersText = Array.isArray(blog.writers) ? blog.writers.join(', ') : blog
+                        .writers || 'Unknown';
+                    const designersText = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners
+                        .join(', ') : blog.graphicDesigners || 'Unknown';
+
                     // Handle multiple categories
-                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : ['General']);
-                    const categoriesHTML = categories.map(cat => `<span class="blog-category">${cat}</span>`).join('');
-                    
+                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog
+                        .category ? [blog.category] : ['General']);
+                    const categoriesHTML = categories.map(cat =>
+                        `<span class="blog-category">${cat}</span>`).join('');
+
                     const blogCard = `
                         <div class="blog-card" data-blog-id="${blog.id}" style="animation-delay: ${index * 0.1}s">
                             <div class="blog-image-container">
@@ -756,7 +1101,7 @@
                 });
 
                 // Add click handler to blog cards
-                $('.blog-card').on('click', function(e) {
+                $('.blog-card').on('click', function (e) {
                     if (!$(e.target).closest('.read-more-btn').length) {
                         const blogId = $(this).data('blog-id');
                         window.location.href = `blog-detail.html?id=${blogId}`;
@@ -777,33 +1122,39 @@
                 const filteredBlogs = allBlogs.filter(blog => {
                     // Search in blog name and description
                     const basicMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
-                                     blog.description.toLowerCase().includes(searchTerm);
-                    
+                        blog.description.toLowerCase().includes(searchTerm);
+
                     // Search in writers array
-                    const writersMatch = Array.isArray(blog.writers) ? 
+                    const writersMatch = Array.isArray(blog.writers) ?
                         blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
                         (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
-                    
+
                     // Search in graphic designers array
-                    const designersMatch = Array.isArray(blog.graphicDesigners) ? 
-                        blog.graphicDesigners.some(designer => designer.toLowerCase().includes(searchTerm)) :
-                        (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(searchTerm));
-                    
+                    const designersMatch = Array.isArray(blog.graphicDesigners) ?
+                        blog.graphicDesigners.some(designer => designer.toLowerCase().includes(
+                            searchTerm)) :
+                        (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(
+                            searchTerm));
+
                     // Search in categories array
-                    const categoriesMatch = Array.isArray(blog.categories) ? 
-                        blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
+                    const categoriesMatch = Array.isArray(blog.categories) ?
+                        blog.categories.some(category => category.toLowerCase().includes(
+                            searchTerm)) :
                         (blog.category && blog.category.toLowerCase().includes(searchTerm));
-                    
+
                     // Search in content - NEW: Split content into words and search for keywords
-                    const contentMatch = blog.content && blog.content.toLowerCase().includes(searchTerm);
-                    
+                    const contentMatch = blog.content && blog.content.toLowerCase().includes(
+                        searchTerm);
+
                     // Advanced content keyword matching - search for partial matches in content
-                    const contentKeywordMatch = blog.content && 
-                        blog.content.toLowerCase().split(/\s+/).some(word => 
-                            word.includes(searchTerm) || searchTerm.includes(word.replace(/[^\w]/g, ''))
+                    const contentKeywordMatch = blog.content &&
+                        blog.content.toLowerCase().split(/\s+/).some(word =>
+                            word.includes(searchTerm) || searchTerm.includes(word.replace(
+                                /[^\w]/g, ''))
                         );
-                    
-                    return basicMatch || writersMatch || designersMatch || categoriesMatch || contentMatch || contentKeywordMatch;
+
+                    return basicMatch || writersMatch || designersMatch || categoriesMatch ||
+                        contentMatch || contentKeywordMatch;
                 });
 
                 renderBlogs(filteredBlogs);
@@ -811,34 +1162,40 @@
 
             // Enhanced real-time search as user types (optional)
             let searchTimeout;
-            $('#searchInput').on('input', function() {
+            $('#searchInput').on('input', function () {
                 const searchTerm = $(this).val().toLowerCase().trim();
-                
+
                 // Clear previous timeout
                 clearTimeout(searchTimeout);
-                
+
                 // Add delay to avoid too many searches while typing
                 searchTimeout = setTimeout(() => {
                     if (searchTerm.length >= 2) { // Only search after 2 characters
                         const filteredBlogs = allBlogs.filter(blog => {
                             // Quick search in title, description, and key content words
-                            const quickMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
-                                             blog.description.toLowerCase().includes(searchTerm) ||
-                                             (blog.content && blog.content.toLowerCase().includes(searchTerm));
-                            
+                            const quickMatch = blog.blogName.toLowerCase().includes(
+                                    searchTerm) ||
+                                blog.description.toLowerCase().includes(searchTerm) ||
+                                (blog.content && blog.content.toLowerCase().includes(
+                                    searchTerm));
+
                             // Search in writers
-                            const writersMatch = Array.isArray(blog.writers) ? 
-                                blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
-                                (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
-                            
+                            const writersMatch = Array.isArray(blog.writers) ?
+                                blog.writers.some(writer => writer.toLowerCase()
+                                    .includes(searchTerm)) :
+                                (blog.writers && blog.writers.toLowerCase().includes(
+                                    searchTerm));
+
                             // Search in categories
-                            const categoriesMatch = Array.isArray(blog.categories) ? 
-                                blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
-                                (blog.category && blog.category.toLowerCase().includes(searchTerm));
-                            
+                            const categoriesMatch = Array.isArray(blog.categories) ?
+                                blog.categories.some(category => category.toLowerCase()
+                                    .includes(searchTerm)) :
+                                (blog.category && blog.category.toLowerCase().includes(
+                                    searchTerm));
+
                             return quickMatch || writersMatch || categoriesMatch;
                         });
-                        
+
                         renderBlogs(filteredBlogs);
                     } else if (searchTerm.length === 0) {
                         renderBlogs(allBlogs); // Show all blogs when search is empty
@@ -847,7 +1204,7 @@
             });
 
             // Clear search functionality
-            $('#searchInput').on('keydown', function(e) {
+            $('#searchInput').on('keydown', function (e) {
                 if (e.key === 'Escape') {
                     $(this).val('');
                     renderBlogs(allBlogs);

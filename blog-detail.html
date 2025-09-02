@@ -13,6 +13,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/navbar.css">
     <style>
         /* Animation Keyframes */
         @keyframes fadeInUp {
@@ -291,6 +292,58 @@
         }
 
         /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            body {
+                padding-top: 90px;
+            }
+
+            .btn-back {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .blog-content {
+                margin: 20px auto;
+                max-width: 750px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            body {
+                padding-top: 80px;
+            }
+
+            .btn-back {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+
+            .blog-content {
+                margin: 15px;
+                border-radius: 12px;
+            }
+
+            .blog-image {
+                height: clamp(180px, 35vh, 300px);
+            }
+
+            .blog-text-content {
+                padding: clamp(25px, 5vw, 35px);
+            }
+
+            .blog-title {
+                font-size: clamp(1.3rem, 5vw, 2.2rem);
+                margin-bottom: 18px;
+            }
+
+            .blog-meta {
+                gap: 12px;
+                margin-bottom: 25px;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding-top: 70px;
@@ -300,58 +353,337 @@
                 position: relative;
                 display: block;
                 width: calc(100% - 20px);
-                margin: 10px auto 20px;
+                margin: 10px auto 15px;
                 text-align: center;
                 top: auto;
                 left: auto;
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
 
             .blog-content {
                 margin: 10px;
-                padding: 20px;
+                border-radius: 12px;
             }
 
             .blog-image {
-                height: clamp(150px, 30vh, 250px);
+                height: clamp(160px, 30vh, 250px);
             }
 
             .blog-text-content {
                 padding: 20px;
             }
 
-            .blog-meta {
-                grid-template-columns: 1fr;
-                gap: 10px;
+            .blog-category {
+                padding: 5px 14px;
+                font-size: 0.8rem;
+                margin-bottom: 15px;
             }
 
+            .blog-title {
+                font-size: clamp(1.2rem, 6vw, 1.8rem);
+                margin-bottom: 15px;
+                line-height: 1.2;
+            }
+
+            .blog-meta {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 20px;
+                font-size: 0.85rem;
+                padding-bottom: 15px;
+            }
+
+            .blog-meta span {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .blog-description {
+                font-size: 1rem;
+                margin-bottom: 25px;
+                padding: 15px;
+                border-radius: 0 6px 6px 0;
+                line-height: 1.5;
+            }
+
+            .blog-text {
+                font-size: clamp(0.9rem, 3vw, 1rem);
+                line-height: 1.6;
+            }
+
+            .blog-text p {
+                margin-bottom: 1.2rem;
+            }
+
+            /* Enhanced categories section for mobile */
             .blog-categories-section {
                 gap: 6px;
+                margin-bottom: 15px;
+                flex-wrap: wrap;
             }
 
             .blog-category-tag {
                 font-size: 0.8rem;
                 padding: 5px 12px;
+                border-radius: 20px;
+                margin-bottom: 5px;
             }
         }
 
         @media (max-width: 576px) {
+            .btn-back {
+                margin: 8px auto 12px;
+                padding: 8px 16px;
+                font-size: 0.85rem;
+                width: calc(100% - 16px);
+            }
+
+            .blog-content {
+                margin: 8px;
+                border-radius: 10px;
+            }
+
+            .blog-image {
+                height: clamp(140px, 25vh, 200px);
+            }
+
+            .blog-text-content {
+                padding: 15px;
+            }
+
+            .blog-category {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+                margin-bottom: 12px;
+            }
+
+            .blog-title {
+                font-size: clamp(1.1rem, 7vw, 1.5rem);
+                margin-bottom: 12px;
+                line-height: 1.1;
+            }
+
             .blog-meta {
-                gap: 8px;
+                gap: 6px;
+                margin-bottom: 15px;
+                font-size: 0.8rem;
+                padding-bottom: 12px;
+            }
+
+            .blog-meta span {
+                margin-bottom: 4px;
+                font-size: 0.75rem;
+            }
+
+            .blog-description {
                 font-size: 0.9rem;
+                margin-bottom: 20px;
+                padding: 12px;
+                border-radius: 0 5px 5px 0;
+                line-height: 1.4;
+            }
+
+            .blog-text {
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+                line-height: 1.5;
+            }
+
+            .blog-text p {
+                margin-bottom: 1rem;
+            }
+
+            .blog-categories-section {
+                gap: 4px;
+                margin-bottom: 12px;
+            }
+
+            .blog-category-tag {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+                border-radius: 15px;
+            }
+
+            /* Loading states for mobile */
+            .loading-shimmer {
+                border-radius: 6px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn-back {
+                margin: 6px auto 10px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .blog-content {
+                margin: 6px;
+            }
+
+            .blog-image {
+                height: clamp(120px, 22vh, 180px);
+            }
+
+            .blog-text-content {
+                padding: 12px;
+            }
+
+            .blog-title {
+                font-size: clamp(1rem, 8vw, 1.3rem);
+                margin-bottom: 10px;
+            }
+
+            .blog-meta {
+                gap: 5px;
+                font-size: 0.75rem;
+                margin-bottom: 12px;
+            }
+
+            .blog-meta span {
+                font-size: 0.7rem;
+                margin-bottom: 3px;
+            }
+
+            .blog-description {
+                font-size: 0.85rem;
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            .blog-text {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+
+            .blog-text p {
+                margin-bottom: 0.8rem;
+            }
+
+            .blog-category-tag {
+                font-size: 0.65rem;
+                padding: 3px 8px;
+            }
+        }
+
+        /* Landscape phone orientation */
+        @media (max-width: 812px) and (orientation: landscape) {
+            .blog-image {
+                height: clamp(120px, 40vh, 200px);
+            }
+
+            .blog-text-content {
+                padding: 15px;
+            }
+
+            .blog-title {
+                font-size: 1.3rem;
+            }
+
+            .btn-back {
+                margin: 5px auto 8px;
+                padding: 6px 14px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-back:hover {
+                transform: none;
+                box-shadow: 0 4px 15px rgba(1, 47, 179, 0.3);
+            }
+
+            .btn-back:active {
+                transform: scale(0.98);
+            }
+
+            /* Ensure text is selectable on touch devices */
+            .blog-text {
+                -webkit-user-select: text;
+                -moz-user-select: text;
+                -ms-user-select: text;
+                user-select: text;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 320px) {
+            .blog-text-content {
+                padding: 10px;
+            }
+
+            .blog-title {
+                font-size: 1rem;
+            }
+
+            .blog-meta {
+                font-size: 0.7rem;
+            }
+
+            .blog-description {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            .blog-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Accessibility improvements for mobile */
+        @media (max-width: 768px) {
+            .btn-back:focus {
+                outline: 3px solid #012FB3;
+                outline-offset: 2px;
+            }
+
+            /* Improve touch targets */
+            .btn-back {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Print styles for mobile users who want to save/print */
+        @media print {
+
+            .btn-back,
+            .navbar,
+            #footer {
+                display: none !important;
+            }
+
+            body {
+                padding-top: 0 !important;
+            }
+
+            .blog-content {
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .blog-text {
+                font-size: 12pt !important;
+                line-height: 1.5 !important;
+                color: black !important;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- Enhanced Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="images/logo.svg" alt="InkPact Logo">
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -371,13 +703,13 @@
                     </li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn btn-outline-primary mr-2" type="button">Sign In</button>
+                    <button class="btn btn-outline-primary" type="button">Sign In</button>
                     <button class="btn btn-primary" type="button">Get Started</button>
                 </div>
             </div>
         </div>
     </nav>
-    <!-- End Navbar -->
+    <!-- End Enhanced Navbar -->
 
     <a href="blogs.html" class="btn-back">
         <i class="fas fa-arrow-left mr-2"></i>Back
@@ -406,18 +738,22 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Contact InkPact</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> InkPact Office, Jakarta, Indonesia</a>
-                        </li>
-                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
-                        <li><a href="#"><i class="fas fa-fax"></i> (021) 8765 4321</a></li>
                         <li><a href="mailto:hr@inkpact.org"><i class="fas fa-envelope"></i> hr@inkpact.org</a></li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Our Social Media</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D"
+                                target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://inkpactmm.org" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>LinkedIn</a></li>
+                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>YouTube</a></li>
+                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -463,12 +799,16 @@
                     ).join('');
 
                     // Handle multiple writers, designers, and categories
-                    const writers = Array.isArray(blog.writers) ? blog.writers.join(', ') : (blog.writers || blog.writer || 'Unknown');
-                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners.join(', ') : (blog.graphicDesigners || blog.graphicDesigner || 'Unknown');
-                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : ['General']);
+                    const writers = Array.isArray(blog.writers) ? blog.writers.join(', ') : (blog
+                        .writers || blog.writer || 'Unknown');
+                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners.join(
+                        ', ') : (blog.graphicDesigners || blog.graphicDesigner || 'Unknown');
+                    const categories = Array.isArray(blog.categories) ? blog.categories : (blog
+                        .category ? [blog.category] : ['General']);
 
                     // Generate categories HTML
-                    const categoriesHTML = categories.map(cat => `<span class="blog-category-tag">${cat}</span>`).join('');
+                    const categoriesHTML = categories.map(cat =>
+                        `<span class="blog-category-tag">${cat}</span>`).join('');
 
                     const blogHtml = `
                         <img src="${blog.image}" alt="${blog.blogName}" class="blog-image">
@@ -525,12 +865,26 @@
                 `);
             });
 
-            // Navbar scroll effect
+            // Enhanced navbar scroll effect
             $(window).scroll(function () {
                 if ($(this).scrollTop() > 50) {
                     $('.navbar').addClass('scrolled');
                 } else {
                     $('.navbar').removeClass('scrolled');
+                }
+            });
+
+            // Auto-close mobile menu when clicking on links
+            $('.navbar-nav .nav-link').on('click', function () {
+                if ($(window).width() < 992) {
+                    $('.navbar-collapse').collapse('hide');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.navbar').length) {
+                    $('.navbar-collapse').collapse('hide');
                 }
             });
         });
