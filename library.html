@@ -87,12 +87,13 @@
         body {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             overflow-x: hidden;
+            min-width: 320px;
         }
 
         /* Hero and Search Section */
         .hero-section {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 80px 0 60px;
+            padding: clamp(40px, 8vh, 80px) 0 clamp(30px, 6vh, 60px);
             margin-top: 76px;
             margin-bottom: 40px;
             border-bottom: 1px solid #eee;
@@ -113,7 +114,7 @@
 
         .hero-section h1 {
             color: #333;
-            font-size: 3.2rem;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
             margin-bottom: 1rem;
             font-weight: 700;
             animation: fadeInUp 0.8s ease-out;
@@ -121,7 +122,7 @@
 
         .hero-section .lead {
             color: #666;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             margin-bottom: 2.5rem;
             animation: fadeInUp 0.8s ease-out 0.2s both;
         }
@@ -153,13 +154,15 @@
             display: inline-block;
             cursor: pointer;
             margin: 0px 0.8%;
-            width: 15% !important;
+            width: clamp(80px, 15%, 140px) !important;
             max-width: 140px;
             transition: transform 0.3s ease;
             border-radius: 8px;
             overflow: visible;
             position: relative;
             animation-fill-mode: both;
+            /* Ensure minimum size on high zoom */
+            min-width: 80px;
         }
 
         .bookshelf .thumb:nth-child(1) {
@@ -222,7 +225,7 @@
         #searchForm {
             max-width: 700px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 clamp(10px, 3vw, 15px);
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
@@ -243,9 +246,9 @@
 
         #searchForm .form-control {
             border: none;
-            padding: 0.75rem 1.75rem;
-            height: 58px;
-            font-size: 1.1rem;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.75rem);
+            height: clamp(48px, 8vw, 58px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
             line-height: 1.5;
             background: transparent;
             transition: all 0.3s ease;
@@ -257,15 +260,16 @@
         }
 
         #searchForm .btn {
-            padding: 0.75rem 2.5rem;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2.5rem);
             background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
             color: white;
             border: none;
-            min-width: 140px;
+            min-width: clamp(100px, 20vw, 140px);
             font-weight: 600;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            font-size: clamp(0.8rem, 2vw, 1rem);
         }
 
         #searchForm .btn::before {
@@ -450,22 +454,27 @@
         }
 
         /* Mobile Responsive */
+        @media (max-width: 1400px) {
+            .hero-section {
+                margin-top: 70px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .bookshelf .thumb {
+                width: clamp(90px, 18%, 130px) !important;
+                margin: 0px 1%;
+            }
+        }
+
         @media (max-width: 991px) {
             .hero-section {
                 padding: 60px 0 40px;
                 margin-top: 70px;
             }
 
-            .hero-section h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-section .lead {
-                font-size: 1.1rem;
-            }
-
             .bookshelf .thumb {
-                width: 18% !important;
+                width: clamp(85px, 18%, 120px) !important;
                 margin: 0px 1%;
             }
 
@@ -490,14 +499,18 @@
                 padding: 40px 0 30px;
             }
 
-            .hero-section h1 {
-                font-size: 2.2rem;
-                margin-bottom: 0.8rem;
+            .bookshelf .covers {
+                padding: 35px 0 15px;
             }
 
-            .hero-section .lead {
-                font-size: 1rem;
-                margin-bottom: 2rem;
+            .bookshelf .thumb {
+                width: clamp(80px, 22%, 100px) !important;
+                margin: 0px 1.5%;
+                max-width: 100px;
+            }
+
+            .bookshelf .thumb:hover {
+                transform: translateY(-6px);
             }
 
             #searchForm {
@@ -519,20 +532,6 @@
                 margin-bottom: 40px !important;
             }
 
-            .bookshelf .covers {
-                padding: 35px 0 15px;
-            }
-
-            .bookshelf .thumb {
-                width: 22% !important;
-                margin: 0px 1.5%;
-                max-width: 100px;
-            }
-
-            .bookshelf .thumb:hover {
-                transform: none;
-            }
-
             .pagination .page-link {
                 padding: 0.5rem 0.75rem;
                 font-size: 0.9rem;
@@ -540,19 +539,18 @@
         }
 
         @media (max-width: 576px) {
-            .hero-section h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero-section .lead {
-                font-size: 0.95rem;
-                padding: 0 1rem;
+            .hero-section {
+                padding: 30px 0 20px;
             }
 
             .bookshelf .thumb {
-                width: 28% !important;
+                width: clamp(75px, 28%, 90px) !important;
                 margin: 2px 2%;
                 max-width: 90px;
+            }
+
+            .bookshelf .covers {
+                padding: 30px 0 15px;
             }
 
             #searchForm .btn {
@@ -568,7 +566,7 @@
 
         @media (max-width: 480px) {
             .bookshelf .thumb {
-                width: 44% !important;
+                width: clamp(100px, 44%, 120px) !important;
                 margin: 3px 3%;
                 display: inline-block;
                 max-width: 120px;
@@ -576,6 +574,7 @@
 
             .bookshelf .covers {
                 text-align: center;
+                padding: 25px 0 10px;
             }
         }
 
