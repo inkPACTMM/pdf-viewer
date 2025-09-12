@@ -47,6 +47,114 @@
             "categories": ["Technology", "Education"],
             "readTime": "6 min read",
             "image": "../data/thumbnails/blogs/b4.jpg"
+        },
+        {
+            "id": 5,
+            "blogName": "🌟 အမှန်တကယ် တိုးတက်ချင်ရင် Fail ဖြစ်ဖူးဖို့လိုတယ်တဲ့...! 💪",
+            "writers": ["Hnin Thiri Aung"],
+            "graphicDesigners": ["Sheri"],
+            "date": "2024-08-01",
+            "description": "",
+            "mdPath": "../data/blogs/b5.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "4 min read",
+            "image": "../data/thumbnails/blogs/b5.jpg"
+        },
+        {
+            "id": 6,
+            "blogName": "💭 Self-Doubt ကို ဘယ်လိုကျော်ဖြတ်ကြမလဲ",
+            "writers": ["Phyu Pwint Thant"],
+            "graphicDesigners": ["Austin"],
+            "date": "2024-08-08",
+            "description": "",
+            "mdPath": "../data/blogs/b6.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "5 min read",
+            "image": "../data/thumbnails/blogs/b6.jpg"
+        },
+        {
+            "id": 7,
+            "blogName": "🫵inkPACT ကရှာနေတဲ့ ဆောင်းပါးရှင်က “သင်” ဖြစ်နေမလား?",
+            "writers": ["Hnin Thiri Aung"],
+            "graphicDesigners": [],
+            "date": "2024-08-17",
+            "description": "",
+            "mdPath": "../data/blogs/b7.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "4 min read",
+            "image": "../data/thumbnails/blogs/b7.jpg"
+        },
+        {
+            "id": 8,
+            "blogName": "𝐀𝐭𝐭𝐚𝐜𝐡𝐦𝐞𝐧𝐭 𝐒𝐭𝐲𝐥𝐞𝐬 : 𝐇𝐨𝐰 𝐘𝐨𝐮𝐫 𝐂𝐡𝐢𝐥𝐝𝐡𝐨𝐨𝐝 𝐒𝐡𝐚𝐩𝐞𝐬 𝐘𝐨𝐮𝐫 𝐀𝐝𝐮𝐥𝐭 𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩𝐬",
+            "writers": ["Roelin"],
+            "graphicDesigners": ["Betty"],
+            "date": "2024-08-20",
+            "description": "",
+            "mdPath": "../data/blogs/b8.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "5 min read",
+            "image": "../data/thumbnails/blogs/b8.jpg"
+        },
+        {
+            "id": 9,
+            "blogName": "လူငယ်ဘဝမှာ ထမ်းပိုးထားရတဲ့ တာဝန်တွေ၊ ဝေဝါးနေတဲ့ ဆုံးဖြတ်ချက်တွေနဲ့အတူ...",
+            "writers": ["Phyu Pwint Thant"],
+            "graphicDesigners": ["Sheri"],
+            "date": "2024-08-22",
+            "description": "",
+            "mdPath": "../data/blogs/b9.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "4 min read",
+            "image": "../data/thumbnails/blogs/b9.jpg"
+        },
+        {
+            "id": 10,
+            "blogName": "🧘‍♀️ When Social Media Drains You 🧘🏻‍♀️",
+            "writers": [""],
+            "graphicDesigners": [""],
+            "date": "2024-08-27",
+            "description": "",
+            "mdPath": "../data/blogs/b10.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "4 min read",
+            "image": "../data/thumbnails/blogs/b10.jpg"
+        },
+        {
+            "id": 11,
+            "blogName": "🫵“သင်” သိထားသင့်သော Digital Tools များ",
+            "writers": ["Hnin Thiri Aung"],
+            "graphicDesigners": ["Betty"],
+            "date": "2024-09-01",
+            "description": "",
+            "mdPath": "../data/blogs/b11.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "6 min read",
+            "image": "../data/thumbnails/blogs/b11.jpg"
+        },
+        {
+            "id": 12,
+            "blogName": "သင့်ရဲ့ အမူကျင့် သေးသေးလေးတွေက ကြီးမားတဲ့ သက်ရောက်မှုကို ဖြစ်စေနိုင်ပါတယ်",
+            "writers": ["Phyu Pwint Thant"],
+            "graphicDesigners": ["Sheri"],
+            "date": "2024-09-02",
+            "description": "",
+            "mdPath": "../data/blogs/b12.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "5 min read",
+            "image": "../data/thumbnails/blogs/b12.jpg"
+        },
+        {
+            "id": 13,
+            "blogName": "YouTube Channels That Help You Build Better Habits",
+            "writers": [""],
+            "graphicDesigners": [""],
+            "date": "2024-09-05",
+            "description": "",
+            "mdPath": "../data/blogs/b13.md",
+            "categories": ["Technology", "Education"],
+            "readTime": "4 min read",
+            "image": "../data/thumbnails/blogs/b13.jpg"
         }
     ]
 }
