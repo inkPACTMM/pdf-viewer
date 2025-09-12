@@ -959,20 +959,15 @@
                 // Find all blogs this person contributed to
                 const contributedBlogs = blogsData.blogs.filter(blog => {
                     const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
-                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [
-                        blog.graphicDesigners
-                    ];
+                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
                     return writers.includes(profileName) || designers.includes(profileName);
                 });
 
                 // Determine role based on actual blog participation
-                let writerCount = 0,
-                    designerCount = 0;
+                let writerCount = 0, designerCount = 0;
                 contributedBlogs.forEach(blog => {
                     const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
-                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [
-                        blog.graphicDesigners
-                    ];
+                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
                     if (writers.includes(profileName)) writerCount++;
                     if (designers.includes(profileName)) designerCount++;
                 });
@@ -984,17 +979,14 @@
                 } else if (designerCount > 0) {
                     mainRole = 'Graphic Designer';
                 } else {
-                    mainRole = profilesData.profiles.find(p => p.name === profileName) ? .role || '';
+                    mainRole = profilesData.profiles.find(p => p.name === profileName)?.role || '';
                 }
 
                 // Count collaborations (blogs with multiple contributors)
                 const collaborations = contributedBlogs.filter(blog => {
                     const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
-                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [
-                        blog.graphicDesigners
-                    ];
-                    const totalContributors = [...writers, ...designers].filter(name => name && name
-                        .trim()).length;
+                    const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
+                    const totalContributors = [...writers, ...designers].filter(name => name && name.trim()).length;
                     return totalContributors > 1;
                 });
 
@@ -1006,8 +998,7 @@
                     term: profile.term || '2023 - Present',
                     bio: profile.bio || '',
                     avatar: profile.avatar || '../data/images/default-avatar.jpg',
-                    experienceYears: profile.experienceYears || Math.max(1, Math.floor(contributedBlogs
-                        .length / 5)),
+                    experienceYears: profile.experienceYears || Math.max(1, Math.floor(contributedBlogs.length / 5)),
                     articlesContributed: contributedBlogs.length,
                     collaborations: collaborations.length
                 };
@@ -1032,17 +1023,13 @@
 
         function displayBlogs(blogs, profileName) {
             if (blogs.length === 0) {
-                $('#blogGrid').html(
-                    '<div class="empty-state"><i class="fas fa-pen"></i><h3>No articles yet</h3><p>This contributor hasn\'t published any articles yet.</p></div>'
-                    );
+                $('#blogGrid').html('<div class="empty-state"><i class="fas fa-pen"></i><h3>No articles yet</h3><p>This contributor hasn\'t published any articles yet.</p></div>');
                 return;
             }
             let html = '';
             blogs.forEach((blog, index) => {
                 const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
-                const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog
-                    .graphicDesigners
-                ];
+                const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
                 let roleInBlog = '';
                 if (writers.includes(profileName) && designers.includes(profileName)) {
                     roleInBlog = 'Writer & Designer';
