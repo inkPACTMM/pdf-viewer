@@ -14,6 +14,29 @@
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/navbar.css">
+
+    <!-- Primary Meta Tags -->
+    <title>inkPACT Myanmar – Mindfulness & Wellbeing Community</title>
+    <meta name="title" content="inkPACT Myanmary">
+    <meta name="description"
+        content="inkPACTmm.org showcases and supports youth-led projects in Myanmar, amplifying their voices, promoting social impact, and connecting changemakers through digital storytelling and inclusive publishing.">
+    <meta name="keywords"
+        content="Mindfulness, Wellbeing, Self-Care, Mental Health, Meditation, Yoga, Stress Relief, Relaxation, Mind-Body Connection, Emotional Wellness, Mindful Living, Personal Growth, Positive Psychology, Mindfulness Practices, Mindfulness Techniques, Mindfulness Exercises, Mindfulness Meditation, Mindfulness for Beginners">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://inkpactmm.org/">
+    <meta property="og:title" content="inkPACT Myanmar">
+    <meta property="og:description"
+        content="inkPACTmm.org showcases and supports youth-led projects in Myanmar, amplifying their voices, promoting social impact, and connecting changemakers through digital storytelling and inclusive publishing.">
+    <meta property="og:image" content="https://inkpactmm.org/data/images/preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://inkpactmm.org/">
+    <meta property="twitter:title" content="inkPACT Myanmar – Mindfulness & Wellbeing Community">
+    <meta property="twitter:description"
+        content="inkPACTmm.org showcases and supports youth-led projects in Myanmar, amplifying their voices, promoting social impact, and connecting changemakers through digital storytelling and inclusive publishing.">
+    <meta property="twitter:image" content="https://inkpactmm.org/data/images/preview.png">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* Animation Keyframes */
@@ -341,6 +364,7 @@
 
         /* Touch device optimizations */
         @media (hover: none) and (pointer: coarse) {
+
             .profile-link:hover,
             .back-button:hover {
                 transform: none;
@@ -486,11 +510,16 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <h5>Our Social Media</h5>
                     <ul class="list-unstyled quick-links">
-                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i class="fa fa-angle-double-right"></i>Facebook</a></li>
-                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D" target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
-                        <li><a href="https://inkpactmm.org" target="_blank"><i class="fa fa-angle-double-right"></i>LinkedIn</a></li>
-                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i class="fa fa-angle-double-right"></i>YouTube</a></li>
-                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i class="fa fa-angle-double-right"></i>Telegram</a></li>
+                        <li><a href="https://www.facebook.com/share/1AhGAwZaYu/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Facebook</a></li>
+                        <li><a href="https://www.instagram.com/inkpactmm?igsh=MTl2OXFmYXU1aHNmeA%3D%3D"
+                                target="_blank"><i class="fa fa-angle-double-right"></i>Instagram</a></li>
+                        <li><a href="https://inkpactmm.org" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>LinkedIn</a></li>
+                        <li><a href="https://www.youtube.com/@inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>YouTube</a></li>
+                        <li><a href="https://t.me/inkPACTmm" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i>Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -510,7 +539,7 @@
     <script>
         $(document).ready(function () {
             // Enhanced navbar scroll effect
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 if ($(this).scrollTop() > 50) {
                     $('.navbar').addClass('scrolled');
                 } else {
@@ -519,14 +548,14 @@
             });
 
             // Auto-close mobile menu when clicking on links
-            $('.navbar-nav .nav-link').on('click', function() {
+            $('.navbar-nav .nav-link').on('click', function () {
                 if ($(window).width() < 992) {
                     $('.navbar-collapse').collapse('hide');
                 }
             });
 
             // Close mobile menu when clicking outside
-            $(document).on('click', function(e) {
+            $(document).on('click', function (e) {
                 if (!$(e.target).closest('.navbar').length) {
                     $('.navbar-collapse').collapse('hide');
                 }
@@ -542,7 +571,7 @@
             }
 
             loadBlog(blogId);
-            $('.back-button').on('click', function(e) {
+            $('.back-button').on('click', function (e) {
                 e.preventDefault();
                 if (document.referrer && document.referrer.includes(window.location.host)) {
                     history.back();
@@ -554,21 +583,22 @@
 
         function loadBlog(blogId) {
             showLoadingStates();
-            $.getJSON('../data/blogs.json', function(data) {
+            $.getJSON('../data/blogs.json', function (data) {
                 const blog = data.blogs.find(b => b.id == blogId);
                 if (blog) {
                     displayBlog(blog);
                 } else {
                     showError('Blog not found');
                 }
-            }).fail(function() {
+            }).fail(function () {
                 showError('Error loading blog data');
             });
         }
 
         function showLoadingStates() {
             $('#blogImage').hide();
-            $('#blogTitle').html('<div class="loading-shimmer" style="width: 60%; height: 40px; margin: 0 auto;"></div>');
+            $('#blogTitle').html(
+                '<div class="loading-shimmer" style="width: 60%; height: 40px; margin: 0 auto;"></div>');
             $('#blogDate').html('<div class="loading-shimmer" style="width: 100px; height: 20px;"></div>');
             $('#blogReadTime').html('<div class="loading-shimmer" style="width: 80px; height: 20px;"></div>');
             $('#blogContent').html('<div class="loading-shimmer" style="width: 100%; height: 200px;"></div>');
@@ -585,7 +615,9 @@
             $('#blogReadTime').text(blog.readTime);
 
             // Categories
-            const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : ['General']);
+            const categories = Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : [
+                'General'
+            ]);
             let categoriesHTML = '';
             categories.forEach(category => {
                 categoriesHTML += `<span class="blog-category">${category}</span>`;
@@ -596,7 +628,8 @@
             const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
             let writersHTML = '';
             writers.filter(writer => writer && writer.trim()).forEach(writer => {
-                writersHTML += `<a href="profile.html?name=${encodeURIComponent(writer)}" class="profile-link">${writer}</a>`;
+                writersHTML +=
+                    `<a href="profile.html?name=${encodeURIComponent(writer)}" class="profile-link">${writer}</a>`;
             });
             $('#writerLinks').html(writersHTML || '<span style="color: #999;">No writers listed</span>');
 
@@ -604,17 +637,18 @@
             const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
             let designersHTML = '';
             designers.filter(designer => designer && designer.trim()).forEach(designer => {
-                designersHTML += `<a href="profile.html?name=${encodeURIComponent(designer)}" class="profile-link designer-link">${designer}</a>`;
+                designersHTML +=
+                    `<a href="profile.html?name=${encodeURIComponent(designer)}" class="profile-link designer-link">${designer}</a>`;
             });
             $('#designerLinks').html(designersHTML || '<span style="color: #999;">No designers listed</span>');
 
             // Load and render Markdown file for blog content using mdPath from JSON
             const mdPath = blog.mdPath ? blog.mdPath : null;
             if (mdPath) {
-                $.get(mdPath, function(mdContent) {
+                $.get(mdPath, function (mdContent) {
                     const htmlContent = marked.parse(mdContent);
                     $('#blogContent').html(htmlContent);
-                }).fail(function() {
+                }).fail(function () {
                     $('#blogContent').html(blog.description || 'No content available');
                 });
             } else {
