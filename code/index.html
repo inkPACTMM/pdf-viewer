@@ -902,16 +902,6 @@
         </div>
     </section>
 
-    <!-- Latest Books Section -->
-    <section class="featured-section">
-        <div class="container">
-            <h2 class="section-title">Latest Additions</h2>
-            <div class="row" id="latestBooks">
-                <!-- Will be populated by JS -->
-            </div>
-        </div>
-    </section>
-
     <!-- Latest Blogs Section - NEW -->
     <section class="featured-section bg-white">
         <div class="container">
@@ -927,11 +917,11 @@
         </div>
     </section>
 
-    <!-- Popular Books Section -->
+    <!-- Latest Books Section -->
     <section class="featured-section">
         <div class="container">
-            <h2 class="section-title">Popular Books</h2>
-            <div class="row" id="popularBooks">
+            <h2 class="section-title">Latest Books</h2>
+            <div class="row" id="latestBooks">
                 <!-- Will be populated by JS -->
             </div>
         </div>
@@ -1056,9 +1046,8 @@
             }
 
             // Show loading states
-            showLoadingState('#latestBooks');
             showLoadingState('#latestBlogs');
-            showLoadingState('#popularBooks');
+            showLoadingState('#latestBooks');
 
             // Load latest books
             $.getJSON('../data/books.json', function (data) {
@@ -1082,15 +1071,6 @@
             }).fail(function () {
                 $('#latestBlogs').html(
                     '<div class="col-12 text-center"><p>Unable to load latest blogs</p></div>');
-            });
-
-            // Load popular books
-            $.getJSON('../data/popular-books.json', function (data) {
-                $('#popularBooks').empty();
-                renderBooks('#popularBooks', data.popular_books);
-            }).fail(function () {
-                $('#popularBooks').html(
-                    '<div class="col-12 text-center"><p>Unable to load popular books</p></div>');
             });
 
             function renderBooks(container, books) {
