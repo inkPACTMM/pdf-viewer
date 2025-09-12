@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog Detail | InkPact Digital Library</title>
-    <link rel="shortcut icon" href="images/logo.svg">
+    <link rel="shortcut icon" href="../data/images/logo.svg">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/navbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* Animation Keyframes */
         @keyframes fadeInUp {
@@ -376,7 +377,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="images/logo.svg" alt="InkPact Logo">
+                <img src="../data/images/logo.svg" alt="InkPact Logo">
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -540,10 +541,7 @@
                 return;
             }
 
-            // Load blog data
             loadBlog(blogId);
-
-            // Enhanced back button
             $('.back-button').on('click', function(e) {
                 e.preventDefault();
                 if (document.referrer && document.referrer.includes(window.location.host)) {
@@ -555,11 +553,8 @@
         });
 
         function loadBlog(blogId) {
-            // Show loading states
             showLoadingStates();
-
-            // Load blog data
-            $.getJSON('data/blogs.json', function(data) {
+            $.getJSON('../data/blogs.json', function(data) {
                 const blog = data.blogs.find(b => b.id == blogId);
                 if (blog) {
                     displayBlog(blog);
@@ -613,8 +608,18 @@
             });
             $('#designerLinks').html(designersHTML || '<span style="color: #999;">No designers listed</span>');
 
-            // Blog content
-            $('#blogContent').html(blog.content || blog.description || 'No content available');
+            // Load and render Markdown file for blog content using mdPath from JSON
+            const mdPath = blog.mdPath ? blog.mdPath : null;
+            if (mdPath) {
+                $.get(mdPath, function(mdContent) {
+                    const htmlContent = marked.parse(mdContent);
+                    $('#blogContent').html(htmlContent);
+                }).fail(function() {
+                    $('#blogContent').html(blog.description || 'No content available');
+                });
+            } else {
+                $('#blogContent').html(blog.description || 'No content available');
+            }
         }
 
         function showError(message) {

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Profile | InkPact Digital Library</title>
-    <link rel="shortcut icon" href="images/logo.svg">
+    <link rel="shortcut icon" href="../data/images/logo.svg">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -765,7 +765,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="images/logo.svg" alt="InkPact Logo">
+                <img src="../data/images/logo.svg" alt="InkPact Logo">
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -933,8 +933,8 @@
 
             // Load profiles data and blogs data simultaneously
             Promise.all([
-                $.getJSON('data/profiles.json'),
-                $.getJSON('data/blogs.json')
+                $.getJSON('../data/profiles.json'),
+                $.getJSON('../data/blogs.json')
             ]).then(([profilesData, blogsData]) => {
                 const profile = profilesData.profiles.find(p => p.name === profileName);
 
@@ -955,7 +955,7 @@
             document.title = `${profile.name} - Profile | InkPact Digital Library`;
 
             // Profile basic info
-            $('#profileAvatar').attr('src', profile.avatar || 'images/default-avatar.jpg').show();
+            $('#profileAvatar').attr('src', profile.avatar || '../dataimages/default-avatar.jpg').show();
             $('#profileName').text(profile.name);
             $('#profileRole').text(profile.role);
             $('#profileTerm').text(`Term: ${profile.term}`);
@@ -1026,7 +1026,7 @@
                 role: role,
                 term: "2023 - Present",
                 bio: `Contributor to InkPact Digital Magazine. ${role} specializing in creating impactful content that drives social change and youth empowerment.`,
-                avatar: "images/profiles/default-avatar.jpg",
+                avatar: "../data/images/profiles/default-avatar.jpg",
                 experienceYears: Math.max(1, Math.floor(contributedBlogs.length / 5)),
                 articlesContributed: contributedBlogs.length,
                 collaborations: collaborations.length

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="shortcut icon" href="images/logo.svg">
+  <link rel="shortcut icon" href="../data/images/logo.svg">
   <title>View PDF</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -636,7 +636,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <img src="images/logo.svg" alt="InkPact Logo">
+        <img src="../data/images/logo.svg" alt="InkPact Logo">
       </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -776,7 +776,7 @@
         '<div class="loading-shimmer" style="width: 150px; height: 20px; border-radius: 4px;"></div>');
 
       // Load book data
-      $.getJSON('data/books.json', function (data) {
+      $.getJSON('../data/books.json', function (data) {
         const book = data.books.find(b => b.id == bookId);
         if (book) {
           // Animate content reveal

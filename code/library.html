@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Library | InkPact Digital Library</title>
-    <link rel="shortcut icon" href="images/logo.svg">
+    <link rel="shortcut icon" href="../data/images/logo.svg">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -726,7 +726,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="images/logo.svg" alt="InkPact Logo">
+                <img src="../data/images/logo.svg" alt="InkPact Logo">
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -924,7 +924,7 @@
 
             // Load books data (refresh cache after AJAX)
             $.ajax({
-                url: 'data/books.json',
+                url: '../data/books.json',
                 dataType: 'json',
                 success: function (data) {
                     allBooks = data.books;
@@ -1076,7 +1076,7 @@
                                 </div>
                             `).join('')}
                         </div>
-                        <img class="shelf-img" src="images/shelf_wood.png" loading="lazy" alt="Bookshelf">
+                        <img class="shelf-img" src="../data/images/shelf_wood.png" loading="lazy" alt="Bookshelf">
                     </div>
                 `);
                         $page.append($shelf);
@@ -1112,7 +1112,7 @@
                         title: "Download pages",
                         icon: "fa-download",
                         icon2: "file_download",
-                        url: "images/pdf.rar",
+                        url: "../data/images/pdf.rar",
                         name: "allPages.zip",
                         hideOnMobile: false
                     },

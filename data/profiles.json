@@ -1,48 +1,13 @@
 {
-    "profiles": [
-        {
-            "id": "1",
-            "name": "Aung Thura",
-            "role": "Senior Writer & Editor",
-            "term": "2023 - Present",
-            "bio": "Passionate storyteller and advocate for youth empowerment in Myanmar. Specializes in covering social impact initiatives and community development projects.",
-            "avatar": "images/default-avatar.jpg",
-            "experienceYears": 3,
-            "articlesContributed": 12,
-            "collaborations": 8
-        },
-        {
-            "id": "2", 
-            "name": "Zaw Min Htut",
-            "role": "Graphic Designer & Visual Storyteller",
-            "term": "2022 - Present",
-            "bio": "Creative visual designer with a passion for bringing stories to life through compelling graphics and illustrations. Focuses on sustainable design practices.",
-            "avatar": "images/default-avatar.jpg",
-            "experienceYears": 4,
-            "articlesContributed": 15,
-            "collaborations": 10
-        },
-        {
-            "id": "3",
-            "name": "Khin Sandar",
-            "role": "Content Writer & Researcher",
-            "term": "2024 - Present", 
-            "bio": "Dedicated researcher and writer focusing on environmental issues and sustainable development. Brings academic rigor to accessible storytelling.",
-            "avatar": "images/default.png",
-            "experienceYears": 2,
-            "articlesContributed": 7,
-            "collaborations": 5
-        },
-        {
-            "id": "4",
-            "name": "Pyae Phyo",
-            "role": "Junior Graphic Designer",
-            "term": "2024 - Present",
-            "bio": "Emerging talent in graphic design with a focus on digital illustrations and social media graphics. Passionate about visual communication for social causes.",
-            "avatar": "images/default.png", 
-            "experienceYears": 1,
-            "articlesContributed": 3,
-            "collaborations": 2
-        }
-    ]
+    "profiles": [{
+        "id": "1",
+        "name": "Aung Thura",
+        "role": "Senior Writer & Editor",
+        "term": "2023 - Present",
+        "bio": "Passionate storyteller and advocate for youth empowerment in Myanmar. Specializes in covering social impact initiatives and community development projects.",
+        "avatar": "images/default-avatar.jpg",
+        "experienceYears": 3,
+        "articlesContributed": 12,
+        "collaborations": 8
+    }]
 }
