@@ -1,38 +1,37 @@
 {
-    "blogs": [
-        {
+    "blogs": [{
             "id": 1,
             "blogName": "လူငယ်တွေဖန်တီးတဲ့ အရာတွေကို မှတ်တမ်းတင်ပေးထားမယ့် inkPACT",
-            "writers": [""],
-            "graphicDesigners": [""],
+            "writers": ["Hnin Thiri Aung"],
+            "graphicDesigners": ["Betty"],
             "date": "2025-06-06",
             "description": "ဒီနေ့မှာတော့ မြန်မာနိုင်ငံက လူငယ်တွေ ဦးဆောင်ထားတဲ့ Digital Publication နဲ့ Storytelling Platform တစ်ခုဖြစ်တဲ့ inkPACT အကြောင်း အပြည့်အစုံကို ပြောပြပေးသွားပါမယ်။",
             "mdPath": "../data/blogs/b1.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information Sharing"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b1.jpg"
         },
         {
             "id": 2,
             "blogName": "မဂ္ဂဇင်းက ပေးခဲ့တဲ့အမှတ်တရ",
-            "writers": [""],
-            "graphicDesigners": [""],
+            "writers": ["Hnin Thri Aung"],
+            "graphicDesigners": ["Betty"],
             "date": "2024-07-01",
             "description": "",
             "mdPath": "../data/blogs/b2.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information"],
             "readTime": "3 min read",
             "image": "../data/thumbnails/blogs/b2.png"
         },
         {
             "id": 3,
             "blogName": "တစ်ပိုင်းတစ်စနဲ့ ရပ်တန့်ထားရတဲ့ ပညာရေးကြောင့် အိမ်မက်တွေကိုပါ ရပ်တန့်ထားတော့မလို့လား?🤨",
-            "writers": [""],
-            "graphicDesigners": [""],
+            "writers": ["Phyu Pwint Thant"],
+            "graphicDesigners": ["Betty"],
             "date": "2024-07-11",
             "description": "",
             "mdPath": "../data/blogs/b3.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information Sharing", "Education"],
             "readTime": "5 min read",
             "image": "../data/thumbnails/blogs/b3.jpg"
         },
@@ -44,7 +43,7 @@
             "date": "2024-07-17",
             "description": "",
             "mdPath": "../data/blogs/b4.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information Sharing", "Education"],
             "readTime": "6 min read",
             "image": "../data/thumbnails/blogs/b4.jpg"
         },
@@ -56,7 +55,7 @@
             "date": "2024-08-01",
             "description": "",
             "mdPath": "../data/blogs/b5.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Self-Development"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b5.jpg"
         },
@@ -68,7 +67,7 @@
             "date": "2024-08-08",
             "description": "",
             "mdPath": "../data/blogs/b6.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Self-Development"],
             "readTime": "5 min read",
             "image": "../data/thumbnails/blogs/b6.jpg"
         },
@@ -76,11 +75,11 @@
             "id": 7,
             "blogName": "🫵inkPACT ကရှာနေတဲ့ ဆောင်းပါးရှင်က “သင်” ဖြစ်နေမလား?",
             "writers": ["Hnin Thiri Aung"],
-            "graphicDesigners": [],
+            "graphicDesigners": ["Betty"],
             "date": "2024-08-17",
             "description": "",
             "mdPath": "../data/blogs/b7.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information Sharing"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b7.jpg"
         },
@@ -92,7 +91,7 @@
             "date": "2024-08-20",
             "description": "",
             "mdPath": "../data/blogs/b8.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Mental Health"],
             "readTime": "5 min read",
             "image": "../data/thumbnails/blogs/b8.jpg"
         },
@@ -104,19 +103,19 @@
             "date": "2024-08-22",
             "description": "",
             "mdPath": "../data/blogs/b9.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Self-Development"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b9.jpg"
         },
         {
             "id": 10,
             "blogName": "🧘‍♀️ When Social Media Drains You 🧘🏻‍♀️",
-            "writers": [""],
-            "graphicDesigners": [""],
+            "writers": ["Roelin"],
+            "graphicDesigners": ["Austin"],
             "date": "2024-08-27",
             "description": "",
             "mdPath": "../data/blogs/b10.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Self-Development"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b10.jpg"
         },
@@ -128,7 +127,7 @@
             "date": "2024-09-01",
             "description": "",
             "mdPath": "../data/blogs/b11.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Technology", "Information Sharing"],
             "readTime": "6 min read",
             "image": "../data/thumbnails/blogs/b11.jpg"
         },
@@ -140,19 +139,19 @@
             "date": "2024-09-02",
             "description": "",
             "mdPath": "../data/blogs/b12.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Self-Development"],
             "readTime": "5 min read",
             "image": "../data/thumbnails/blogs/b12.jpg"
         },
         {
             "id": 13,
             "blogName": "YouTube Channels That Help You Build Better Habits",
-            "writers": [""],
-            "graphicDesigners": [""],
+            "writers": ["Roelin"],
+            "graphicDesigners": ["Austin"],
             "date": "2024-09-05",
             "description": "",
             "mdPath": "../data/blogs/b13.md",
-            "categories": ["Technology", "Education"],
+            "categories": ["Information Sharing"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b13.jpg"
         }
