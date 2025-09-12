@@ -4,29 +4,29 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ "master ]
+    branches: [ "master" ]
 
 jobs:
   update-sitemap:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
+      
     - name: Get Previous Commit Message
       id: prev_commit_message
       run: |
         PREV_COMMIT_MESSAGE=$(git log -2 --pretty=format:"%s" | tail -n 1)
         echo "PREV_COMMIT_MESSAGE=$PREV_COMMIT_MESSAGE" >> $GITHUB_ENV
-
+        
     - name: Check Commit Message for Skip Sitemap
       run: |
         if [[ "$PREV_COMMIT_MESSAGE" == *"[skip-sitemap]"* ]]; then
           echo "Previous commit contains [skip-sitemap]. Exiting."
           exit 0
         fi
-
+        
     - name: Generate Blog URLs for Sitemap
       id: gen_blog_urls
       run: |
@@ -37,39 +37,40 @@ jobs:
           # Extract numeric id from filename (e.g. b1.md -> 1)
           id=$(echo "$fname" | grep -oP '(?<=b)[0-9]+(?=\.md)')
           if [ ! -z "$id" ]; then
-            BLOG_URLS="${BLOG_URLS}    <url>\n      <loc>https://inkpactmm.org/blog-detail.html?id=${id}</loc>\n      <priority>0.8</priority>\n    </url>\n"
+            BLOG_URLS="${BLOG_URLS}  <url>\n    <loc>https://inkpactmm.org/blog-detail.html?id=${id}</loc>\n    <priority>0.8</priority>\n  </url>\n"
           fi
         done
         echo "BLOG_URLS<<EOF" >> $GITHUB_ENV
         echo -e "$BLOG_URLS" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-
+        
     - name: Update sitemap.xml
       run: |
-        cat > sitemap.xml <<'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>https://inkpactmm.org/</loc>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://inkpactmm.org/about-us.html</loc>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://inkpactmm.org/blogs.html</loc>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://inkpactmm.org/library.html</loc>
-        <priority>0.9</priority>
-    </url>
-EOF
+        cat > sitemap.xml << 'SITEMAP_EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          <url>
+            <loc>https://inkpactmm.org/</loc>
+            <priority>1.0</priority>
+          </url>
+          <url>
+            <loc>https://inkpactmm.org/about-us.html</loc>
+            <priority>0.9</priority>
+          </url>
+          <url>
+            <loc>https://inkpactmm.org/blogs.html</loc>
+            <priority>0.9</priority>
+          </url>
+          <url>
+            <loc>https://inkpactmm.org/library.html</loc>
+            <priority>0.9</priority>
+          </url>
+        SITEMAP_EOF
+        
         # Append blog urls
         echo "${BLOG_URLS}" >> sitemap.xml
         echo "</urlset>" >> sitemap.xml
-
+        
     - name: Commit and Push Changes
       run: |
         git config --global user.name "Sai Khant Zay Lynn Yaung(Andrew)"
@@ -77,7 +78,7 @@ EOF
         git add sitemap.xml
         git commit -m "$PREV_COMMIT_MESSAGE (sitemap updated)" || echo "No changes to commit"
         git push https://x-access-token:${{secrets.API}}@github.com/inkPACTMM/pdf-viewer.git HEAD:master
-
+        
     - name: Trigger Render Hooks
       run: |
         curl -X POST "${{secrets.RENDER_HOOKS}}"
