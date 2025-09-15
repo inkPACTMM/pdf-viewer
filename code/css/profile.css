@@ -1,0 +1,742 @@
+/* Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+/* Main Layout */
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    overflow-x: hidden;
+    min-width: 320px;
+}
+
+/* Profile Header Section */
+.profile-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: clamp(60px, 10vh, 100px) 0 clamp(40px, 6vh, 60px);
+    margin-top: 76px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Profile Card - Enhanced Mobile */
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: clamp(20px, 5vw, 40px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(1, 47, 179, 0.1);
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.8s;
+}
+
+.profile-card:hover::before {
+    left: 100%;
+}
+
+/* Profile Avatar - Responsive */
+.profile-avatar {
+    width: clamp(100px, 25vw, 180px);
+    height: clamp(100px, 25vw, 180px);
+    border-radius: 50%;
+    border: 4px solid #012FB3;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    animation: fadeInScale 1s ease-out 0.2s both;
+    transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+/* Profile Info - Responsive Typography */
+.profile-name {
+    font-size: clamp(1.4rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+    line-height: 1.2;
+    word-wrap: break-word;
+}
+
+.profile-role {
+    font-size: clamp(0.9rem, 3vw, 1.3rem);
+    color: #012FB3;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+    line-height: 1.3;
+}
+
+.profile-term {
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.profile-bio {
+    font-size: clamp(0.85rem, 2.2vw, 1rem);
+    color: #555;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    animation: fadeInUp 0.8s ease-out 1s both;
+    padding: 0 10px;
+    font-weight: 400;
+}
+
+/* Social Links - Mobile Optimized */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: clamp(8px, 3vw, 15px);
+    margin-bottom: 30px;
+    animation: fadeInUp 0.8s ease-out 1.2s both;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    width: clamp(40px, 10vw, 50px);
+    height: clamp(40px, 10vw, 50px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #012FB3 0%, #1E43B0 100%);
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    min-width: 40px;
+    min-height: 40px;
+}
+
+/* Statistics Cards - Mobile First */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: clamp(10px, 3vw, 20px);
+    margin-bottom: 50px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: clamp(15px, 4vw, 25px);
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(1, 47, 179, 0.1);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-number {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    font-weight: 700;
+    color: #012FB3;
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    color: #666;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Content Sections - Mobile Optimized */
+.content-section {
+    margin-bottom: clamp(40px, 8vw, 60px);
+    padding: 0 clamp(10px, 3vw, 15px);
+}
+
+.section-title {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 700;
+    color: #333;
+    margin-bottom: clamp(20px, 5vw, 30px);
+    padding-bottom: 10px;
+    border-bottom: 3px solid #012FB3;
+    display: inline-block;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Blog Cards - Mobile Responsive */
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(15px, 4vw, 25px);
+}
+
+.blog-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(1, 47, 179, 0.1);
+    transition: all 0.4s ease;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.blog-image {
+    width: 100%;
+    height: clamp(150px, 40vw, 200px);
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.blog-content {
+    padding: clamp(15px, 4vw, 20px);
+}
+
+.blog-title {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-date {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.blog-role {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    color: #012FB3;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 4px 8px;
+    background: rgba(1, 47, 179, 0.1);
+    border-radius: 12px;
+    display: inline-block;
+}
+
+.blog-excerpt {
+    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+    color: #555;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+/* Enhanced Mobile Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .profile-header {
+        margin-top: 70px;
+        padding: 60px 0 40px;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 991px) {
+    .profile-header {
+        padding: 50px 0 35px;
+        margin-top: 70px;
+    }
+
+    .profile-card {
+        margin: 0 15px;
+        border-radius: 16px;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+
+    .blog-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        padding: 40px 0 30px;
+        margin-top: 70px;
+        margin-bottom: 30px;
+    }
+
+    .profile-card {
+        padding: 20px 15px;
+        border-radius: 16px;
+        margin: 0 10px;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 15px;
+    }
+
+    .social-links {
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .social-link {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 35px;
+    }
+
+    .stat-card {
+        padding: 15px 10px;
+        min-height: 90px;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .content-section {
+        margin-bottom: 40px;
+        padding: 0 10px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-header {
+        padding: 30px 0 25px;
+    }
+
+    .profile-card {
+        padding: 15px 12px;
+        margin: 0 5px;
+        border-radius: 12px;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 12px;
+    }
+
+    .profile-name {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+
+    .profile-role {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .profile-term {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+
+    .profile-bio {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+        padding: 0 5px;
+    }
+
+    .social-links {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        padding: 12px 8px;
+        min-height: 80px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        line-height: 1.1;
+    }
+
+    .blog-card {
+        border-radius: 12px;
+    }
+
+    .blog-content {
+        padding: 15px;
+    }
+
+    .blog-image {
+        height: 140px;
+    }
+
+    .content-section {
+        margin-bottom: 30px;
+        padding: 0 5px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        max-width: 300px;
+    }
+
+    .stat-card {
+        padding: 15px 10px;
+        min-height: 85px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .blog-grid {
+        gap: 15px;
+    }
+
+    .profile-card {
+        padding: 12px 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-header {
+        padding: 25px 0 20px;
+    }
+
+    .profile-card {
+        padding: 10px 8px;
+        margin: 0 3px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    .profile-name {
+        font-size: 1.2rem;
+    }
+
+    .profile-role {
+        font-size: 0.9rem;
+    }
+
+    .profile-term {
+        font-size: 0.8rem;
+    }
+
+    .profile-bio {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+    }
+
+    .social-link {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        max-width: 200px;
+    }
+
+    .stat-card {
+        padding: 12px;
+        min-height: 70px;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .content-section {
+        padding: 0 3px;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .blog-image {
+        height: 120px;
+    }
+}
+
+/* Landscape phone orientation */
+@media (max-width: 896px) and (orientation: landscape) and (max-height: 500px) {
+    .profile-header {
+        padding: 20px 0 15px;
+        margin-top: 60px;
+    }
+
+    .profile-card {
+        padding: 15px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 20px;
+    }
+
+    .content-section {
+        margin-bottom: 25px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .profile-card:hover::before {
+        display: none;
+    }
+
+    .stat-card:hover,
+    .blog-card:hover {
+        transform: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .blog-card:hover .blog-image {
+        transform: none;
+    }
+
+    .profile-avatar:hover {
+        transform: none;
+    }
+
+    .social-link:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(1, 47, 179, 0.3);
+    }
+
+    /* Add touch feedback */
+    .social-link:active {
+        transform: scale(0.95);
+        background: linear-gradient(135deg, #1E43B0 0%, #012FB3 100%);
+    }
+
+    .stat-card:active {
+        transform: scale(0.98);
+    }
+
+    .blog-card:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .profile-card {
+        border: 2px solid #012FB3;
+    }
+
+    .stat-card,
+    .blog-card {
+        border: 1px solid #333;
+    }
+
+    .social-link {
+        border: 2px solid white;
+    }
+}
+
+/* Focus states for better accessibility */
+.social-link:focus,
+.stat-card:focus,
+.blog-card:focus {
+    outline: 2px solid #012FB3;
+    outline-offset: 2px;
+}
+
+/* Improve readability on small screens */
+@media (max-width: 576px) {
+    .profile-bio {
+        text-align: left;
+        padding: 0 10px;
+    }
+
+    .blog-excerpt {
+        text-align: left;
+    }
+}
+
+/* Loading states responsive */
+.loading-shimmer {
+    min-height: clamp(60px, 15vw, 100px);
+}
+
+/* Empty state responsive */
+.empty-state {
+    padding: clamp(40px, 10vw, 60px) clamp(15px, 5vw, 20px);
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: #012FB3;
+    opacity: 0.3;
+    margin-bottom: clamp(15px, 4vw, 20px);
+}
+
+.empty-state h3 {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    margin-bottom: clamp(8px, 2vw, 10px);
+    color: #333;
+}
+
+.empty-state p {
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    color: #666;
+}
+
+/* Button responsive */
+.btn {
+    padding: clamp(6px 12px, 2vw, 10px 20px);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    border-radius: clamp(6px, 2vw, 8px);
+}
+
+/* Ensure text is selectable on mobile */
+.profile-bio,
+.blog-excerpt,
+.profile-name,
+.profile-role {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
