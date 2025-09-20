@@ -207,6 +207,30 @@
             loadProfile(decodeURIComponent(profileName));
         });
 
+        function calculateExperienceYears(term) {
+            if (!term) return 1;
+
+            // Parse the term string (e.g., "2025 - Present" or "2023 - 2026")
+            const termParts = term.split(' - ');
+            if (termParts.length !== 2) return 1;
+
+            const startYear = parseInt(termParts[0]);
+            const currentYear = new Date().getFullYear();
+
+            let endYear;
+            if (termParts[1].toLowerCase() === 'present') {
+                endYear = currentYear;
+            } else {
+                endYear = parseInt(termParts[1]);
+            }
+
+            // Calculate experience years
+            const experienceYears = endYear - startYear;
+
+            // If they started this year or experience is 0, show at least 1 year
+            return Math.max(1, experienceYears);
+        }
+
         function loadProfile(profileName) {
             showLoadingStates();
             Promise.all([
@@ -247,15 +271,19 @@
                     return totalContributors > 1;
                 });
 
-                // Use profile data for avatar, term, bio, experienceYears
+                // Use profile data for avatar, term, bio
                 const profile = profilesData.profiles.find(p => p.name === profileName) || {};
+
+                // Calculate experience years from term instead of using experienceYears field
+                const calculatedExperience = calculateExperienceYears(profile.term);
+
                 const displayProfileData = {
                     name: profileName,
                     role: mainRole,
-                    term: profile.term || '2023 - Present',
+                    term: profile.term || '2025 - Present',
                     bio: profile.bio || '',
                     avatar: profile.avatar || '../data/images/default-avatar.jpg',
-                    experienceYears: profile.experienceYears || Math.max(1, Math.floor(contributedBlogs.length / 5)),
+                    experienceYears: calculatedExperience,
                     articlesContributed: contributedBlogs.length,
                     collaborations: collaborations.length
                 };
@@ -275,7 +303,7 @@
             $('#profileBio').text(profile.bio || 'No bio available').show();
             $('#blogCount').text(profile.articlesContributed || 0);
             $('#collaborationCount').text(profile.collaborations || 0);
-            $('#experienceYears').text(profile.experienceYears || 0);
+            $('#experienceYears').text(profile.experienceYears || 1);
         }
 
         function displayBlogs(blogs, profileName) {
