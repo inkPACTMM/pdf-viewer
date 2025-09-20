@@ -30,6 +30,190 @@ $(document).ready(function () {
     });
 
     let allBlogs = [];
+    let blogContents = {}; // Cache for loaded markdown content
+
+    // Function to load markdown content
+    async function loadMarkdownContent(mdPath) {
+        if (blogContents[mdPath]) {
+            return blogContents[mdPath];
+        }
+
+        try {
+            const response = await fetch(mdPath);
+            if (response.ok) {
+                const content = await response.text();
+                blogContents[mdPath] = content.toLowerCase();
+                return blogContents[mdPath];
+            }
+        } catch (error) {
+            console.log('Could not load markdown:', mdPath);
+        }
+        return '';
+    }
+
+    // Enhanced search function with markdown content
+    async function searchBlogs(searchTerm) {
+        const filteredBlogs = [];
+
+        for (const blog of allBlogs) {
+            // Search in blog name and description
+            const basicMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
+                blog.description.toLowerCase().includes(searchTerm);
+
+            // Search in writers array
+            const writersMatch = Array.isArray(blog.writers) ?
+                blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
+                (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
+
+            // Search in graphic designers array
+            const designersMatch = Array.isArray(blog.graphicDesigners) ?
+                blog.graphicDesigners.some(designer => designer.toLowerCase().includes(searchTerm)) :
+                (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(searchTerm));
+
+            // Search in categories array
+            const categoriesMatch = Array.isArray(blog.categories) ?
+                blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
+                (blog.category && blog.category.toLowerCase().includes(searchTerm));
+
+            // Search in markdown content
+            let markdownMatch = false;
+            if (blog.mdPath) {
+                const markdownContent = await loadMarkdownContent(blog.mdPath);
+                markdownMatch = markdownContent.includes(searchTerm);
+            }
+
+            // Advanced keyword matching in available text
+            const allText = [
+                blog.blogName,
+                blog.description,
+                blog.content || '',
+                ...(Array.isArray(blog.writers) ? blog.writers : [blog.writers || '']),
+                ...(Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners || '']),
+                ...(Array.isArray(blog.categories) ? blog.categories : [blog.category || ''])
+            ].join(' ').toLowerCase();
+
+            const keywordMatch = allText.includes(searchTerm);
+
+            if (basicMatch || writersMatch || designersMatch || categoriesMatch || markdownMatch || keywordMatch) {
+                filteredBlogs.push(blog);
+            }
+        }
+
+        return filteredBlogs;
+    }
+
+    // Search functionality - Updated to include markdown content search
+    $('#searchForm').on('submit', async function (e) {
+        e.preventDefault();
+        const searchTerm = $('#searchInput').val().toLowerCase().trim();
+
+        if (searchTerm === '') {
+            renderBlogs(allBlogs);
+            return;
+        }
+
+        // Show loading state during search
+        $('#blogsGrid').html(`
+            <div class="loading-state text-center py-5" style="grid-column: 1 / -1;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Searching...</span>
+                </div>
+                <h4 class="mt-3">Searching...</h4>
+                <p class="text-muted">Looking through articles and content</p>
+            </div>
+        `);
+
+        try {
+            const filteredBlogs = await searchBlogs(searchTerm);
+            // Sort filtered results by date - latest first
+            const sortedFilteredBlogs = filteredBlogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            renderBlogs(sortedFilteredBlogs);
+        } catch (error) {
+            console.error('Search error:', error);
+            renderBlogs(allBlogs.filter(blog => {
+                // Fallback to basic search if markdown loading fails
+                const basicMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
+                    blog.description.toLowerCase().includes(searchTerm);
+                const writersMatch = Array.isArray(blog.writers) ?
+                    blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
+                    (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
+                return basicMatch || writersMatch;
+            }));
+        }
+    });
+
+    // Enhanced real-time search with markdown content
+    let searchTimeout;
+    $('#searchInput').on('input', function () {
+        const searchTerm = $(this).val().toLowerCase().trim();
+
+        // Clear previous timeout
+        clearTimeout(searchTimeout);
+
+        // Add delay to avoid too many searches while typing
+        searchTimeout = setTimeout(async () => {
+            if (searchTerm.length >= 3) { // Increase to 3 characters for markdown search
+                try {
+                    // For real-time search, do a quick search first without markdown
+                    const quickFilteredBlogs = allBlogs.filter(blog => {
+                        const quickMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
+                            blog.description.toLowerCase().includes(searchTerm) ||
+                            (blog.content && blog.content.toLowerCase().includes(searchTerm));
+
+                        const writersMatch = Array.isArray(blog.writers) ?
+                            blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
+                            (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
+
+                        const designersMatch = Array.isArray(blog.graphicDesigners) ?
+                            blog.graphicDesigners.some(designer => designer.toLowerCase().includes(searchTerm)) :
+                            (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(searchTerm));
+
+                        const categoriesMatch = Array.isArray(blog.categories) ?
+                            blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
+                            (blog.category && blog.category.toLowerCase().includes(searchTerm));
+
+                        return quickMatch || writersMatch || designersMatch || categoriesMatch;
+                    });
+
+                    // Sort and show quick results first
+                    const sortedQuickResults = quickFilteredBlogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    renderBlogs(sortedQuickResults);
+
+                    // Then search markdown content in background and update if needed
+                    setTimeout(async () => {
+                        try {
+                            const fullResults = await searchBlogs(searchTerm);
+                            const sortedFullResults = fullResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                            // Only update if results are different and search term hasn't changed
+                            if ($('#searchInput').val().toLowerCase().trim() === searchTerm &&
+                                sortedFullResults.length !== sortedQuickResults.length) {
+                                renderBlogs(sortedFullResults);
+                            }
+                        } catch (error) {
+                            console.log('Background markdown search failed:', error);
+                        }
+                    }, 100);
+
+                } catch (error) {
+                    console.error('Real-time search error:', error);
+                }
+            } else if (searchTerm.length === 0) {
+                renderBlogs(allBlogs);
+            }
+        }, 500); // Increased delay for markdown search
+    });
+
+    // Preload popular blog markdown content for faster search
+    function preloadPopularContent() {
+        // Preload the first 5 most recent blogs
+        const recentBlogs = allBlogs.slice(0, 5);
+        recentBlogs.forEach(blog => {
+            if (blog.mdPath) {
+                loadMarkdownContent(blog.mdPath);
+            }
+        });
+    }
 
     // Load blogs data
     function loadBlogs() {
@@ -47,8 +231,12 @@ $(document).ready(function () {
             url: '../data/blogs.json',
             dataType: 'json',
             success: function (data) {
-                allBlogs = data.blogs;
+                // Sort blogs by date - latest first
+                allBlogs = data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderBlogs(allBlogs);
+
+                // Preload some content for faster search
+                setTimeout(preloadPopularContent, 1000);
             },
             error: function () {
                 $('#blogsGrid').html(`
@@ -148,108 +336,6 @@ $(document).ready(function () {
             }
         });
     }
-
-    // Search functionality - Updated to include content keywords
-    $('#searchForm').on('submit', function (e) {
-        e.preventDefault();
-        const searchTerm = $('#searchInput').val().toLowerCase().trim();
-
-        if (searchTerm === '') {
-            renderBlogs(allBlogs);
-            return;
-        }
-
-        const filteredBlogs = allBlogs.filter(blog => {
-            // Search in blog name and description
-            const basicMatch = blog.blogName.toLowerCase().includes(searchTerm) ||
-                blog.description.toLowerCase().includes(searchTerm);
-
-            // Search in writers array
-            const writersMatch = Array.isArray(blog.writers) ?
-                blog.writers.some(writer => writer.toLowerCase().includes(searchTerm)) :
-                (blog.writers && blog.writers.toLowerCase().includes(searchTerm));
-
-            // Search in graphic designers array
-            const designersMatch = Array.isArray(blog.graphicDesigners) ?
-                blog.graphicDesigners.some(designer => designer.toLowerCase().includes(
-                    searchTerm)) :
-                (blog.graphicDesigners && blog.graphicDesigners.toLowerCase().includes(
-                    searchTerm));
-
-            // Search in categories array
-            const categoriesMatch = Array.isArray(blog.categories) ?
-                blog.categories.some(category => category.toLowerCase().includes(
-                    searchTerm)) :
-                (blog.category && blog.category.toLowerCase().includes(searchTerm));
-
-            // Search in content - NEW: Split content into words and search for keywords
-            const contentMatch = blog.content && blog.content.toLowerCase().includes(
-                searchTerm);
-
-            // Advanced content keyword matching - search for partial matches in content
-            const contentKeywordMatch = blog.content &&
-                blog.content.toLowerCase().split(/\s+/).some(word =>
-                    word.includes(searchTerm) || searchTerm.includes(word.replace(
-                        /[^\w]/g, ''))
-                );
-
-            return basicMatch || writersMatch || designersMatch || categoriesMatch ||
-                contentMatch || contentKeywordMatch;
-        });
-
-        renderBlogs(filteredBlogs);
-    });
-
-    // Enhanced real-time search as user types (optional)
-    let searchTimeout;
-    $('#searchInput').on('input', function () {
-        const searchTerm = $(this).val().toLowerCase().trim();
-
-        // Clear previous timeout
-        clearTimeout(searchTimeout);
-
-        // Add delay to avoid too many searches while typing
-        searchTimeout = setTimeout(() => {
-            if (searchTerm.length >= 2) { // Only search after 2 characters
-                const filteredBlogs = allBlogs.filter(blog => {
-                    // Quick search in title, description, and key content words
-                    const quickMatch = blog.blogName.toLowerCase().includes(
-                            searchTerm) ||
-                        blog.description.toLowerCase().includes(searchTerm) ||
-                        (blog.content && blog.content.toLowerCase().includes(
-                            searchTerm));
-
-                    // Search in writers
-                    const writersMatch = Array.isArray(blog.writers) ?
-                        blog.writers.some(writer => writer.toLowerCase()
-                            .includes(searchTerm)) :
-                        (blog.writers && blog.writers.toLowerCase().includes(
-                            searchTerm));
-
-                    // Search in categories
-                    const categoriesMatch = Array.isArray(blog.categories) ?
-                        blog.categories.some(category => category.toLowerCase()
-                            .includes(searchTerm)) :
-                        (blog.category && blog.category.toLowerCase().includes(
-                            searchTerm));
-
-                    return quickMatch || writersMatch || categoriesMatch;
-                });
-
-                renderBlogs(filteredBlogs);
-            } else if (searchTerm.length === 0) {
-                renderBlogs(allBlogs); // Show all blogs when search is empty
-            }
-        }, 300); // 300ms delay
-    });
-
-    // Clear search functionality
-    $('#searchInput').on('keydown', function (e) {
-        if (e.key === 'Escape') {
-            $(this).val('');
-            renderBlogs(allBlogs);
-        }
-    });
 
     // Initial load
     loadBlogs();
