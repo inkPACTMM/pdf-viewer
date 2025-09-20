@@ -154,6 +154,30 @@
             "categories": ["Information Sharing"],
             "readTime": "4 min read",
             "image": "../data/thumbnails/blogs/b13.jpg"
+        },
+        {
+            "id": 14,
+            "blogName": "Essential Life Skills Every Teen Should Learn",
+            "writers": ["Roelin"],
+            "graphicDesigners": ["Austin"],
+            "date": "2024-09-14",
+            "description": "ငယ်စဉ်အခါမှာ ပညာရှာခဲ့ကြသလို ကြီးတဲ့အခါမှာလည်း ဘဝအတွက်အရေးကြီးတဲ့ problem-solving, time management, decision-making စသည့် skills တွေကို ရှာကြရပါတယ်။ ဒီ skills တွေကို တည်ဆောက်ထားခြင်းက  ဆယ်ကျော်သက်ဘဝကနေ လူကြီးဘဝအထိ confidence, independence, နဲ့ အောင်မြင်မှုကို တိုးတက်စေပါတယ်။ ဒါကြောင့် ဒီနေ့မှာတော့ inkPACT ကနေ လူငယ်တိုင်းအတွက် ဘဝမှာအရေးကြီးတဲ့ skillsတွေကို Youtube Videosများနှင့်တကွ ဝေမျှပေးသွားမှာပဲ ဖြစ်ပါတယ်။",
+            "mdPath": "../data/blogs/b14.md",
+            "categories": ["Information Sharing", "Education"],
+            "readTime": "6 min read",
+            "image": "../data/thumbnails/blogs/b14.jpg"
+        },
+        {
+            "id": 15,
+            "blogName": "Micro-Moments of Happiness: How Small Daily Wins Shape Your Life",
+            "writers": ["Phyu Pwint Thant"],
+            "graphicDesigners": ["CherryonTop"],
+            "date": "2024-09-19",
+            "description": "",
+            "mdPath": "../data/blogs/b15.md",
+            "categories": ["Self-Development"],
+            "readTime": "5 min read",
+            "image": "../data/thumbnails/blogs/b15.jpg"
         }
     ]
 }
