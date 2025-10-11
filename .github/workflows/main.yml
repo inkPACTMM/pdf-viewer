@@ -30,15 +30,11 @@ jobs:
     - name: Generate Blog URLs for Sitemap
       id: gen_blog_urls
       run: |
-        BLOG_DIR="data/blogs"
+        # Fetch blog list from API and generate sitemap URL entries.
+        # Use curl+grep to extract numeric ids from the returned JSON.
         BLOG_URLS=""
-        for mdfile in $BLOG_DIR/*.md; do
-          fname=$(basename "$mdfile")
-          # Extract numeric id from filename (e.g. b1.md -> 1)
-          id=$(echo "$fname" | grep -oP '(?<=b)[0-9]+(?=\.md)')
-          if [ ! -z "$id" ]; then
-            BLOG_URLS="${BLOG_URLS}  <url>\n    <loc>https://inkpactmm.org/blog-detail.html?id=${id}</loc>\n    <priority>0.8</priority>\n  </url>\n"
-          fi
+        for id in $(curl -s 'https://dashboard.inkpactmm.org/api/blogs' | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]\+' | grep -o '[0-9]\+'); do
+          BLOG_URLS="${BLOG_URLS}  <url>\n    <loc>https://inkpactmm.org/blog-detail.html?id=${id}</loc>\n    <priority>0.8</priority>\n  </url>\n"
         done
         echo "BLOG_URLS<<EOF" >> $GITHUB_ENV
         echo -e "$BLOG_URLS" >> $GITHUB_ENV
