@@ -239,7 +239,7 @@ $(document).ready(function () {
                                 </div>
                             `).join('')}
                         </div>
-                            <img class="shelf-img" src="../data/images/shelf_wood.png" loading="lazy" alt="Bookshelf">
+                            <img class="shelf-img" src="images/shelf_wood.png" loading="lazy" alt="Bookshelf">
                     </div>
                 `);
                 $page.append($shelf);
@@ -276,7 +276,7 @@ $(document).ready(function () {
                     title: "Download pages",
                     icon: "fa-download",
                     icon2: "file_download",
-                    url: toAbsolute('../data/images/pdf.rar'),
+                    url: toAbsolute('images/pdf.rar'),
                     name: "allPages.zip",
                     hideOnMobile: false
                 },
