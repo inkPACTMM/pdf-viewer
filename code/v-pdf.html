@@ -759,13 +759,16 @@
   <!-- Include flipbook JS after jQuery -->
   <script src="js/flipbook.min.js"></script>
 
+  <!-- Shared API config -->
+  <script src="js/config.js"></script>
+
   <script type="text/javascript">
     $(document).ready(function () {
       // Get book ID from URL parameter
       const urlParams = new URLSearchParams(window.location.search);
       const bookId = urlParams.get('id');
 
-      // Show loading state
+    // Show loading state
       $('#info').addClass('loading-state');
       $('.book-cover').html(`
         <div class="loading-shimmer" style="width: 200px; height: 280px; border-radius: 8px;"></div>
@@ -775,10 +778,17 @@
       $('#author').html(
         '<div class="loading-shimmer" style="width: 150px; height: 20px; border-radius: 4px;"></div>');
 
-      // Load book data
-      $.getJSON('../data/books.json', function (data) {
-        const book = data.books.find(b => b.id == bookId);
-        if (book) {
+            // Load book data (from API)
+      (function loadBook() {
+        fetch(`${API_BASE}/api/books`)
+          .then(resp => {
+            if (!resp.ok) throw new Error('Failed to fetch books');
+            return resp.json();
+          })
+          .then(data => {
+            const list = data.data || data.books || data || [];
+            const book = (list || []).find(b => b.id == bookId);
+            if (book) {
           // Animate content reveal
           setTimeout(() => {
             // Update page metadata
@@ -790,14 +800,14 @@
 
             // Replace loading shimmer with actual book cover
             $('.book-cover').html(`
-              <img src="${book.thumbnail}" class="book-1 fade-in-scale" alt="${book.title}" style="display: block;">
+              <img src="${toAbsolute(book.thumbnail)}" class="book-1 fade-in-scale" alt="${book.title}" style="display: block;">
             `);
 
             document.title = book.title + " - View PDF";
 
             // Initialize flipbook with book's PDF
             $("#read").flipBook({
-              pdfUrl: book.pdfUrl,
+              pdfUrl: toAbsolute(book.pdfUrl),
               lightBox: true,
               layout: 3,
               currentPage: {
@@ -834,7 +844,7 @@
             });
 
             // Update download button href
-            $('a[download]').attr('href', book.pdfUrl);
+            $('a[download]').attr('href', toAbsolute(book.pdfUrl));
 
             $('#info').removeClass('loading-state').addClass('content-loaded');
           }, 800);
@@ -847,15 +857,17 @@
             </div>
           `);
         }
-      }).fail(function () {
-        $('#info').html(`
-          <div class="alert alert-danger text-center">
-            <h4>Error Loading Book</h4>
-            <p>Please try refreshing the page or go back to the library.</p>
-            <a href="library.html" class="btn btn-primary">Browse Library</a>
-          </div>
-        `);
-      });
+          })
+          .catch(() => {
+            $('#info').html(`
+              <div class="alert alert-danger text-center">
+                <h4>Error Loading Book</h4>
+                <p>Please try refreshing the page or go back to the library.</p>
+                <a href="library.html" class="btn btn-primary">Browse Library</a>
+              </div>
+            `);
+          });
+      })();
     });
   </script>
 

@@ -29,6 +29,8 @@ $(document).ready(function () {
         $(this).closest('.input-group').removeClass('focused');
     });
 
+    // `API_BASE` and `toAbsolute()` are provided by `code/js/config.js`
+
     let allBlogs = [];
     let blogContents = {}; // Cache for loaded markdown content
 
@@ -37,16 +39,32 @@ $(document).ready(function () {
         if (blogContents[mdPath]) {
             return blogContents[mdPath];
         }
-
         try {
-            const response = await fetch(mdPath);
-            if (response.ok) {
-                const content = await response.text();
+            // If mdPath looks like an API id token (we store by blog id), prefer the API endpoint
+            // If mdPath contains '/data/blogs/' or is a path, still try API by deriving id if possible
+            // We'll attempt a best-effort: if mdPath is like 'data/blogs/NAME.md' fallback to fetch raw path
+            let content = null;
+            // If mdPath is a blog id placeholder (e.g., 'blog-1' or numeric), try content endpoint
+            if (/^[\w\-]+$/.test(mdPath)) {
+                try {
+                    const resp = await fetch(`${API_BASE}/api/blogs/${encodeURIComponent(mdPath)}/content`);
+                    if (resp.ok) content = await resp.text();
+                } catch (e) {
+                    // ignore and fallback
+                }
+            }
+            if (content === null) {
+                // Fallback: try fetching the mdPath directly
+                const response = await fetch(mdPath);
+                if (response.ok) content = await response.text();
+            }
+
+            if (content) {
                 blogContents[mdPath] = content.toLowerCase();
                 return blogContents[mdPath];
             }
         } catch (error) {
-            console.log('Could not load markdown:', mdPath);
+            console.log('Could not load markdown:', mdPath, error);
         }
         return '';
     }
@@ -75,9 +93,11 @@ $(document).ready(function () {
                 blog.categories.some(category => category.toLowerCase().includes(searchTerm)) :
                 (blog.category && blog.category.toLowerCase().includes(searchTerm));
 
-            // Search in markdown content
+            // Search in markdown content (prefer inline markdownContent from API)
             let markdownMatch = false;
-            if (blog.mdPath) {
+            if (blog.markdownContent) {
+                markdownMatch = blog.markdownContent.toLowerCase().includes(searchTerm);
+            } else if (blog.mdPath) {
                 const markdownContent = await loadMarkdownContent(blog.mdPath);
                 markdownMatch = markdownContent.includes(searchTerm);
             }
@@ -209,7 +229,10 @@ $(document).ready(function () {
         // Preload the first 5 most recent blogs
         const recentBlogs = allBlogs.slice(0, 5);
         recentBlogs.forEach(blog => {
-            if (blog.mdPath) {
+            // Prefer inline markdownContent; otherwise preload mdPath
+            if (blog.markdownContent) {
+                blogContents[blog.id || blog.mdPath || blog.blogName] = (blog.markdownContent || '').toLowerCase();
+            } else if (blog.mdPath) {
                 loadMarkdownContent(blog.mdPath);
             }
         });
@@ -227,18 +250,20 @@ $(document).ready(function () {
                     </div>
                 `);
 
-        $.ajax({
-            url: '../data/blogs.json',
-            dataType: 'json',
-            success: function (data) {
-                // Sort blogs by date - latest first
-                allBlogs = data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+                fetch(`${API_BASE}/api/blogs`)
+            .then(resp => {
+                if (!resp.ok) throw new Error('Failed to fetch blogs');
+                return resp.json();
+            })
+            .then(data => {
+                const list = data.data || data.blogs || data || [];
+                allBlogs = (list).sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderBlogs(allBlogs);
 
                 // Preload some content for faster search
                 setTimeout(preloadPopularContent, 1000);
-            },
-            error: function () {
+            })
+            .catch(() => {
                 $('#blogsGrid').html(`
                             <div class="alert alert-danger m-5 text-center" style="grid-column: 1 / -1;">
                                 <h4><i class="fas fa-exclamation-triangle mr-2"></i>Error Loading Blogs</h4>
@@ -248,8 +273,7 @@ $(document).ready(function () {
                                 </button>
                             </div>
                         `);
-            }
-        });
+            });
     }
 
     // Render blogs - Updated to include clickable names
@@ -293,7 +317,7 @@ $(document).ready(function () {
             const blogCard = `
                         <div class="blog-card" data-blog-id="${blog.id}" style="animation-delay: ${index * 0.1}s">
                             <div class="blog-image-container">
-                                <img src="${blog.image}" alt="${blog.blogName}" class="blog-image" loading="lazy">
+                                <img src="${toAbsolute(blog.image)}" alt="${blog.blogName}" class="blog-image" loading="lazy">
                                 <div class="blog-categories">
                                     ${categoriesHTML}
                                 </div>

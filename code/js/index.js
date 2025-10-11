@@ -1,4 +1,5 @@
   $(document).ready(function () {
+      // `API_BASE` and `toAbsolute()` are provided by `code/js/config.js`
       // Enhanced navbar scroll effect
       $(window).scroll(function () {
           if ($(this).scrollTop() > 50) {
@@ -69,29 +70,48 @@
       showLoadingState('#latestBlogs');
       showLoadingState('#latestBooks');
 
-      // Load latest books
-      $.getJSON('../data/books.json', function (data) {
-          $('#latestBooks').empty();
-          const latestBooks = data.books
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
-              .slice(0, 4);
-          renderBooks('#latestBooks', latestBooks);
-      }).fail(function () {
-          $('#latestBooks').html(
-              '<div class="col-12 text-center"><p>Unable to load latest books</p></div>');
-      });
+      // Load latest books (from API)
+      (function loadLatestBooks() {
+          fetch(`${API_BASE}/api/books`)
+              .then(resp => {
+                  if (!resp.ok) throw new Error('Failed to fetch books');
+                  return resp.json();
+              })
+              .then(data => {
+                  $('#latestBooks').empty();
+                  const list = data.data || data.books || data;
+                  const latestBooks = (list || [])
+                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                      .slice(0, 4);
+                  renderBooks('#latestBooks', latestBooks);
+              })
+              .catch(() => {
+                  $('#latestBooks').html(
+                      '<div class="col-12 text-center"><p>Unable to load latest books</p></div>');
+              });
+      })();
 
-      // Load latest blogs - NEW
-      $.getJSON('../data/blogs.json', function (data) {
-          $('#latestBlogs').empty();
-          const latestBlogs = data.blogs
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
-              .slice(0, 4);
-          renderBlogs('#latestBlogs', latestBlogs);
-      }).fail(function () {
-          $('#latestBlogs').html(
-              '<div class="col-12 text-center"><p>Unable to load latest blogs</p></div>');
-      });
+      // Load latest blogs - NEW (from API)
+      (function loadLatestBlogs() {
+          fetch(`${API_BASE}/api/blogs`)
+              .then(resp => {
+                  if (!resp.ok) throw new Error('Failed to fetch blogs');
+                  return resp.json();
+              })
+                  .then(data => {
+                      $('#latestBlogs').empty();
+                      // API may return { success:true, count:n, data:[...] } or { blogs:[...] } or an array
+                      const list = data.data || data.blogs || data;
+                      const latestBlogs = (list || [])
+                          .sort((a, b) => new Date(b.date) - new Date(a.date))
+                          .slice(0, 4);
+                      renderBlogs('#latestBlogs', latestBlogs);
+                  })
+              .catch(() => {
+                  $('#latestBlogs').html(
+                      '<div class="col-12 text-center"><p>Unable to load latest blogs</p></div>');
+              });
+      })();
 
       function renderBooks(container, books) {
           books.forEach((book, index) => {
@@ -100,7 +120,7 @@
                             <div class="book-card" style="animation-delay: ${index * 0.1}s">
                                 <a href="v-pdf.html?id=${book.id}">
                                     <div class="thumbnail-wrapper">
-                                        <img src="${book.thumbnail}" class="thumbnail" alt="${book.title}" loading="lazy">
+                                        <img src="${toAbsolute(book.thumbnail)}" class="thumbnail" alt="${book.title}" loading="lazy">
                                         <div class="book-tooltip">${book.title}</div>
                                     </div>
                                     <h5 class="book-title">${book.title}</h5>
@@ -169,7 +189,7 @@
                             <div class="blog-card-home" style="animation-delay: ${index * 0.1}s">
                                 <a href="blog-detail.html?id=${blog.id}">
                                     <div class="blog-thumbnail-wrapper">
-                                        <img src="${blog.image}" class="blog-thumbnail" alt="${blog.blogName}" loading="lazy">
+                                        <img src="${toAbsolute(blog.image)}" class="blog-thumbnail" alt="${blog.blogName}" loading="lazy">
                                         <div class="blog-categories-home">
                                             ${categoriesHTML}
                                         </div>

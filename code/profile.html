@@ -104,7 +104,7 @@
                         </div>
                         <div class="stat-card">
                             <div class="stat-number" id="experienceYears">0</div>
-                            <div class="stat-label">Years Experience</div>
+                            <div class="stat-label">Months Experience</div>
                         </div>
                     </div>
                 </div>
@@ -169,6 +169,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/config.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -208,38 +209,132 @@
             loadProfile(decodeURIComponent(profileName));
         });
 
-        function calculateExperienceYears(term) {
+        // Calculate total months of experience from a term string.
+        // Supports formats like "Feb 2025 - Present", "2023 - 2025", "Mar 2024 - Jun 2025",
+        // and month-only forms like "Feb - Dec" (assumes same year or wraps to next year when end < start).
+        function calculateExperienceMonths(term) {
             if (!term) return 1;
 
-            // Parse the term string (e.g., "2025 - Present" or "2023 - 2026")
-            const termParts = term.split(' - ');
+            const termParts = term.split(' - ').map(p => p.trim());
             if (termParts.length !== 2) return 1;
 
-            const startYear = parseInt(termParts[0]);
-            const currentYear = new Date().getFullYear();
+            const monthMap = {
+                jan: 0, january: 0,
+                feb: 1, february: 1,
+                mar: 2, march: 2,
+                apr: 3, april: 3,
+                may: 4,
+                jun: 5, june: 5,
+                jul: 6, july: 6,
+                aug: 7, august: 7,
+                sep: 8, sept: 8, september: 8,
+                oct: 9, october: 9,
+                nov: 10, november: 10,
+                dec: 11, december: 11
+            };
 
-            let endYear;
-            if (termParts[1].toLowerCase() === 'present') {
-                endYear = currentYear;
+            const parsePart = (part) => {
+                if (!part) return { date: null, hasYear: false, month: null };
+                if (part.toLowerCase() === 'present') return { date: new Date(), hasYear: true, month: null };
+
+                // Try YYYY or YYYY-MM-DD
+                const yearOnly = /^\d{4}$/.test(part);
+                if (yearOnly) {
+                    const y = parseInt(part, 10);
+                    return { date: new Date(y, 0, 1), hasYear: true, month: 0 };
+                }
+
+                // Try to capture month name and optional year: e.g. "Feb 2025" or "February 2025" or "Feb"
+                const mMatch = part.match(/^([A-Za-z]+)\s*(\d{4})?$/);
+                if (mMatch) {
+                    const mName = mMatch[1].toLowerCase();
+                    const month = monthMap[mName];
+                    const hasYear = !!mMatch[2];
+                    const year = hasYear ? parseInt(mMatch[2], 10) : null;
+                    if (typeof month === 'number') {
+                        if (hasYear) {
+                            return { date: new Date(year, month, 1), hasYear: true, month };
+                        }
+                        return { date: null, hasYear: false, month };
+                    }
+                }
+
+                // Try full Date parse and fallback with day=1
+                const d = new Date(part);
+                if (!isNaN(d)) return { date: d, hasYear: true, month: d.getMonth() };
+                const fb = new Date(part + ' 1');
+                if (!isNaN(fb)) return { date: fb, hasYear: true, month: fb.getMonth() };
+
+                return { date: null, hasYear: false, month: null };
+            };
+
+            const start = parsePart(termParts[0]);
+            const end = parsePart(termParts[1]);
+
+            const now = new Date();
+
+            // If end is 'Present' we already returned a date above and hasYear=true
+            let startDate, endDate;
+
+            // Case: both have concrete Date (with year) -> use them
+            if (start.date && end.date) {
+                startDate = new Date(start.date.getFullYear(), start.date.getMonth(), 1);
+                endDate = new Date(end.date.getFullYear(), end.date.getMonth(), 1);
+            } else if (start.hasYear && start.date && !end.date) {
+                // end has month w/o year -> assume same year as start, or next year if end month < start month
+                const sYear = start.date.getFullYear();
+                const eYear = (typeof end.month === 'number') ? (end.month < start.date.getMonth() ? sYear + 1 : sYear) : sYear;
+                startDate = new Date(sYear, start.date.getMonth(), 1);
+                endDate = (end.month !== null) ? new Date(eYear, end.month, 1) : new Date(eYear, 11, 1);
+            } else if (!start.date && end.hasYear && end.date) {
+                // start has month w/o year -> assume same year as end, or previous year if start month > end month
+                const eYear = end.date.getFullYear();
+                const sYear = (typeof start.month === 'number') ? (start.month > end.date.getMonth() ? eYear - 1 : eYear) : eYear;
+                startDate = (start.month !== null) ? new Date(sYear, start.month, 1) : new Date(sYear, 0, 1);
+                endDate = new Date(eYear, end.date.getMonth(), 1);
+            } else if (!start.date && !end.date && typeof start.month === 'number' && typeof end.month === 'number') {
+                // both months but no years: assume current year, wrap to next year if needed
+                let sYear = now.getFullYear();
+                let eYear = now.getFullYear();
+                if (end.month < start.month) eYear = sYear + 1;
+                startDate = new Date(sYear, start.month, 1);
+                endDate = new Date(eYear, end.month, 1);
+            } else if (!start.date && !end.date && (start.month !== null || end.month !== null)) {
+                // partial info: try to fill with current year
+                const sMonth = (start.month !== null) ? start.month : 0;
+                const eMonth = (end.month !== null) ? end.month : now.getMonth();
+                let sYear = now.getFullYear();
+                let eYear = now.getFullYear();
+                if (eMonth < sMonth) eYear = sYear + 1;
+                startDate = new Date(sYear, sMonth, 1);
+                endDate = new Date(eYear, eMonth, 1);
             } else {
-                endYear = parseInt(termParts[1]);
+                // last resort: use parsed dates if available or fallback to now
+                startDate = start.date ? new Date(start.date.getFullYear(), start.date.getMonth(), 1) : new Date(now.getFullYear(), 0, 1);
+                endDate = end.date ? new Date(end.date.getFullYear(), end.date.getMonth(), 1) : new Date(now.getFullYear(), now.getMonth(), 1);
             }
 
-            // Calculate experience years
-            const experienceYears = endYear - startYear;
-
-            // If they started this year or experience is 0, show at least 1 year
-            return Math.max(1, experienceYears);
+            // Compute months inclusive of start month
+            const sYear = startDate.getFullYear();
+            const sMonth = startDate.getMonth();
+            const eYear = endDate.getFullYear();
+            const eMonth = endDate.getMonth();
+            let totalMonths = (eYear - sYear) * 12 + (eMonth - sMonth) + 1;
+            totalMonths = Math.max(1, totalMonths);
+            return totalMonths;
         }
 
         function loadProfile(profileName) {
             showLoadingStates();
+            // Load profiles from API and blogs from API (use API_BASE from config.js)
             Promise.all([
-                $.getJSON('../data/profiles.json'),
-                $.getJSON('../data/blogs.json')
+                fetch(`${API_BASE}/api/profiles`).then(r => r.ok ? r.json() : { data: [] }),
+                fetch(`${API_BASE}/api/blogs`).then(r => r.ok ? r.json() : { data: [] })
             ]).then(([profilesData, blogsData]) => {
+                const profilesArray = profilesData.data || profilesData.profiles || [];
+                const blogsArray = blogsData.data || blogsData.blogs || [];
                 // Find all blogs this person contributed to
-                const contributedBlogs = blogsData.blogs.filter(blog => {
+                const contributedBlogs = blogsArray.filter(blog => {
                     const writers = Array.isArray(blog.writers) ? blog.writers : [blog.writers];
                     const designers = Array.isArray(blog.graphicDesigners) ? blog.graphicDesigners : [blog.graphicDesigners];
                     return writers.includes(profileName) || designers.includes(profileName);
@@ -273,18 +368,19 @@
                 });
 
                 // Use profile data for avatar, term, bio
-                const profile = profilesData.profiles.find(p => p.name === profileName) || {};
+                const profile = profilesArray.find(p => p.name === profileName) || {};
 
-                // Calculate experience years from term instead of using experienceYears field
-                const calculatedExperience = calculateExperienceYears(profile.term);
+                // Calculate experience months from term
+                const calculatedMonths = calculateExperienceMonths(profile.term);
 
                 const displayProfileData = {
                     name: profileName,
                     role: mainRole,
                     term: profile.term || '2025 - Present',
                     bio: profile.bio || '',
-                    avatar: profile.avatar || '../data/images/default-avatar.jpg',
-                    experienceYears: calculatedExperience,
+                    avatar: toAbsolute(profile.avatar || 'data/images/default-avatar.jpg'),
+                    mail: (profile && (profile.mail || profile.email)) || '',
+                    experienceMonths: calculatedMonths,
                     articlesContributed: contributedBlogs.length,
                     collaborations: collaborations.length
                 };
@@ -297,14 +393,28 @@
 
         function displayProfile(profile) {
             document.title = `${profile.name} - Profile | InkPact Digital Library`;
-            $('#profileAvatar').attr('src', profile.avatar || '../data/images/default-avatar.jpg').show();
+            $('#profileAvatar').attr('src', toAbsolute(profile.avatar) || toAbsolute('data/images/default-avatar.jpg')).show();
             $('#profileName').text(profile.name);
             $('#profileRole').text(profile.role);
             $('#profileTerm').text(`Term: ${profile.term}`);
             $('#profileBio').text(profile.bio || 'No bio available').show();
             $('#blogCount').text(profile.articlesContributed || 0);
             $('#collaborationCount').text(profile.collaborations || 0);
-            $('#experienceYears').text(profile.experienceYears || 1);
+            // Format months: show numeric value only in the big stat number so it uses the same
+            // font/style as other stats. Add a tooltip/title for full text (e.g., "12 months").
+            const months = profile.experienceMonths || 1;
+            const fullLabel = `${months} ${months === 1 ? 'month' : 'months'}`;
+            $('#experienceYears').text(months).attr('title', fullLabel);
+
+            // Render social links (email primarily). Server may send `mail` or `email` field.
+            const email = (profile.mail || profile.email || '').trim();
+            let socialHtml = '';
+            if (email) {
+                // show as a button with envelope icon; keep the address visible for contact
+                socialHtml += `<a href="mailto:${email}" class="btn btn-outline-primary mr-2" aria-label="Email ${profile.name}"><i class="fas fa-envelope mr-2"></i>${email}</a>`;
+            }
+            // Optionally add more social links here if profile contains them (e.g., website, twitter)
+            $('#socialLinks').html(socialHtml);
         }
 
         function displayBlogs(blogs, profileName) {
@@ -326,7 +436,7 @@
                 }
                 html += `
                     <div class="blog-card" style="animation-delay: ${index * 0.1}s">
-                        <img src="${blog.image}" alt="${blog.blogName}" class="blog-image" loading="lazy">
+                        <img src="${toAbsolute(blog.image)}" alt="${blog.blogName}" class="blog-image" loading="lazy">
                         <div class="blog-content">
                             <h3 class="blog-title">${blog.blogName}</h3>
                             <div class="blog-date">

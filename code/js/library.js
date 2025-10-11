@@ -76,29 +76,33 @@ $(document).ready(function () {
     // Initial display (always use cache if available)
     handleBooksDisplay();
 
-    // Load books data (refresh cache after AJAX)
-    $.ajax({
-        url: '../data/books.json',
-        dataType: 'json',
-        success: function (data) {
-            allBooks = data.books;
-            sessionStorage.setItem('libraryBooks', JSON.stringify(allBooks));
-            handleBooksDisplay();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (!cachedData) {
-                $('.bookshelf-container').html(`
-                    <div class="alert alert-danger m-5 text-center">
-                        <h4><i class="fas fa-exclamation-triangle mr-2"></i>Error Loading Books</h4>
-                        <p>Unable to load the library at this time. Please check your connection and try again.</p>
-                        <button class="btn btn-primary mt-3" onclick="location.reload()">
-                            <i class="fas fa-redo mr-2"></i>Retry
-                        </button>
-                    </div>
-                `);
-            }
-        }
-    });
+    // Load books data (refresh cache after fetch)
+    (function refreshBooks() {
+        fetch(`${API_BASE}/api/books`)
+            .then(resp => {
+                if (!resp.ok) throw new Error('Failed to fetch books');
+                return resp.json();
+            })
+            .then(data => {
+                const list = data.data || data.books || data || [];
+                allBooks = list;
+                sessionStorage.setItem('libraryBooks', JSON.stringify(allBooks));
+                handleBooksDisplay();
+            })
+            .catch(() => {
+                if (!cachedData) {
+                    $('.bookshelf-container').html(`
+                        <div class="alert alert-danger m-5 text-center">
+                            <h4><i class="fas fa-exclamation-triangle mr-2"></i>Error Loading Books</h4>
+                            <p>Unable to load the library at this time. Please check your connection and try again.</p>
+                            <button class="btn btn-primary mt-3" onclick="location.reload()">
+                                <i class="fas fa-redo mr-2"></i>Retry
+                            </button>
+                        </div>
+                    `);
+                }
+            });
+    })();
 
     // Save scroll position when leaving page
     $(window).on('beforeunload', function () {
@@ -113,14 +117,17 @@ $(document).ready(function () {
     });
 
     function showPage(pageNum) {
+        // Update active pagination button
         $('.pagination .page-item').removeClass('active');
-        $(`.pagination .page-item:not(:first-child):not(:last-child)`).eq(pageNum - 1).addClass(
-            'active');
+        $(`.pagination .page-item`).filter(function () {
+            const p = $(this).find('.page-link').data('page');
+            return parseInt(p) === parseInt(pageNum);
+        }).addClass('active');
 
-        // Add fade transition
-        $('.bookshelf-page').fadeOut(200, function () {
-            $(`.bookshelf-page[data-page="${pageNum}"]`).fadeIn(400);
-        });
+        // Fade transition between pages
+        $('.bookshelf-page').not(`[data-page="${pageNum}"]`).fadeOut(200);
+        $(`.bookshelf-page[data-page="${pageNum}"]`).fadeIn(400);
+
         sessionStorage.setItem('lastActivePage', pageNum);
     }
 
@@ -156,6 +163,8 @@ $(document).ready(function () {
     // Set worker path for PDF.js
     pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+    // `API_BASE` and `toAbsolute()` are provided by `code/js/config.js`
 
     async function renderPDFThumbnail(pdfUrl) {
         try {
@@ -225,12 +234,12 @@ $(document).ready(function () {
                                 <div class="thumb book-1" data-id="${book.id}" data-book-id="${book.id}">
                                     <div class="book-tooltip">${book.title}</div>
                                     <a href="v-pdf.html?id=${book.id}">
-                                        <img src="${book.thumbnail}" alt="${book.title}" loading="lazy">
+                                            <img src="${toAbsolute(book.thumbnail)}" alt="${book.title}" loading="lazy">
                                     </a>
                                 </div>
                             `).join('')}
                         </div>
-                        <img class="shelf-img" src="../data/images/shelf_wood.png" loading="lazy" alt="Bookshelf">
+                            <img class="shelf-img" src="../data/images/shelf_wood.png" loading="lazy" alt="Bookshelf">
                     </div>
                 `);
                 $page.append($shelf);
@@ -244,72 +253,39 @@ $(document).ready(function () {
         $('.bookshelf-page').hide();
         $('.bookshelf-page[data-page="1"]').show();
 
-        // Initialize flipBook for new elements
-        $(".book-1").flipBook({
-            // Layout Setting
-            pdfUrl: 'pdf/pdf.pdf',
-            lightBox: true,
-            layout: 3,
-            currentPage: {
-                vAlign: "bottom",
-                hAlign: "left"
-            },
-            // BTN SETTING
-            btnShare: {
-                enabled: false
-            },
-            btnPrint: {
-                hideOnMobile: true
-            },
-            btnDownloadPages: {
-                enabled: true,
-                title: "Download pages",
-                icon: "fa-download",
-                icon2: "file_download",
-                url: "../data/images/pdf.rar",
-                name: "allPages.zip",
-                hideOnMobile: false
-            },
-            btnColor: '#012FB3',
-            sideBtnColor: '#012FB3',
-            sideBtnSize: 60,
-            sideBtnBackground: "rgba(0,0,0,.7)",
-            sideBtnRadius: 60,
-            btnSound: {
-                vAlign: "top",
-                hAlign: "left"
-            },
-            btnAutoplay: {
-                vAlign: "top",
-                hAlign: "left"
-            },
-            // SHARING
-            btnShare: {
-                enabled: true,
-                title: "Share",
-                icon: "fa-share-alt"
-            },
-            facebook: {
-                enabled: true,
-                url: "ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            },
-            google_plus: {
-                enabled: false
-            },
-            email: {
-                enabled: true,
-                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf",
-                title: "PDF KPK",
-                description: "Silahkan click link di bawah untuk melihat / mengunduf pdf"
-            },
-            twitter: {
-                enabled: true,
-                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            },
-            pinterest: {
-                enabled: true,
-                url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
-            }
+        // Initialize flipBook for each book element with its own pdfUrl
+        $container.find('.thumb').each(function () {
+            const $thumb = $(this);
+            const bookId = $thumb.data('book-id');
+            const book = books.find(b => b.id == bookId) || {};
+            const pdfUrl = toAbsolute((book && (book.pdfUrl || book.pdf)) || 'data/pdf/pdf.pdf');
+
+            // Attach flipBook to the thumb container so clicking the cover opens the flipbook
+            $thumb.flipBook({
+                pdfUrl: pdfUrl,
+                lightBox: true,
+                layout: 3,
+                currentPage: {
+                    vAlign: "bottom",
+                    hAlign: "left"
+                },
+                btnShare: { enabled: false },
+                btnPrint: { hideOnMobile: true },
+                btnDownloadPages: {
+                    enabled: true,
+                    title: "Download pages",
+                    icon: "fa-download",
+                    icon2: "file_download",
+                    url: toAbsolute('../data/images/pdf.rar'),
+                    name: "allPages.zip",
+                    hideOnMobile: false
+                },
+                btnColor: '#012FB3',
+                sideBtnColor: '#012FB3',
+                sideBtnSize: 60,
+                sideBtnBackground: "rgba(0,0,0,.7)",
+                sideBtnRadius: 60
+            });
         });
 
         // SIMPLIFIED TOOLTIP HANDLING
@@ -377,20 +353,26 @@ $(document).ready(function () {
             e.preventDefault();
             if ($(this).hasClass('disabled')) return;
 
-            let pageNum;
             const $link = $(this).find('.page-link');
 
-            if ($link.attr('aria-label') === 'Previous') {
-                const currentPage = $('.pagination .page-item.active').index();
-                pageNum = Math.max(1, currentPage);
-            } else if ($link.attr('aria-label') === 'Next') {
-                const currentPage = $('.pagination .page-item.active').index();
-                pageNum = Math.min(pageCount, currentPage + 2);
-            } else {
-                pageNum = parseInt($link.data('page'));
+            // Determine currently active page number
+            const $active = $('.pagination .page-item').filter('.active');
+            let currentPage = 1;
+            if ($active.length) {
+                currentPage = parseInt($active.find('.page-link').data('page')) || $active.index() + 1;
             }
 
-            if (pageNum) {
+            let pageNum = currentPage;
+
+            if ($link.attr('aria-label') === 'Previous') {
+                pageNum = Math.max(1, currentPage - 1);
+            } else if ($link.attr('aria-label') === 'Next') {
+                pageNum = Math.min(pageCount, currentPage + 1);
+            } else {
+                pageNum = parseInt($link.data('page')) || currentPage;
+            }
+
+            if (pageNum && pageNum >= 1 && pageNum <= pageCount) {
                 showPage(pageNum);
             }
         });

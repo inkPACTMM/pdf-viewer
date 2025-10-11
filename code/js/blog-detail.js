@@ -44,17 +44,25 @@ $(document).ready(function () {
 
 function loadBlog(blogId) {
     showLoadingStates();
-    $.getJSON('../data/blogs.json', function (data) {
-        const blog = data.blogs.find(b => b.id == blogId);
-        if (blog) {
-            displayBlog(blog);
-        } else {
-            showError('Blog not found');
-        }
-    }).fail(function () {
-        showError('Error loading blog data');
-    });
-}
+    // Fetch blog metadata by id
+    fetch(`${API_BASE}/api/blogs/${encodeURIComponent(blogId)}`)
+        .then(resp => {
+            if (!resp.ok) throw new Error('Network response was not ok');
+            return resp.json();
+        })
+        .then(json => {
+            // API returns { success:true, data: {...} } or the blog object directly
+            const blog = json && json.data ? json.data : json;
+            if (blog) {
+                displayBlog(blog);
+            } else {
+                showError('Blog not found');
+            }
+        })
+        .catch(() => {
+            showError('Error loading blog data');
+        });
+    }
 
 function showLoadingStates() {
     $('#blogImage').hide();
@@ -65,12 +73,15 @@ function showLoadingStates() {
     $('#blogContent').html('<div class="loading-shimmer" style="width: 100%; height: 200px;"></div>');
 }
 
+// `API_BASE` and `toAbsolute()` are provided by `code/js/config.js`
+
 function displayBlog(blog) {
     // Update page title
     document.title = `${blog.blogName} - Blog | InkPact Digital Library`;
 
     // Blog basic info
-    $('#blogImage').attr('src', blog.image).attr('alt', blog.blogName).show();
+    // Use server-hosted image when available
+    $('#blogImage').attr('src', toAbsolute(blog.image)).attr('alt', blog.blogName).show();
     $('#blogTitle').text(blog.blogName);
     $('#blogDate').text(new Date(blog.date).toLocaleDateString());
     $('#blogReadTime').text(blog.readTime);
@@ -105,13 +116,31 @@ function displayBlog(blog) {
 
     // Load and render Markdown file for blog content using mdPath from JSON
     const mdPath = blog.mdPath ? blog.mdPath : null;
-    if (mdPath) {
-        $.get(mdPath, function (mdContent) {
-            const htmlContent = marked.parse(mdContent);
+    if (mdPath || blog.markdownContent) {
+        // Prefer markdownContent field returned by API when available
+        if (blog.markdownContent) {
+            const htmlContent = marked.parse(blog.markdownContent);
             $('#blogContent').html(htmlContent);
-        }).fail(function () {
-            $('#blogContent').html(blog.description || 'No content available');
-        });
+        } else {
+            // Try content endpoint first (may 404), then fallback to mdPath file
+            fetch(`${API_BASE}/api/blogs/${encodeURIComponent(blog.id)}/content`)
+                .then(resp => {
+                    if (resp.ok) return resp.text();
+                    // fallback to mdPath (served by API) — ensure absolute URL
+                    return fetch(toAbsolute(mdPath)).then(r => r.ok ? r.text() : null);
+                })
+                .then(mdContent => {
+                    if (mdContent) {
+                        const htmlContent = marked.parse(mdContent);
+                        $('#blogContent').html(htmlContent);
+                    } else {
+                        $('#blogContent').html(blog.description || 'No content available');
+                    }
+                })
+                .catch(() => {
+                    $('#blogContent').html(blog.description || 'No content available');
+                });
+        }
     } else {
         $('#blogContent').html(blog.description || 'No content available');
     }
