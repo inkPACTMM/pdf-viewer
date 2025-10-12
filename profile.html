@@ -16,6 +16,43 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/profile.css">
+    <style>
+        /* Contributors directory enhancements */
+        .profiles-list .card.profile-card-sm {
+            transition: transform 180ms ease, box-shadow 180ms ease;
+            border: 0;
+            box-shadow: 0 6px 18px rgba(14, 30, 37, 0.06);
+            padding: 18px;
+            border-radius: 12px;
+            min-height: 180px;
+        }
+        .profiles-list .card.profile-card-sm:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 40px rgba(14, 30, 37, 0.12);
+        }
+        .profiles-list .rounded-circle {
+            border: 4px solid #fff;
+            box-shadow: 0 6px 18px rgba(2, 43, 115, 0.08);
+        }
+        #contentSubtitle {
+            color: #6b7280;
+            margin-top: 6px;
+            margin-bottom: 18px;
+            font-size: 0.95rem;
+        }
+        .section-title {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+        .content-section .container { text-align: center; }
+        .profiles-list .card .btn { width: 100%; }
+        .profiles-list .card .text-muted { min-height: 1.6em; }
+        @media (max-width: 576px) {
+            .profiles-list .col-md-4 { width: 100%; flex: 0 0 100%; }
+            .profiles-list .card.profile-card-sm { min-height: 150px; }
+        }
+    </style>
 
     <!-- Primary Meta Tags -->
     <title>inkPACT Myanmar - Profile</title>
@@ -112,12 +149,13 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
+    <!-- Content Section (dynamic title: either Contributed Articles or Contributors) -->
     <section class="content-section">
         <div class="container">
-            <h2 class="section-title">Contributed Articles</h2>
+            <h2 class="section-title" id="contentTitle">Contributed Articles</h2>
+            <div id="contentSubtitle" class="mb-3"></div>
             <div class="blog-grid" id="blogGrid">
-                <!-- Blogs will be populated by JS -->
+                <!-- Blogs or profiles will be populated by JS -->
             </div>
         </div>
     </section>
@@ -203,7 +241,7 @@
             if (!profileName) {
                 // If no specific profile requested, show a directory of profiles so the page
                 // can be used without query params.
-                loadProfilesList();
+                    loadProfilesList();
             } else {
                 // Load profile data
                 loadProfile(decodeURIComponent(profileName));
@@ -372,6 +410,12 @@
                 // Use profile data for avatar, term, bio
                 const profile = profilesArray.find(p => p.name === profileName) || {};
 
+                // If there is no profile metadata and no contributed blogs, show a clear "no profile" state
+                if ((!profile || Object.keys(profile).length === 0) && contributedBlogs.length === 0) {
+                    displayNoProfile(profileName);
+                    return;
+                }
+
                 // Calculate experience months from term
                 const calculatedMonths = calculateExperienceMonths(profile.term);
 
@@ -386,6 +430,9 @@
                     articlesContributed: contributedBlogs.length,
                     collaborations: collaborations.length
                 };
+                // Ensure content section is visible and title is correct for single profile
+                $('#contentTitle').text('Contributed Articles');
+                $('.content-section').show();
                 displayProfile(displayProfileData);
                 displayBlogs(contributedBlogs, profileName);
             }).catch(() => {
@@ -395,6 +442,11 @@
 
         function displayProfile(profile) {
             document.title = `${profile.name} - Profile | InkPact Digital Library`;
+            // Show profile card and populate fields
+            $('.profile-card').show();
+            $('.profile-header').show();
+            // Clear directory subtitle when showing a single profile
+            $('#contentSubtitle').text('');
             $('#profileAvatar').attr('src', toAbsolute(profile.avatar) || toAbsolute('data/images/default-avatar.jpg')).show();
             $('#profileName').text(profile.name);
             $('#profileRole').text(profile.role);
@@ -494,8 +546,43 @@
             `);
         }
 
+        function displayNoProfile(name) {
+            $('.profile-container').html(`
+                <div class="no-profile text-center py-5">
+                    <img src="images/preview.png" alt="No profile" style="max-width:160px; opacity:0.6;">
+                    <h3 class="mt-4">No profile found for "${name}"</h3>
+                    <p class="text-muted">We couldn't find any information for this contributor. They may not have a public profile yet.</p>
+                    <div class="mt-3">
+                        <a href="profile.html" class="btn btn-outline-primary mr-2">Browse Contributors</a>
+                        <a href="blogs.html" class="btn btn-primary">Browse Articles</a>
+                    </div>
+                </div>
+            `);
+            // Hide other header pieces
+            $('#profileAvatar').hide();
+            $('#profileName').text('Profile not found');
+            $('#profileRole').hide();
+            $('#profileTerm').hide();
+            $('#profileBio').hide();
+            // Show content section with empty state so layout remains consistent
+            $('#blogGrid').html('');
+            // Clear directory subtitle
+            $('#contentSubtitle').text('');
+            $('#contentTitle').text('Contributed Articles');
+            $('.content-section').show();
+        }
+
         // When profile page is opened without ?name, load a directory of profiles
         function loadProfilesList() {
+            // Set the page title and ensure header is visible
+            $('#contentTitle').text('Contributors');
+            // Hide the single-profile card when listing contributors
+            $('.profile-card').hide();
+            $('.profile-header').hide();
+            $('.profile-container').show();
+            // Make sure the content section is visible when showing the directory
+            $('.content-section').show();
+            // Hide single-profile specific fields while keeping the header container visible
             $('#profileName').text('Contributors');
             $('#profileRole').hide();
             $('#profileTerm').hide();
@@ -512,7 +599,7 @@
                 // Fallback to local file if API not available
                 fetch('data/profiles.json').then(r => r.json()).then(d => {
                     const list = d.profiles || [];
-                    displayProfilesList(list);
+                        displayProfilesList(list);
                 }).catch(() => {
                     showError('Unable to load contributors list');
                 });
@@ -521,9 +608,12 @@
 
         function displayProfilesList(list) {
             if (!Array.isArray(list) || list.length === 0) {
+                $('#contentSubtitle').text('');
                 $('#blogGrid').html('<div class="empty-state"><h3>No contributors found</h3></div>');
                 return;
             }
+            // Subtitle for directory
+            $('#contentSubtitle').text('Browse our contributors and view their profiles and articles.');
             let html = '<div class="profiles-list row">';
             list.forEach(p => {
                 const avatar = toAbsolute((p && p.avatar) || 'data/images/default-avatar.jpg');
@@ -540,7 +630,9 @@
                 `;
             });
             html += '</div>';
-            $('.profile-container').hide();
+            // Ensure header container is visible and hide single-profile card
+            $('.profile-container').show();
+            $('.profile-card').hide();
             $('#blogGrid').html(html);
         }
     </script>
