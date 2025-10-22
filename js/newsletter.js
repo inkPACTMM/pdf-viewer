@@ -29,58 +29,47 @@
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-
-        // Simulate API call (replace with actual API endpoint)
-        setTimeout(() => {
-            // Success
-            let message_text = `Thank you ${name}! Your message has been sent successfully.`;
-            
-            if (subscribeToNewsletter) {
-                message_text += '\n\nYou have also been subscribed to our newsletter!';
-            }
-            
-            alert(message_text);
-            form.reset();
-            
-            // Reset button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-        }, 1500);
-
-        // For actual implementation:
-        /*
+        
         const payload = {
             name,
             email,
             message,
-            subscribe: subscribeToNewsletter
+            subscribe: !!subscribeToNewsletter,
+            source: 'newsletter-page'
         };
 
-        fetch(`${API_BASE}/api/contact`, {
+        fetch(`${API_BASE}/api/contact/send`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload),
         })
-        .then(response => response.json())
-        .then(data => {
-            let successMessage = `Thank you ${name}! Your message has been sent successfully.`;
-            if (subscribeToNewsletter) {
-                successMessage += '\n\nYou have also been subscribed to our newsletter!';
+        .then(async (response) => {
+            let data;
+            try { data = await response.json(); } catch (_) { data = {}; }
+            if (!response.ok) {
+                const msg = data.message || data.error || 'Failed to send your message.';
+                throw new Error(msg);
+            }
+            return data;
+        })
+        .then((data) => {
+            let successMessage = `Thank you ${name || email}! Your message has been sent successfully.`;
+            if (payload.subscribe) {
+                successMessage += '\n\nSubscription: ' + (data.subscriptionStatus || 'requested');
             }
             alert(successMessage);
             form.reset();
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Sorry, there was an error sending your message. Please try again later.');
+        .catch((error) => {
+            console.error('Contact error:', error);
+            alert(error.message || 'Sorry, there was an error sending your message. Please try again later.');
         })
         .finally(() => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         });
-        */
     }
 
     // Handle subscribe form submission
@@ -103,40 +92,40 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Subscribing...';
 
-        // Simulate API call (replace with actual API endpoint)
-        setTimeout(() => {
-            // Success
-            alert(`Thank you ${name}! You've been subscribed to our newsletter at ${email}`);
-            form.reset();
-            
-            // Reset button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-        }, 1500);
-
-        // For actual implementation:
-        /*
-        fetch(`${API_BASE}/api/subscribe`, {
+        fetch(`${API_BASE}/api/newsletter/subscribe`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ name, email }),
         })
-        .then(response => response.json())
-        .then(data => {
-            alert(`Thank you ${name}! You've been subscribed successfully.`);
+        .then(async (response) => {
+            let data;
+            try { data = await response.json(); } catch (_) { data = {}; }
+            if (!response.ok) {
+                const msg = data.message || data.error || 'Subscription failed.';
+                throw new Error(msg);
+            }
+            return data;
+        })
+        .then((data) => {
+            // Try to interpret subscription status from API
+            const status = (data.status || data.subscriptionStatus || '').toString().toLowerCase();
+            if (status.includes('already') || status === 'duplicate') {
+                alert(`You're already subscribed with ${email}.`);
+            } else {
+                alert(`Thank you ${name || email}! You've already subscribed!`);
+            }
             form.reset();
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Sorry, there was an error. Please try again later.');
+        .catch((error) => {
+            console.error('Subscribe error:', error);
+            alert(error.message || 'Sorry, there was an error. Please try again later.');
         })
         .finally(() => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         });
-        */
     }
 
     // Add navbar scroll effect
