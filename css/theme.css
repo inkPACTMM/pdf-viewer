@@ -221,3 +221,54 @@ a:hover {
         padding-top: 100%;
     }
 }
+
+/* Global responsive helpers to improve mobile layout across pages */
+/* Images and media scale down nicely */
+img, .thumbnail, .book-card .thumbnail, .book-cover img, .profile-avatar, .logo-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make sure form columns stack on small screens and are touch-friendly */
+@media (max-width: 991.98px) {
+  .contact-subscribe-section .col-lg-6,
+  .content-section .col-lg-6,
+  .profiles-list .col-md-4,
+  .book-grid .col-md-4,
+  .bookshelf-container .col-md-3 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Ensure navbar container has touch padding on small screens */
+  .navbar .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Reduce header/title sizes for small devices */
+  h1 { font-size: clamp(1.4rem, 4vw, 2rem); }
+  h2 { font-size: clamp(1.25rem, 3.5vw, 1.5rem); }
+  .lead { font-size: 0.95rem; }
+}
+
+/* Buttons and interactive elements - make larger tappable targets */
+.btn, .nav-link, .form-control, .main-form .btn {
+  min-height: 44px;
+}
+
+/* Footer quick-links stack on small screens */
+@media (max-width: 576px) {
+  .footer .col-xs-12 { text-align: left; padding-left: 1rem; padding-right: 1rem; }
+  .footer .quick-links li { margin-bottom: 8px; }
+}
+
+/* Tables responsiveness */
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Utility: collapse long text in cards on small screens */
+@media (max-width: 480px) {
+  .book-bottom-title h5, .book-title { -webkit-line-clamp: 3; }
+}

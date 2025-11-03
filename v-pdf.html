@@ -635,9 +635,6 @@
   <!-- Enhanced Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">
-        <img src="images/logo.png" alt="InkPact Logo">
-      </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -645,7 +642,12 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mx-auto">
+          <li>
+            <a class="navbar-brand" href="index.html">
+              <img src="images/logo.png" alt="InkPact Logo">
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="index.html">Home</a>
           </li>
@@ -658,11 +660,14 @@
           <li class="nav-item">
             <a class="nav-link" href="blogs.html">Blogs</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html">Profiles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact-us.html">Contact</a>
+          </li>
         </ul>
-        <div class="nav-buttons">
-          <button class="btn btn-outline-primary" type="button">Sign In</button>
-          <button class="btn btn-primary" type="button">Get Started</button>
-        </div>
+        <!-- action buttons removed site-wide -->
       </div>
     </div>
   </nav>
@@ -715,6 +720,7 @@
             <li><a href="index.html"><i class="fa fa-angle-double-right"></i>Home</a></li>
             <li><a href="about-us.html"><i class="fa fa-angle-double-right"></i>About Us</a></li>
             <li><a href="library.html"><i class="fa fa-angle-double-right"></i>Library</a></li>
+            <li><a href="profile.html"><i class="fa fa-angle-double-right"></i>Profiles</a></li>
             <li><a href="blogs.html"><i class="fa fa-angle-double-right"></i>Blogs</a></li>
             <li><a href="contact-us.html"><i class="fa fa-angle-double-right"></i>Contact</a></li>
           </ul>
@@ -769,7 +775,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const bookId = urlParams.get('id');
 
-    // Show loading state
+      // Show loading state
       $('#info').addClass('loading-state');
       $('.book-cover').html(`
         <div class="loading-shimmer" style="width: 200px; height: 280px; border-radius: 8px;"></div>
@@ -779,7 +785,7 @@
       $('#author').html(
         '<div class="loading-shimmer" style="width: 150px; height: 20px; border-radius: 4px;"></div>');
 
-            // Load book data (from API)
+      // Load book data (from API)
       (function loadBook() {
         fetch(`${API_BASE}/api/books`)
           .then(resp => {
@@ -790,74 +796,74 @@
             const list = data.data || data.books || data || [];
             const book = (list || []).find(b => b.id == bookId);
             if (book) {
-          // Animate content reveal
-          setTimeout(() => {
-            // Update page metadata
-            $('#title').text(book.title).addClass('fade-in');
-            $('#author').text(book.author).addClass('fade-in');
-            $('#date').text(new Date(book.date).toLocaleDateString()).addClass('fade-in');
-            $('#size b').text(book.size);
-            $('#description').text(book.description).addClass('fade-in');
+              // Animate content reveal
+              setTimeout(() => {
+                // Update page metadata
+                $('#title').text(book.title).addClass('fade-in');
+                $('#author').text(book.author).addClass('fade-in');
+                $('#date').text(new Date(book.date).toLocaleDateString()).addClass('fade-in');
+                $('#size b').text(book.size);
+                $('#description').text(book.description).addClass('fade-in');
 
-            // Replace loading shimmer with actual book cover
-            $('.book-cover').html(`
+                // Replace loading shimmer with actual book cover
+                $('.book-cover').html(`
               <img src="${toAbsolute(book.thumbnail)}" class="book-1 fade-in-scale" alt="${book.title}" style="display: block;">
             `);
 
-            document.title = book.title + " - View PDF";
+                document.title = book.title + " - View PDF";
 
-            // Initialize flipbook with book's PDF
-            $("#read").flipBook({
-              pdfUrl: toAbsolute(book.pdfUrl),
-              lightBox: true,
-              layout: 3,
-              currentPage: {
-                vAlign: "bottom",
-                hAlign: "left"
-              },
-              btnShare: {
-                enabled: false
-              },
-              btnPrint: {
-                enabled: false
-              },
-              btnDownloadPages: {
-                enabled: true,
-                title: "Download PDF",
-                icon: "fa-download",
-                url: book.pdfUrl,
-                name: book.title + ".pdf",
-                hideOnMobile: false
-              },
-              btnColor: '#012FB3',
-              sideBtnColor: '#012FB3',
-              sideBtnSize: 60,
-              sideBtnBackground: "rgba(0,0,0,.7)",
-              sideBtnRadius: 60,
-              btnSound: {
-                vAlign: "top",
-                hAlign: "left"
-              },
-              btnAutoplay: {
-                vAlign: "top",
-                hAlign: "left"
-              }
-            });
+                // Initialize flipbook with book's PDF
+                $("#read").flipBook({
+                  pdfUrl: toAbsolute(book.pdfUrl),
+                  lightBox: true,
+                  layout: 3,
+                  currentPage: {
+                    vAlign: "bottom",
+                    hAlign: "left"
+                  },
+                  btnShare: {
+                    enabled: false
+                  },
+                  btnPrint: {
+                    enabled: false
+                  },
+                  btnDownloadPages: {
+                    enabled: true,
+                    title: "Download PDF",
+                    icon: "fa-download",
+                    url: book.pdfUrl,
+                    name: book.title + ".pdf",
+                    hideOnMobile: false
+                  },
+                  btnColor: '#012FB3',
+                  sideBtnColor: '#012FB3',
+                  sideBtnSize: 60,
+                  sideBtnBackground: "rgba(0,0,0,.7)",
+                  sideBtnRadius: 60,
+                  btnSound: {
+                    vAlign: "top",
+                    hAlign: "left"
+                  },
+                  btnAutoplay: {
+                    vAlign: "top",
+                    hAlign: "left"
+                  }
+                });
 
-            // Update download button href
-            $('a[download]').attr('href', toAbsolute(book.pdfUrl));
+                // Update download button href
+                $('a[download]').attr('href', toAbsolute(book.pdfUrl));
 
-            $('#info').removeClass('loading-state').addClass('content-loaded');
-          }, 800);
-        } else {
-          $('#info').html(`
+                $('#info').removeClass('loading-state').addClass('content-loaded');
+              }, 800);
+            } else {
+              $('#info').html(`
             <div class="alert alert-danger text-center">
               <h4>Book Not Found</h4>
               <p>The requested book could not be found.</p>
               <a href="library.html" class="btn btn-primary">Browse Library</a>
             </div>
           `);
-        }
+            }
           })
           .catch(() => {
             $('#info').html(`
