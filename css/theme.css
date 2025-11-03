@@ -215,6 +215,23 @@ a:hover {
     padding-top: 140%; /* Taller aspect ratio for latest books */
 }
 
+/* Landscape thumbnail handling: when a thumbnail is wider than tall */
+.thumbnail-wrapper.landscape {
+  padding-top: 60%; /* shallower box for landscape covers */
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-wrapper.landscape .thumbnail {
+  object-fit: contain; /* show full width for landscape images */
+  background: #f6f6f6;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .book-card .thumbnail-wrapper {

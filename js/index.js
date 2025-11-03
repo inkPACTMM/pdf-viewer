@@ -132,6 +132,25 @@
               $(container).append(bookCard);
           });
 
+          // Detect landscape thumbnails and mark wrapper for different aspect handling
+          $(container).find('.thumbnail').each(function () {
+              const $img = $(this);
+              function checkOrientation() {
+                  try {
+                      const el = $img[0];
+                      if (el.naturalWidth && el.naturalHeight && el.naturalWidth > el.naturalHeight) {
+                          $img.closest('.thumbnail-wrapper').addClass('landscape');
+                      }
+                  } catch (e) {
+                      // ignore
+                  }
+              }
+
+              $img.on('load', checkOrientation);
+              // If image is already cached and complete
+              if ($img[0].complete) checkOrientation();
+          });
+
           // Re-observe new elements
           $(container).find('.book-card').each(function () {
               observer.observe(this);
