@@ -627,6 +627,182 @@
       max-width: 100%;
       height: auto;
     }
+
+    /* Tip QR Code Grid Styles */
+    .tip-qr-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 15px;
+      padding: 15px;
+      justify-items: center;
+    }
+
+    /* Horizontal scroll when more than 4 items (needs more than 2x2) */
+    .tip-qr-grid.horizontal-scroll {
+      display: grid;
+      grid-template-rows: repeat(2, auto);
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(140px, 1fr);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 10px;
+      justify-items: center;
+    }
+
+    .tip-qr-grid::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    .tip-qr-grid::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    .tip-qr-grid::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+
+    .tip-qr-grid::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+    }
+
+    .tip-qr-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      min-width: 140px;
+      flex-shrink: 0;
+    }
+
+    .tip-qr-item:hover {
+      border-color: #1E43B0;
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(30, 67, 176, 0.15);
+    }
+
+    .tip-qr-image {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: white;
+      padding: 5px;
+    }
+
+    .tip-qr-label {
+      margin-top: 8px;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    #tipModal .modal-body {
+      padding: 1.5rem;
+    }
+
+    #tipModal .modal-footer {
+      border-top: 1px solid #e9ecef;
+      padding: 1rem;
+    }
+
+    #continueWithoutTip {
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    #continueWithoutTip:hover {
+      background: #012FB3;
+      border-color: #012FB3;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(1, 47, 179, 0.3);
+    }
+
+    /* Clickable QR images */
+    .tip-qr-image {
+      cursor: pointer;
+    }
+
+    /* Enlarged QR Modal */
+    #qrEnlargeModal .modal-dialog {
+      max-width: 60vw;
+      width: 60vw;
+    }
+
+    #qrEnlargeModal .modal-content {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    #qrEnlargeModal .modal-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .enlarged-qr-container {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 100%;
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .enlarged-qr-image {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f8f9fa;
+      padding: 15px;
+    }
+
+    .enlarged-qr-label {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .enlarged-qr-close {
+      margin-top: 20px;
+      padding: 10px 40px;
+      border-radius: 25px;
+    }
+
+    @media (max-width: 768px) {
+      #qrEnlargeModal .modal-dialog {
+        max-width: 90vw;
+        width: 90vw;
+        margin: 20px auto;
+      }
+    }
   </style>
 </head>
 
@@ -756,6 +932,57 @@
   </section>
   <!-- End Of Footer -->
 
+  <!-- Tip/Read Book Modal -->
+  <div class="modal fade" id="tipModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title"><i class="fas fa-heart mr-2"></i>Support Our Work</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-3">If you enjoy this book, consider leaving a tip to support the creators!</p>
+          <div class="tip-qr-grid" id="tipQrContainer">
+            <!-- QR codes will be loaded dynamically from API -->
+            <div class="tip-qr-loading text-center" style="grid-column: 1 / -1;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <p class="mt-2 text-muted">Loading payment options...</p>
+            </div>
+          </div>
+          <p class="text-muted mt-3 mb-0"><small>Scan any QR code above to send a tip</small></p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-secondary" id="continueWithoutTip">
+            <i class="fas fa-book-open mr-2"></i>Continue Reading
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Tip Modal -->
+
+  <!-- Enlarged QR Modal -->
+  <div class="modal fade" id="qrEnlargeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="enlarged-qr-container">
+            <img id="enlargedQrImage" src="" alt="QR Code" class="enlarged-qr-image">
+            <p id="enlargedQrLabel" class="enlarged-qr-label"></p>
+            <button type="button" class="btn btn-primary enlarged-qr-close" data-dismiss="modal">
+              <i class="fas fa-times mr-2"></i>Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Enlarged QR Modal -->
+
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS, then flipbook -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -774,6 +1001,59 @@
       // Get book ID from URL parameter
       const urlParams = new URLSearchParams(window.location.search);
       const bookId = urlParams.get('id');
+
+      // Load QR codes from API for tip modal
+      (function loadQRCodes() {
+        fetch(`${API_BASE}/api/qr`)
+          .then(resp => {
+            if (!resp.ok) throw new Error('Failed to fetch QR codes');
+            return resp.json();
+          })
+          .then(data => {
+            const qrList = data.data || data.qr || data || [];
+            const container = $('#tipQrContainer');
+            container.empty();
+
+            if (qrList.length === 0) {
+              container.html('<p class="text-muted">No payment options available</p>');
+              return;
+            }
+
+            // If more than 4 items (more than 2x2 grid), switch to horizontal scroll with 2 rows
+            if (qrList.length > 4) {
+              container.addClass('horizontal-scroll');
+            } else {
+              container.removeClass('horizontal-scroll');
+            }
+
+            qrList.forEach((qr, index) => {
+              const name = qr.name || qr.label || qr.filename?.replace(/\.[^/.]+$/, '') || `Payment ${index + 1}`;
+              const imageUrl = qr.url || qr.image || `${API_BASE}/data/qr/${qr.filename}`;
+              
+              const qrItem = $(`
+                <div class="tip-qr-item">
+                  <img src="${imageUrl}" alt="${name}" class="tip-qr-image" data-qr-name="${name}" onerror="this.style.display='none'">
+                  <small class="tip-qr-label">${name}</small>
+                </div>
+              `);
+              
+              // Add click handler to enlarge QR code
+              qrItem.find('.tip-qr-image').on('click', function() {
+                const imgSrc = $(this).attr('src');
+                const qrName = $(this).data('qr-name');
+                $('#enlargedQrImage').attr('src', imgSrc);
+                $('#enlargedQrLabel').text(qrName);
+                $('#qrEnlargeModal').modal('show');
+              });
+              
+              container.append(qrItem);
+            });
+          })
+          .catch(err => {
+            console.error('Error loading QR codes:', err);
+            $('#tipQrContainer').html('<p class="text-muted" style="grid-column: 1 / -1;">Unable to load payment options</p>');
+          });
+      })();
 
       // Show loading state
       $('#info').addClass('loading-state');
@@ -812,42 +1092,62 @@
 
                 document.title = book.title + " - View PDF";
 
-                // Initialize flipbook with book's PDF
-                $("#read").flipBook({
-                  pdfUrl: toAbsolute(book.pdfUrl),
-                  lightBox: true,
-                  layout: 3,
-                  currentPage: {
-                    vAlign: "bottom",
-                    hAlign: "left"
-                  },
-                  btnShare: {
-                    enabled: false
-                  },
-                  btnPrint: {
-                    enabled: false
-                  },
-                  btnDownloadPages: {
-                    enabled: true,
-                    title: "Download PDF",
-                    icon: "fa-download",
-                    url: book.pdfUrl,
-                    name: book.title + ".pdf",
-                    hideOnMobile: false
-                  },
-                  btnColor: '#012FB3',
-                  sideBtnColor: '#012FB3',
-                  sideBtnSize: 60,
-                  sideBtnBackground: "rgba(0,0,0,.7)",
-                  sideBtnRadius: 60,
-                  btnSound: {
-                    vAlign: "top",
-                    hAlign: "left"
-                  },
-                  btnAutoplay: {
-                    vAlign: "top",
-                    hAlign: "left"
-                  }
+                // Store book data for later flipBook initialization
+                window.currentBookData = book;
+
+                // Attach click handler to show tip modal first
+                $("#read").off('click').on('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  $('#tipModal').modal('show');
+                });
+
+                // Continue Reading button initializes flipBook
+                $('#continueWithoutTip').off('click').on('click', function() {
+                  $('#tipModal').modal('hide');
+                  
+                  // Initialize flipBook after modal closes
+                  setTimeout(function() {
+                    $("#read").off('click'); // Remove our click handler
+                    $("#read").flipBook({
+                      pdfUrl: toAbsolute(window.currentBookData.pdfUrl),
+                      lightBox: true,
+                      layout: 3,
+                      currentPage: {
+                        vAlign: "bottom",
+                        hAlign: "left"
+                      },
+                      btnShare: {
+                        enabled: false
+                      },
+                      btnPrint: {
+                        enabled: false
+                      },
+                      btnDownloadPages: {
+                        enabled: true,
+                        title: "Download PDF",
+                        icon: "fa-download",
+                        url: window.currentBookData.pdfUrl,
+                        name: window.currentBookData.title + ".pdf",
+                        hideOnMobile: false
+                      },
+                      btnColor: '#012FB3',
+                      sideBtnColor: '#012FB3',
+                      sideBtnSize: 60,
+                      sideBtnBackground: "rgba(0,0,0,.7)",
+                      sideBtnRadius: 60,
+                      btnSound: {
+                        vAlign: "top",
+                        hAlign: "left"
+                      },
+                      btnAutoplay: {
+                        vAlign: "top",
+                        hAlign: "left"
+                      }
+                    });
+                    // Trigger click to open the flipBook
+                    $("#read").trigger('click');
+                  }, 300);
                 });
 
                 // Update download button href

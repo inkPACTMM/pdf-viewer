@@ -1,6 +1,6 @@
 // Shared API config and helper
 (function (global) {
-  const API_BASE = 'https://dashboard.inkpactmm.org';
+  const API_BASE = 'http://localhost:3000';
 
   function toAbsolute(p) {
     if (!p) return p;
